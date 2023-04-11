@@ -1,0 +1,21 @@
+.added {
+	color: green;
+	font-size: 32px;
+	background-color: lightgrey;
+	padding: 16px;
+	border-style: solid;
+	border-radius: 10px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.deleted {
+	color: red;
+	font-size: 32px;
+	background-color: lightgrey;
+	padding: 16px;
+	border-style: solid;
+	border-radius: 10px;
+	padding: 10px;
+	margin-bottom: 10px;
+}

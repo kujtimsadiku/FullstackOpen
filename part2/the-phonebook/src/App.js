@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react'
 import AddPerson from './components/AddPerson'
 import Headers from './components/Headers'
 import phoneServices from './services/Modules'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
 	const [newSearch, setNewSearch] = useState('')
-	const [persons, setPersons] = useState([
-	]) 
+	const [persons, setPersons] = useState([])
+	const [message, setMessage] = useState(null)
+	const [expression, setExpression] = useState(false)
 
 	useEffect(() => {
 		phoneServices
@@ -63,11 +66,15 @@ const App = () => {
 	return (
 		<div>
 			<Headers text='Phonebook' tag='h1'/>
+			<Notification message={message} expression={expression}/>
 			<div>
 				Filter shown with <input value={newSearch} onChange={handleSearchChange}/>
 			</div>
 			<Headers text='Add a new' tag='h2'/>
-			<AddPerson persons={persons} setPersons={setPersons} />
+			<AddPerson 
+				persons={persons} setPersons={setPersons}
+				setMessage={setMessage} setExpression={setExpression}
+			/>
 			<Headers text='Number' tag='h2'/>
 			<table>
 				<tbody>
