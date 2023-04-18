@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import phoneService from '../services/Modules'
 
-const AddPerson = ({ persons, setPersons }) => {
+const AddPerson = ({ persons, setPersons, setMessage, setExpression }) => {
 	const [newName, setNewName] = useState('')
 	const [newNumber, setNewNumber] = useState('')
 
@@ -18,15 +18,25 @@ const AddPerson = ({ persons, setPersons }) => {
 			if (samePerson !== newNumber) {
 				if (window.confirm(`${samePerson.name} is already added to phonebook, replace the old number with a new one`)) {
 					const changeNumber = {...samePerson, number: newNumber}
-					console.log('changed numbers id', changeNumber);
 					return (
 						phoneService
 							.update(changeNumber.id, changeNumber)
 							.then(updateContact => {
 								setPersons(persons.map(p => p.id === changeNumber.id ? changeNumber : p))
+								setMessage(`${newName} number has been changed to ${newNumber}`)
+								setExpression(false)
+								setTimeout(() => {
+									setMessage(null)
+								}, 5000)
 							})
 							.catch(error => {
-								console.log('Couldn`t update the number', error);
+								setPersons(persons.filter(person => person.name !== changeNumber.name))
+								setMessage(`${newName} has already been deleted from the server!`)
+								setExpression(true)
+								setTimeout(() => {
+									setMessage(null)
+									setExpression(false)
+								}, 5000)
 							})
 					)
 				}
@@ -46,6 +56,10 @@ const AddPerson = ({ persons, setPersons }) => {
 			.create(newObject)
 			.then(returnedObj => {
 				setPersons(persons.concat(returnedObj))
+				setMessage(`Added ${newName} to contacts`)
+				setTimeout(() => {
+					setMessage(null)
+				}, 5000)
 			})
 			.catch(error => {
 				console.log('Failed to create new object', error);
