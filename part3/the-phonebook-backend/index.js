@@ -4,7 +4,7 @@ const app = express();
 
 
 app.use(express.json())
-app.use(morgan())
+app.use(morgan('tiny'))
 
 let phonebook = [
       {
