@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 
-if (process.argv.length<3) {
-    console.log('give password as argument');
+if (process.argv.length < 3) {
+    console.log('Give password as an argument');
     process.exit(1);
 }
+
+const password = argv[2];
+
+const url = `mongodb+srv://kuitesadikuu:${password}@fullstack0.fizzje6.mongodb.net/?retryWrites=true&w=majority`;
+
+mongoose.connect(url);
 
 const noteSchema = new mongoose.Schema({
     name: String,
