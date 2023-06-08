@@ -1,12 +1,13 @@
 const blogsRouter = require('express').Router();
-const { request, response } = require('express');
+// const { request, response } = require('express');
 const Blog = require('../models/blog');
-const { error } = require('../utils/logger');
+// const { error } = require('../utils/logger');
 
-blogsRouter.get('/', (request, response) =>{
-	Blog.find({}).then(blog => {
-		response.json(blog)
-	})
+blogsRouter.get('/', (request, response) => {
+	response.send(`<h1>Testing purposes -- remember to take it off from blogs.js line 7</h1>`);
+	// Blog.find({}).then(blog => {
+	// 	response.json(blog)
+	// })
 });
 
 blogsRouter.get('/:id', (request, response, next) => {

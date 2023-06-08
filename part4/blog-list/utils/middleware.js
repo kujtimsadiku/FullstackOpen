@@ -8,6 +8,8 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+// The requested resource could not be found but may be available in the future.
+// Subsequent requests by the client are permissible.
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
@@ -22,10 +24,9 @@ const errorHandler = (error, request, response, next) => {
   }
 
   next(error);
-//   return next(error);
 };
 
-module.export = {
+module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,

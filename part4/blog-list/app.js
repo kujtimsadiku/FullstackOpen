@@ -1,9 +1,9 @@
-const express = require('express');
 const config = require('./utils/config');
+const express = require('express');
 const app = express();
 const cors = require('cors');
 const blogsRouter = require('./controllers/blogs');
-const middleware = require('./utils/logger');
+const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 const mongoose = require('mongoose');
 
@@ -13,16 +13,17 @@ logger.info('connecting to', config.MONGODB_URI);
 
 mongoose.connect(config.MONGODB_URI)
 	.then(() => {
-		logger.info('connected to MongoDB');
+		logger.info('Connected to MongoDB');
 	})
 	.catch(error => {
-		logger.error('error connecting to MongoDB', error.message);
+		logger.error('Error connecting to MongoDB\n', error.message);
 	});
 
 app.use(cors());
+app.use(express.json());
 app.use(express.static('build'));
-app.use(express.json);
 app.use(middleware.requestLogger);
+app.use(blogsRouter);
 
 app.use('/api/blogs', blogsRouter);
 
