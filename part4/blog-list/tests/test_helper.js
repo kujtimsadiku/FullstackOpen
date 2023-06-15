@@ -58,8 +58,8 @@ const blogsInDb = async () => {
 }
 
 const usersInDb = async () => {
-	const user = await User.find({})
-	return user.map(user => user.toJSON())
+	const users = await User.find({})
+	return users.map(user => user.toJSON())
 }
 
 module.exports = {

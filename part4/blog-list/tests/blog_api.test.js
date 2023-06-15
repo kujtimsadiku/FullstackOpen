@@ -87,7 +87,6 @@ describe('When there is initially some blog saved', () => {
 			const blogsAtStart = await api.get('/api/blogs');
 
 			const toBeRemoved = blogsAtStart.body[0];
-			console.log(toBeRemoved.id);
 			await api
 				.delete(`/api/blogs/${toBeRemoved.id}`)
 				.expect(204);

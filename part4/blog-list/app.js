@@ -31,7 +31,7 @@ app.use(blogsRouter);
 app.use(usersRouter);
 
 app.use('/api/blogs', blogsRouter);
-app.use('/app/users', usersRouter);
+app.use('/api/users', usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
