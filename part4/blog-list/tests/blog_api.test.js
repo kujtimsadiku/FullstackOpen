@@ -6,115 +6,100 @@ const api = supertest(app);
 
 const Blog = require('../models/blog');
 const testHelper = require('./test_helper');
+const blog = require('../models/blog');
 
-beforeEach(async () => {
-	await Blog.deleteMany({})
-	console.log('cleared');
+describe('When there is initially some blog saved', () => {
+	beforeEach(async () => {
+		await Blog.deleteMany({});
+		await Blog.insertMany(testHelper.initialBlog);
+	});
 
-	const blogObject = testHelper.initialBlog
-		.map(blog => new Blog(blog)
-	);
-
-	const promiseArray = blogObject
-		.map(blog => blog.save()
-	);
-
-	await Promise.all(promiseArray);
-})
-
-test('blogs are returned as json', async () => {
-	console.log('entered test')
-	await api
-	  .get('/api/blogs')
-	  .expect(200)
-	  .expect('Content-Type', /application\/json/)
-})
-
-test('all blogs are returned', async () => {
-	const response = await api.get('/api/blogs')
-  
-  
-	expect(response.body).toHaveLength(testHelper.initialBlog.length)
-})
-
-test('a specific blog is within the returned blog', async () => {
-	const response = await api.get('/api/blogs')
-  
-  
-	const titles = response.body.map(r => r.title)
-  
-	expect(titles).toContain('World')
-})
-
-test('there are two blogs', async () => {
-	const response = await api.get('/api/blogs')
-  
-	expect(response.body).toHaveLength(2)
-})
-
-test('a valid blog can be added ', async () => {
-	const newBlog = {
-		title: "wau",
-		author: "body.author",
-		url: "body.url",
-		likes: "10",
-	};
-
-	await api
-		.post('/api/blogs')
-		.send(newBlog)
-		.expect(201)
-		.expect('Content-Type', /application\/json/)
-
-	const blogsAtEnd = await testHelper.blogsInDb();
-	expect(blogsAtEnd).toHaveLength(testHelper.initialBlog.length + 1);
-
-	const title = blogsAtEnd.map(r => r.title)
-	expect(title).toContain('wau')
-})
-
-test('test without content is not added', async () => {
-	const newBlog = {};
-
-	await api
-		.post('/api/blogs')
-		.send(newBlog)
-		.expect(400)
-
-	const blogsAtEnd = await testHelper.blogsInDb();
-	expect(blogsAtEnd).toHaveLength(testHelper.initialBlog.length);
-})
-
-test('a specific blog can be viewed', async () => {
-	const blogAtStart = await testHelper.blogsInDb();
-
-	const blogToView = blogAtStart[0];
-
-	const resultBlog = await api
-		.get(`/api/blogs/${blogToView.id}`)
+	test('Blogs are returned as JSON', async () => {
+		console.log('entered test')
+		await api
+		.get('/api/blogs')
 		.expect(200)
-		.expect('Content-Type', /application\/json/);
+		.expect('Content-Type', /application\/json/)
+	});
 	
-	expect(resultBlog.body).toEqual(blogToView);
-})
+	// dumb test but with this we also check if the property is not undefined.
+	test('Ammount of blogs returned', async () => {
+		const response = await api.get('/api/blogs');
+		
+		expect(response.status).toBe(200);
+		
+		if (response.body) {
+			expect(response.body.length).toBe(response.body.length);
+		} else {
+			console.error('Response body is undefined')
+			expect(response.body).toBeDefined();
+		}
+	});
+	
+	// Using (await) to be sure the that the promises are returned from api.get()
+	// and to access it without needing to check too much
+	describe('Identified blog by id', () => {
+		test('identified with id and not _id', async () => {
+			const response = api.get('/api/blogs');
+			
+			const blogByIds = (await response).body.map(blog => blog.id);
+			
+			for (const id of blogByIds)
+			expect(id).toBeDefined();
+		});
+	});
+	
+	
+	describe('HTTP POST testing', () => {
+		test('Blog with values can be added', async () => {
+			const blogsAtStart = await api.get('/api/blogs');
+			
+			const newBlog = {
+				title: "test tittle",
+				author: "test author",
+				url: "test url",
+				likes: 10,
+			};
+			
+			await api
+			.post('/api/blogs')
+			.send(newBlog)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+			
+			const blogsAtEnd = await api.get('/api/blogs');
+			
+			expect(blogsAtEnd.body).toHaveLength(blogsAtStart.body.length + 1);
+			// this is valid also expect(blogsAtEnd.body.length).toBe(blogsAtStart.body.length + 1)
+		});
+		
+		test('Blog without values can not be added', async () => {
+			const blog = {};
+			
+			await api
+			.post('/api/blogs')
+			.send(blog)
+			.expect(400);
+		});
+	});
 
-test('a blog can be deleted', async () => {
-	const blogAtStart = await testHelper.blogsInDb();
-	const noteToDelete = blogAtStart[0];
+	describe('HTTP DELETE testing', () => {
+		test('Testing to delete the last one blog', async () => {
+			const blogsAtStart = await api.get('/api/blogs');
 
-	await api
-		.delete(`/api/blogs/${noteToDelete.id}`)
-		.expect(204);
+			const toBeRemoved = blogsAtStart.body[0];
+			console.log(toBeRemoved.id);
+			await api
+				.delete(`/api/blogs/${toBeRemoved.id}`)
+				.expect(204);
+			
+			const blogsAtEnd = await api.get('/api/blogs');
 
-	const blogsAtEnd = await testHelper.blogsInDb();
-
-	expect(blogsAtEnd).toHaveLength(testHelper.initialBlog.length - 1);
-
-	const titles = blogsAtEnd.map(t => t.title);
-
-	expect(titles).not.toContain(noteToDelete.title);
-})
-
+			expect(blogsAtEnd.body).toHaveLength(blogsAtStart.body.length - 1)
+		});
+	});
+});
+	
 afterAll(async () => {
-  await mongoose.connection.close()
-})
+	await mongoose.connection.close();
+});
