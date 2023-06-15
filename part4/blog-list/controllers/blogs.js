@@ -1,8 +1,6 @@
 const blogsRouter = require('express').Router();
 const { response } = require('../app');
-// const { request, response } = require('express');
 const Blog = require('../models/blog');
-// const { error } = require('../utils/logger');
 
 blogsRouter.get('/', async (request, response) => {
 	// response.send(`<h1>Testing purposes -- remember to take it off from blogs.js line 7</h1>`);
@@ -26,7 +24,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.get('/:id', async (request, response, next) => {
 	const blog = await Blog.findById(request.params.id);
-	
+
 	if (blog) {
 		response.json(blog);
 	} else {
