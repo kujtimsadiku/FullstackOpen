@@ -109,7 +109,8 @@ describe('When there is initially one user', () => {
 
 		const passwordHash = await bcrypt.hash('sikret', 10);
 		const user = new User({
-			username: 'root', passwordHash
+			username: 'root', 
+			passwordHash: passwordHash,
 		});
 
 		await user.save();
@@ -131,7 +132,14 @@ describe('When there is initially one user', () => {
 			.expect('Content-Type', /application\/json/)
 		
 		const userAtEnd = await testHelper.usersInDb();
-		expect(userAtEnd).toHaveLength(userAtStart.length + 1);
+		userAtEnd.forEach(element => {
+			console.log(element.username);
+		});
+		console.log(userAtEnd);
+		// userAtStart is a asynchronous function that returns a promise. Therefore we need to 'await' the
+		// result of the 'userAtStart' to get the actual value before using it. ]
+		// Without it we get NaN = "Not a number"
+		expect(userAtEnd).toHaveLength((await userAtStart).length + 1);
 
 		const username = userAtEnd.map(u => u.username)
 		expect(username).not.toContain(newUser.username);
