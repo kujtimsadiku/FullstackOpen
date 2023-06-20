@@ -13,7 +13,7 @@ blogsRouter.get('/', async (request, response) => {
 const getTokenFrom = request => {
 	const authorization = request.get('authorization');
 
-	if (authorization && authorization.startWith('Bearer ')) {
+	if (authorization && authorization.startsWith('Bearer ')) {
 		return authorization.replace('Bearer ', '');
 	}
 	return null;
@@ -25,7 +25,7 @@ blogsRouter.post('/', async (request, response) => {
 
 	if (!decodedToken.id) {
 		return response.status(401).json({
-			error: 'Token invlid'
+			error: 'Token invalid'
 		});
 	}
 	
