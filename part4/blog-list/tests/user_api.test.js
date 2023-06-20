@@ -9,7 +9,7 @@ const helper = require('./test_helper');
 
 describe('When there is initially one user', () => {
 	beforeEach(async () => {
-		// await User.deleteMany({});
+		await User.deleteMany({});
 
 		const passwordHash = await bcrypt.hash('sikret', 10);
 		const user = new User({

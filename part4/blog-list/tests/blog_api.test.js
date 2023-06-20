@@ -6,6 +6,7 @@ const api = supertest(app);
 
 const Blog = require('../models/blog');
 const testHelper = require('./test_helper');
+const User = require('../models/user');
 
 describe('When there is initially some blog saved', () => {
 	beforeEach(async () => {

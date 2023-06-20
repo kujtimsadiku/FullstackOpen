@@ -29,7 +29,7 @@ blogSchema.set('toJSON', {
     returnObject.id = id;
 
     delete returnObject._id;
-    delete returnObject._v;
+    delete returnObject.__v;
   },
 });
 
