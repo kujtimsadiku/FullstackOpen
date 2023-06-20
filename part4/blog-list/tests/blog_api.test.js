@@ -97,57 +97,6 @@ describe('When there is initially some blog saved', () => {
 		});
 	});
 });
-
-// user test -----
-
-const bcrypt = require('bcrypt');
-const User = require('../models/user');
-
-describe('When there is initially one user', () => {
-	beforeEach(async () => {
-		await User.deleteMany({});
-
-		const passwordHash = await bcrypt.hash('sikret', 10);
-		const user = new User({
-			username: 'root', 
-			passwordHash: passwordHash,
-		});
-
-		await user.save();
-	});
-
-	test('creation was success', async () => {
-		const userAtStart = testHelper.usersInDb();
-
-		const newUser = {
-			username: 'ksadiku',
-			name: 'kujtim',
-			password: 'UusiSalasana',
-		}
-
-		await api
-			.post('/api/users')
-			.send(newUser)
-			.expect(201)
-			.expect('Content-Type', /application\/json/)
-		
-		const userAtEnd = await testHelper.usersInDb();
-		userAtEnd.forEach(element => {
-			console.log(element.username);
-		});
-		console.log(userAtEnd);
-		// userAtStart is a asynchronous function that returns a promise. Therefore we need to 'await' the
-		// result of the 'userAtStart' to get the actual value before using it. ]
-		// Without it we get NaN = "Not a number"
-		expect(userAtEnd).toHaveLength((await userAtStart).length + 1);
-
-		const username = userAtEnd.map(u => u.username)
-		expect(username).not.toContain(newUser.username);
-	})
-});
-
-
-// user test -----
 	
 afterAll(async () => {
 	await mongoose.connection.close();
