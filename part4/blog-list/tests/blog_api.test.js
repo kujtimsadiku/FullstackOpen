@@ -62,10 +62,10 @@ describe('When there is initially some blog saved', () => {
 			};
 			
 			await api
-			.post('/api/blogs')
-			.send(newBlog)
-			.expect(201)
-			.expect('Content-Type', /application\/json/);
+				.post('/api/blogs')
+				.send(newBlog)
+				.expect(201)
+				.expect('Content-Type', /application\/json/);
 			
 			const blogsAtEnd = await api.get('/api/blogs');
 			
