@@ -9,7 +9,7 @@ const helper = require('./test_helper');
 
 describe('When there is initially one user', () => {
 	beforeEach(async () => {
-		await User.deleteMany({});
+		// await User.deleteMany({});
 
 		const passwordHash = await bcrypt.hash('sikret', 10);
 		const user = new User({
@@ -18,7 +18,7 @@ describe('When there is initially one user', () => {
 		});
 
 		await user.save();
-	})
+	});
 
 	test('creation was success', async () => {
 		const userAtStart = await helper.usersInDb();
@@ -44,8 +44,6 @@ describe('When there is initially one user', () => {
 
 	test('creation fails with proper statuscode and message if username is already taken', async () => {
 		const userAtStart = await helper.usersInDb();
-		
-		console.log(userAtStart);
 
 		const newUser = {
 			username: 'root',
