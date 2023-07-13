@@ -17,6 +17,16 @@ const App = () => {
 		)
 	}, []);
 
+	useEffect(() => {
+		const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
+
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON);
+			setUser(user);
+			blogService.setToken(user.token);
+		}
+	}, [])
+
 	// method cancels the event if it cancelable, meaning that the default action that belongs to event will not occur
 	const handleLogin = async (event) => {
 		event.preventDefault()
@@ -25,6 +35,11 @@ const App = () => {
 			const user = await loginService.login({
 				username, password
 			});
+			
+			window.localStorage.setItem(
+				'loggedBlogappUser', JSON.stringify(user)
+			);
+
 			setUser(user);
 			setUsername('');
 			setPassword('');
@@ -71,23 +86,30 @@ const App = () => {
 		);
 	}
 
-	const blogForm = ({ username }) => {
+	const loggedIn = (username) => {
+		return (
+			<div>
+				<div 
+					style={{fontWeight: "bold", margin: "0px 0px 20px 0px"}}>
+					{username} is logged in
+					<button style={{margin: "0px 0px 0px 3px"}}>Logout</button>
+				</div>
+			</div>
+		);
+	}
+
+	const blogForm = (user) => {
 		return (
 			<div>
 				<h1>Blogs</h1>
+				{loggedIn(user.username)}
 				{blogs.map((blog) => {
-					console.log("username: " + username);
-					if (blog.user && blog.user.username && blog.user.username === username) {
+					if (blog.user && blog.user.username && blog.user.username === user.username) {
 						return <Blog key={blog.id} blog={blog} />;
 					} else {
 						return null;
 					}
 				})}
-				<h1>Add Blog</h1>
-				<input
-				type="text"
-				name="Blog"
-				/>
 			</div>
 		);
 	};
