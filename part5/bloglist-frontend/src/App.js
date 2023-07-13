@@ -10,10 +10,12 @@ const App = () => {
 	const [user, setUser] = useState(null);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [newBlog, setNewBlog] = useState({title: "", author: "", url: ""})
 
 	useEffect(() => {
-		blogService.getAll().then(blogs =>
-			setBlogs( blogs )
+		blogService
+			.getAll().then(blogs =>
+				setBlogs(blogs)
 		)
 	}, []);
 
@@ -29,7 +31,7 @@ const App = () => {
 
 	// method cancels the event if it cancelable, meaning that the default action that belongs to event will not occur
 	const handleLogin = async (event) => {
-		event.preventDefault()
+		event.preventDefault();
 
 		try {
 			const user = await loginService.login({
@@ -40,6 +42,7 @@ const App = () => {
 				'loggedBlogappUser', JSON.stringify(user)
 			);
 
+			blogService.setToken(user.token);
 			setUser(user);
 			setUsername('');
 			setPassword('');
@@ -86,16 +89,50 @@ const App = () => {
 		);
 	}
 
+	const logOut = () => {
+		window.localStorage.clear('loggedBlogappUser');
+		setUser(null);
+		setNewBlog({title: "", author: "", url: ""});
+	}
+
 	const loggedIn = (username) => {
 		return (
 			<div>
-				<div 
+				<div
 					style={{fontWeight: "bold", margin: "0px 0px 20px 0px"}}>
 					{username} is logged in
-					<button style={{margin: "0px 0px 0px 3px"}}>Logout</button>
+					<button onClick={logOut} style={{margin: "0px 0px 0px 3px"}}>Logout</button>
 				</div>
 			</div>
 		);
+	}
+	
+	// const errorHandler = ()
+
+	const createBlog = async () => {
+
+		const {title, author, url} = newBlog;
+
+		try {
+			const blog = await blogService.create({
+				title,
+				author,
+				url,
+				likes: 0
+			});
+
+			setBlogs(prevBlogs => [...prevBlogs, blog]);
+			setErrorMessage(`A new blog ${blog.title} by ${blog.author}`);
+			setNewBlog({title: "", author: "", url: ""});
+		} catch (exception) {
+			setErrorMessage("error");
+		}
+	}
+
+	const blogInputHandler = (event) => {
+		const createBlog = event.target;
+
+		setNewBlog({ ...newBlog, [createBlog.name]: createBlog.value});
 	}
 
 	const blogForm = (user) => {
@@ -110,6 +147,38 @@ const App = () => {
 						return null;
 					}
 				})}
+				<div>
+					<h2>Create new</h2>
+					<form onSubmit={createBlog}>
+						<div style={{margin: "20px 0px 0px 0px"}}>
+							title: 
+							<input
+								name="title"
+								type="text"
+								value={newBlog.title}
+								onChange={blogInputHandler}/>
+						</div>
+						<div>
+							author: 
+							<input
+								name="author"
+								type="text"
+								value={newBlog.author}
+								onChange={blogInputHandler}
+							/>
+						</div>
+						<div>
+							url
+							<input
+								name="url"
+								type="text"
+								value={newBlog.url}
+								onChange={blogInputHandler}
+							/>
+						</div>
+						<button type="submit" style={{margin: "20px 0px 0px 0px"}}>Create</button>
+					</form>
+				</div>
 			</div>
 		);
 	};

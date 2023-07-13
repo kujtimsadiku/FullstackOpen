@@ -3,7 +3,7 @@ const Notification = ({ message }) => {
     return null;
   
   return (
-    <div className="error" style={{fontSize: "28px", color: "red"}}>
+    <div className="">
       {message}
     </div>
   );

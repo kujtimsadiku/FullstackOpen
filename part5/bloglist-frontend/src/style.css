@@ -1,0 +1,12 @@
+.error-message {
+	color: red;
+}
+
+.success-message {
+	color: green;
+}
+
+.success-message,
+.error-message {
+	font-size: 28px;
+}
