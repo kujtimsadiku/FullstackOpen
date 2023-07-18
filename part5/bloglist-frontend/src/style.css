@@ -1,12 +1,34 @@
 .error-message {
 	color: red;
+	border-radius: 8px;
+	border: 4px solid red;
+	padding: 0.101em;
+	margin-bottom: 8px;
+	background-color: lightgrey;
 }
 
 .success-message {
 	color: green;
+	border-radius: 8px;
+	border: 4px solid green;
+	padding: 0.101em;
+	background-color: lightgrey;
 }
 
 .success-message,
 .error-message {
 	font-size: 28px;
+}
+
+.loggedIn {
+	font-weight: bold;
+	margin: 0px 0px 20px 0px;
+}
+
+.loggedOut-btn {
+	margin: 0px 0px 0px 3px;
+}
+
+.create-btn {
+	margin: 20px 0px 20px 0px;
 }

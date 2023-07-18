@@ -29,5 +29,11 @@ const update = (id, newObject) => {
   return request.then(response => response.data);
 }
 
+const remove = (id) => {
+	const request = axios.delete(`/api/blogs/${id}`)
+	console.log('here is the request of axios.delete', request);
+	return request.then(response => response.data)
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update, setToken }
+export default { getAll, create, update, setToken, remove }

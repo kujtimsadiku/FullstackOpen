@@ -7,6 +7,7 @@ import Notification from './components/Notification';
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
+	const [message, setMessage] = useState(null);
 	const [user, setUser] = useState(null);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -14,7 +15,8 @@ const App = () => {
 
 	useEffect(() => {
 		blogService
-			.getAll().then(blogs =>
+			.getAll()
+			.then(blogs =>
 				setBlogs(blogs)
 		)
 	}, []);
@@ -50,7 +52,7 @@ const App = () => {
 			setErrorMessage('Wrong credentials')
 			setTimeout(() => {
 				setErrorMessage(null);
-			}, 5000);
+			}, 3000);
 		}
 		console.log('Logging in with', username, password);
 	}
@@ -64,6 +66,7 @@ const App = () => {
 		return (
 				<div>
 						<h2>Log in to application</h2>
+						<Notification errorMessage={errorMessage}/>
 						<form onSubmit={handleLogin}>
 							<div>
 								Username
@@ -98,18 +101,16 @@ const App = () => {
 	const loggedIn = (username) => {
 		return (
 			<div>
-				<div
-					style={{fontWeight: "bold", margin: "0px 0px 20px 0px"}}>
+				<div className='loggedIn'>
 					{username} is logged in
-					<button onClick={logOut} style={{margin: "0px 0px 0px 3px"}}>Logout</button>
+					<button onClick={logOut} className='loggedOut-btn'>Logout</button>
 				</div>
 			</div>
 		);
 	}
-	
-	// const errorHandler = ()
 
-	const createBlog = async () => {
+	const createBlog = async (event) => {
+		event.preventDefault();
 
 		const {title, author, url} = newBlog;
 
@@ -122,35 +123,49 @@ const App = () => {
 			});
 
 			setBlogs(prevBlogs => [...prevBlogs, blog]);
-			setErrorMessage(`A new blog ${blog.title} by ${blog.author}`);
+			setMessage(`A new blog ${blog.title} by ${blog.author}`);
+			setTimeout(() => {
+				setMessage(null);
+			}, 3000	)
 			setNewBlog({title: "", author: "", url: ""});
 		} catch (exception) {
 			setErrorMessage("error");
+			setTimeout(() => {
+				setErrorMessage(null);
+			}, 3000)
 		}
 	}
 
 	const blogInputHandler = (event) => {
-		const createBlog = event.target;
+		event.preventDefault();
 
-		setNewBlog({ ...newBlog, [createBlog.name]: createBlog.value});
+		const { name, value } = event.target;
+
+		setNewBlog({ ...newBlog, [name]: value});
 	}
+
+	// Deletes a blog 
+	// const deleteBlog = async (id, event) => {
+	// 	event.preventDefault();
+
+	// 	try {
+	// 		await blogService.remove(id)
+	// 		setBlogs(blogs.filter(blog => blog.id !== id))
+	// 	} catch (exception) {
+	// 		console.log(exception);
+	// 	}
+	// }
 
 	const blogForm = (user) => {
 		return (
 			<div>
 				<h1>Blogs</h1>
 				{loggedIn(user.username)}
-				{blogs.map((blog) => {
-					if (blog.user && blog.user.username && blog.user.username === user.username) {
-						return <Blog key={blog.id} blog={blog} />;
-					} else {
-						return null;
-					}
-				})}
 				<div>
+					<Notification message={message} errorMessage={errorMessage}/>
 					<h2>Create new</h2>
 					<form onSubmit={createBlog}>
-						<div style={{margin: "20px 0px 0px 0px"}}>
+						<div className="blog-form">
 							title: 
 							<input
 								name="title"
@@ -176,8 +191,15 @@ const App = () => {
 								onChange={blogInputHandler}
 							/>
 						</div>
-						<button type="submit" style={{margin: "20px 0px 0px 0px"}}>Create</button>
+						<button className="create-btn" type="submit">Create</button>
 					</form>
+					{blogs.map((blog) => {
+					if (blog.user && blog.user.username && blog.user.username === user.username) {
+						return <Blog key={blog.id} blog={blog} />;
+					} else {
+						return null;
+					}
+				})}
 				</div>
 			</div>
 		);
@@ -185,7 +207,6 @@ const App = () => {
 
 	return (
 		<div>
-				<Notification message={errorMessage} />
 				{!user && login()}
 				{user && blogForm(user)}
 		</div>
