@@ -122,7 +122,10 @@ const App = () => {
 				likes: 0
 			});
 
-			setBlogs(prevBlogs => [...prevBlogs, blog]);
+			// Fetch the updated list of blogs from the server
+			const updatedBlogs = await blogService.getAll();
+			setBlogs([...updatedBlogs, blog]);
+
 			setMessage(`A new blog ${blog.title} by ${blog.author}`);
 			setTimeout(() => {
 				setMessage(null);
