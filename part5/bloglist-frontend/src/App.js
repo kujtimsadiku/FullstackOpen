@@ -14,7 +14,6 @@ const App = () => {
 	const [user, setUser] = useState(null);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
 
 	useEffect(() => {
 		blogService
@@ -63,7 +62,6 @@ const App = () => {
 	const logOut = () => {
 		window.localStorage.clear('loggedBlogappUser');
 		setUser(null);
-		setNewBlog({title: "", author: "", url: ""});
 	}
 
 	const loggedIn = (username) => {
@@ -77,18 +75,9 @@ const App = () => {
 		);
 	}
 
-	const handleBlog = async (event) => {
-		event.preventDefault();
-
-		const {title, author, url} = newBlog;
-
+	const handleBlog = async (newBlog) => {
 		try {
-			const blog = await blogService.create({
-				title,
-				author,
-				url,
-				likes: 0
-			});
+			const blog = await blogService.create(newBlog);
 
 			// Fetch the updated list of blogs from the server
 			const updatedBlogs = await blogService.getAll();
@@ -98,21 +87,12 @@ const App = () => {
 			setTimeout(() => {
 				setMessage(null);
 			}, 3000	)
-			setNewBlog({title: "", author: "", url: ""});
 		} catch (exception) {
 			setErrorMessage("error");
 			setTimeout(() => {
 				setErrorMessage(null);
 			}, 3000)
 		}
-	}
-
-	const blogInputHandler = (event) => {
-		event.preventDefault();
-
-		const { name, value } = event.target;
-
-		setNewBlog({ ...newBlog, [name]: value});
 	}
 
 	// Deletes a blog 
@@ -126,55 +106,6 @@ const App = () => {
 	// 		console.log(exception);
 	// 	}
 	// }
-
-	const blogForm = (user) => {
-		return (
-			<div>
-				<h1>Blogs</h1>
-				{loggedIn(user.username)}
-				<div>
-					<Notification message={message} errorMessage={errorMessage}/>
-					<h2>Create new</h2>
-					<form onSubmit={handleBlog}>
-						<div className="blog-form">
-							title: 
-							<input
-								name="title"
-								type="text"
-								value={newBlog.title}
-								onChange={blogInputHandler}/>
-						</div>
-						<div>
-							author: 
-							<input
-								name="author"
-								type="text"
-								value={newBlog.author}
-								onChange={blogInputHandler}
-							/>
-						</div>
-						<div>
-							url
-							<input
-								name="url"
-								type="text"
-								value={newBlog.url}
-								onChange={blogInputHandler}
-							/>
-						</div>
-						<button className="create-btn" type="submit">Create</button>
-					</form>
-					{blogs.map((blog) => {
-					if (blog.user && blog.user.username && blog.user.username === user.username) {
-						return <Blog key={blog.id} blog={blog} />;
-					} else {
-						return null;
-					}
-				})}
-				</div>
-			</div>
-		);
-	};
 
 	return (
 		<div>
@@ -190,16 +121,23 @@ const App = () => {
 					</Togglable>
 				}
 				{user && 
-					<Togglable>
+				<div>
+					<h2>Blogs</h2>
+					{loggedIn(username)}
+					<Notification message={message} errorMessage={errorMessage}/>
+					<Togglable btnName="Create Blog">
 						<BlogForm
-							username={username}
-							handleTitle={({ target }) => setNewBlog(target.value)}
-							handleAuthor={({ target }) => setNewBlog(target.value)}
-							handleUrl={({ target }) => setNewBlog(target.value)}
-							handleSubmit={handleBlog}
+							createBlog={handleBlog}
 						/>
+						{blogs.map((blog) => {
+							if (blog.user && blog.user.username && blog.user.username === user.username) {
+								return <Blog key={blog.id} blog={blog} />;
+							} else {
+								return null;
+							}
+						})}
 					</Togglable>
-				
+				</div>
 				}
 		</div>
 	)

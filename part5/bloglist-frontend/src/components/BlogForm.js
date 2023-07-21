@@ -1,48 +1,69 @@
+import { useState } from "react";
 
-const BlogForm = ({
-	username,
-	handleTitle,
-	handleAuthor,
-	handleUrl,
-	handleSubmit
-}) => {
+const BlogForm = ({ createBlog }) => {
+	const [title, setTitle] = useState("");
+	const [author, setAuthor] = useState("");
+	const [url, setUrl] = useState("");
+
+	const handleTitleInput = (event) => {
+		event.preventDefault();
+
+		setTitle(event.target.value);
+	}
+
+	const handleAuthorInput = (event) => {
+		event.preventDefault();
+
+		setAuthor(event.target.value);
+	}
+
+	const handleUrlInput = (event) => {
+		event.preventDefault();
+
+		setUrl(event.target.value);
+	}
+
+	const handleBlog = (event) => {
+		event.preventDefault();
+
+		createBlog({
+			title: title,
+			author: author,
+			url: url,
+			likes: 0
+		})
+		setTitle("");
+		setAuthor("");
+		setUrl("");
+	}
+
 	return (
 		<div>
-			<h1>Blogs</h1>
-			{loggedIn(user.username)}
 			<div>
-				<Notification message={message} errorMessage={errorMessage}/>
 				<h2>Create new</h2>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleBlog}>
 					<div className="blog-form">
 						title: 
 						<input
-							value={newBlog.title}
-							onChange={handleTitle}/>
+							value={title}
+							onChange={handleTitleInput}/>
 					</div>
 					<div>
 						author: 
 						<input
-							value={newBlog.author}
-							onChange={handleAuthor}
+							value={author}
+							onChange={handleAuthorInput}
 						/>
 					</div>
 					<div>
 						url
 						<input
-							value={newBlog.url}
-							onChange={handleUrl}
+							value={url}
+							onChange={handleUrlInput}
 						/>
 					</div>
 					<button className="create-btn" type="submit">Create</button>
 				</form>
-				{blogs.map((blog) => {
-				if (blog.user && blog.user.username && blog.user.username === user.username) {
-					return <Blog key={blog.id} blog={blog} />;
-				} else {
-					return null;
-				}
-			})}
 			</div>
 		</div>
 	);
