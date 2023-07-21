@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -64,11 +64,11 @@ const App = () => {
 		setUser(null);
 	}
 
-	const loggedIn = (username) => {
+	const loggedIn = () => {
 		return (
 			<div>
 				<div className='loggedIn'>
-					{username} is logged in
+					{user.username} is logged in
 					<button onClick={logOut} className='loggedOut-btn'>Logout</button>
 				</div>
 			</div>
@@ -76,6 +76,8 @@ const App = () => {
 	}
 
 	const handleBlog = async (newBlog) => {
+		blogFormRef.current.toggleVisibility();
+
 		try {
 			const blog = await blogService.create(newBlog);
 
@@ -95,6 +97,23 @@ const App = () => {
 		}
 	}
 
+	const updateBlogLikes = async (id, blog) => {
+		try {
+			const blogLiked = await blogService.update(id, blog);
+
+			setBlogs((prevBlogs) => 
+			prevBlogs.map(blog => (blog.id === id 
+				? { ...blog, likes: blogLiked.likes } 
+				: blog))
+			);
+		} catch (exception) {
+			setErrorMessage("Error on updating likes");
+			setTimeout(() => {
+				setErrorMessage(null);
+			}, 3000);
+		}
+	}
+
 	// Deletes a blog 
 	// const deleteBlog = async (id, event) => {
 	// 	event.preventDefault();
@@ -107,10 +126,12 @@ const App = () => {
 	// 	}
 	// }
 
+	const blogFormRef = useRef();
+
 	return (
 		<div>
 				{!user && 
-					<Togglable btnName="Login">
+					<Togglable btnName="Login" ref={blogFormRef}>
 						<h2>Log in to application</h2>
 						<Notification message={message} errorMessage={errorMessage}/>
 						<LoginForm
@@ -120,25 +141,27 @@ const App = () => {
 							handlePassword={({ target }) => setPassword(target.value)}
 							handleSubmit={handleLogin}
 							/>
+							<button onClick={() => blogFormRef.current.toggleVisibility()}>Cancel</button>
 					</Togglable>
 				}
 				{user && 
 				<div>
 					<h2>Blogs</h2>
-					{loggedIn(username)}
+					{loggedIn()}
 					<Notification message={message} errorMessage={errorMessage}/>
-					<Togglable btnName="Create Blog">
+					<Togglable btnName="Create Blog" ref={blogFormRef}>
 						<BlogForm
 							createBlog={handleBlog}
 						/>
-						{blogs.map((blog) => {
-							if (blog.user && blog.user.username && blog.user.username === user.username) {
-								return <Blog key={blog.id} blog={blog} />;
-							} else {
-								return null;
-							}
-						})}
+						<button onClick={() => blogFormRef.current.toggleVisibility()} className='cancel-btn'>Cancel</button>
 					</Togglable>
+					{blogs.map((blog) => {
+						if (blog.user && blog.user.username && blog.user.username === user.username) {
+							return <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes}/>
+						} else {
+							return null;
+						}
+					})}
 				</div>
 				}
 		</div>
