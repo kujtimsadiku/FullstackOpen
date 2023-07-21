@@ -111,6 +111,8 @@ const App = () => {
 		<div>
 				{!user && 
 					<Togglable btnName="Login">
+						<h2>Log in to application</h2>
+						<Notification message={message} errorMessage={errorMessage}/>
 						<LoginForm
 							username={username}
 							password={password}
