@@ -1,25 +1,17 @@
-// Delete button will be added. I need to figure out where i call update 
+// Delete button will be added. I need to figure out where i call update
 // for updated blogs to be removed without refreshing the page.
 // solution is to update the useState
-import { useState } from "react"
+import { useState } from 'react'
 
-// import blogService from "../services/blogs"
+const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
+  const [visible, setVisible] = useState(false)
 
-// const removeBlog = async blog => {
-//   await blogService.remove(blog.id);
-// }
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
 
-
-const Blog = ({blog, updateBlogLikes}) => {
-  const [visible, setVisible] = useState(false);
-
-
-	const hideWhenVisible = { display: visible ? 'none' : '' };
-	const showWhenVisible = { display: visible ? '' : 'none' };
-
-	const toggleVisibility = () => {
-		setVisible(!visible);
-	}
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
 
   const handleLikes = () => {
     const blogToUpdate = {
@@ -30,29 +22,30 @@ const Blog = ({blog, updateBlogLikes}) => {
       user: blog.user
     }
 
-    updateBlogLikes(blog.id, blogToUpdate);
+    updateBlogLikes(blog.id, blogToUpdate)
   }
 
   return (
-  <div id="viewing-model">
-    <div style={hideWhenVisible}>
-      {blog.title} - {blog.author}
-      <button onClick={toggleVisibility}>view</button>
-    </div>
-    <div style={showWhenVisible}>
-      {blog.title} - {blog.author}
-      <button onClick={toggleVisibility}>hide</button>
-      <div>
-        <div>{blog.url}</div>
+    <div id='viewing-model'>
+      <div style={hideWhenVisible}>
+        { blog.title } - { blog.author }
+        <button onClick={toggleVisibility} style={{ marginLeft: '4px' }}>view</button>
+      </div>
+      <div style={showWhenVisible}>
+        { blog.title } - { blog.author }
+        <button onClick={toggleVisibility} style={{ marginLeft: '4px' }}>hide</button>
         <div>
-          Likes: {blog.likes}
-          <button onClick={handleLikes}>like</button>
+          <div>{ blog.url }</div>
+          <div>
+            Likes: { blog.likes }
+            <button onClick={handleLikes} style={{ marginLeft: '4px' }}>like</button>
+          </div>
+          <div>{ blog.user.name }</div>
         </div>
-        <div>{blog.user.name}</div>
+        <button onClick={() => removeBlog(blog)}>Remove</button>
       </div>
     </div>
-    {/* <button onClick={() => removeBlog(blog)}>Delete</button> */}
-  </div>  
-)}
+  )
+}
 
 export default Blog
