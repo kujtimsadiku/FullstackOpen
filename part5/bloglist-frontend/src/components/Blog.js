@@ -2,6 +2,7 @@
 // for updated blogs to be removed without refreshing the page.
 // solution is to update the useState
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
   const [visible, setVisible] = useState(false)
@@ -46,6 +47,11 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
       </div>
     </div>
   )
+}
+
+Blog.propTypes = {
+  updateBlogLikes: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired
 }
 
 export default Blog
