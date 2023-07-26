@@ -1,5 +1,14 @@
 describe('Blog', function() {
   beforeEach(function() {
+    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+
+    const user = {
+      name: '123kujtim',
+      username: 'kute',
+      password: '123',
+    }
+
+    cy.request('POST', 'http://localhost:3001/api/users/', user);
     cy.visit('http://localhost:3000');
   });
 
