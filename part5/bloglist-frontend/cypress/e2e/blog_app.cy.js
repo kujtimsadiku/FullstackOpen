@@ -25,6 +25,16 @@ describe('Blog', function() {
     cy.contains('Cancel');
   });
 
+  it('Log in fails with wrong password', function() {
+    cy.contains('Login').click();
+
+    cy.get('#username').type('kute');
+    cy.get('#password').type('321');
+    cy.get('#login-button').click();
+
+    cy.get('.error-message').contains('Wrong credentials');
+  });
+
   it('User can log in', function() {
     cy.contains('Login').click();
 
