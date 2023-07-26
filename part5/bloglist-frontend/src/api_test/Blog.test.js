@@ -39,6 +39,8 @@ describe('<Blog /> component test', () => {
     const button = component.getByText('view');
     userEvent.click(button);
 
+    expect(button).toBeInTheDocument();
+
     // url
     expect(component.container).toHaveTextContent('www.test.com');
     // likes
@@ -49,9 +51,13 @@ describe('<Blog /> component test', () => {
 
   test('Like button pressed few times', async () => {
     const viewBtn = component.getByText('view');
+    expect(viewBtn).toBeInTheDocument();
+
     userEvent.click(viewBtn);
 
     const likeBtn = screen.getByText('like');
+    expect(likeBtn).toBeInTheDocument();
+
     await userEvent.click(likeBtn);
     await userEvent.click(likeBtn);
 
