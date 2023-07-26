@@ -23,30 +23,38 @@ describe('<Blog /> component test', () => {
 
   let component;
 
-  test('Renders Title and Author', () => {
+  beforeEach(() => {
     component = render(
-      <Blog key={blog.id} blog={blog} updateBlogLikes={updateLikesMockFn} removeBlog={removeBlogMockFn}/>
+        <Blog key={blog.id} blog={blog} updateBlogLikes={updateLikesMockFn} removeBlog={removeBlogMockFn}/>
     );
+  })
 
+  test('Renders Title and Author', () => {
     expect(component.container).toHaveTextContent(
       'Kujtim - testKuite'
     );
   });
 
   test('The view button click to display url and likes', () => {
-    component = render(
-      <Togglable>
-        <Blog key={blog.id} blog={blog} updateBlogLikes={updateLikesMockFn} removeBlog={removeBlogMockFn}/>
-      </Togglable>
-    );
-
     const button = component.getByText('view');
     userEvent.click(button);
 
-    screen.debug();
-
-    expect(component.container).toHaveTextContent('www.text.com');
+    // url
+    expect(component.container).toHaveTextContent('www.test.com');
+    // likes
     expect(component.container).toHaveTextContent('5');
-    }
-  );
+    // users name
+    expect(component.container).toHaveTextContent('Name');
+  });
+
+  test('Like button pressed few times', async () => {
+    const viewBtn = component.getByText('view');
+    userEvent.click(viewBtn);
+
+    const likeBtn = screen.getByText('like');
+    await userEvent.click(likeBtn);
+    await userEvent.click(likeBtn);
+
+    expect(updateLikesMockFn).toHaveBeenCalledTimes(2);
+  });
 })
