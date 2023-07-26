@@ -15,7 +15,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "jesttest": "CI=true npm test -- --coverage"
   },
   "eslintConfig": {
     "extends": [

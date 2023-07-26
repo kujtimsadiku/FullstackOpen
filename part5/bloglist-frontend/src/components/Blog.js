@@ -29,7 +29,10 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
   return (
     <div id='viewing-model'>
       <div style={hideWhenVisible}>
-        { blog.title } - { blog.author }
+        {/* { blog.title } - { blog.author } */}
+        <span className='title'>{blog.title}</span>
+        <span> - </span>
+        <span className='author'>{blog.author}</span>
         <button onClick={toggleVisibility} style={{ marginLeft: '4px' }}>view</button>
       </div>
       <div style={showWhenVisible}>
