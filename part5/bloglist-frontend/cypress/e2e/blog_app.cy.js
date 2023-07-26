@@ -3,7 +3,7 @@ describe('Blog', function() {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
 
     const user = {
-      name: '123kujtim',
+      name: 'kujtim',
       username: 'kute',
       password: '123',
     }
