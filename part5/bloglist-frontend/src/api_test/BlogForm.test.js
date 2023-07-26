@@ -11,9 +11,9 @@ describe('<BlogForm /> component test', () => {
 
 		const component = render(<BlogForm createBlog={createBlogMockFn}/>);
 
-		const titleInput = component.container.querySelector("input[name='title']");
-		const authorInput = component.container.querySelector("input[name='author']");
-		const urlInput = component.container.querySelector("input[name='url']");
+		const titleInput = component.container.querySelector('#title-input');
+		const authorInput = component.container.querySelector('#author-input');
+		const urlInput = component.container.querySelector('#url-input');
 
 		const createButton = screen.getByText('Create');
 

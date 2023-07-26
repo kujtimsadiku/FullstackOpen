@@ -58,17 +58,17 @@ const App = () => {	const [blogs, setBlogs] = useState([])
   }
 
   const logOut = () => {
-    window.localStorage.clear('loggedBlogappUser')
-    setUser(null)
+    if (window.confirm('Do you want to log out')) {
+      window.localStorage.clear('loggedBlogappUser')
+      setUser(null)
+    }
   }
 
   const loggedIn = () => {
     return (
-      <div>
-        <div className='loggedIn'>
-          {user.username} is logged in
-          <button onClick={logOut} className='loggedOut-btn'>Logout</button>
-        </div>
+      <div className='loggedIn'>
+        {user.name} is logged in
+        <button onClick={logOut} className='loggedOut-btn'>Logout</button>
       </div>
     )
   }
