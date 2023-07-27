@@ -32,7 +32,10 @@ describe('Blog', function() {
     cy.get('#password').type('321');
     cy.get('#login-button').click();
 
-    cy.get('.error-message').contains('Wrong credentials');
+    cy.get('.error-message').should('contain', 'Wrong credentials')
+      .and('have.css', 'color', 'rgb(255, 0, 0)');
+
+    cy.get('html').should('not.contain', 'kujtim is logged in');
   });
 
   it('User can log in', function() {
@@ -47,14 +50,7 @@ describe('Blog', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.contains('Login').click();
-
-      cy.get('#username').type('kute');
-      cy.get('#password').type('123');
-      cy.get('#login-button').click();
-  
-      cy.contains('kujtim is logged in');
-      cy.contains('Create Blog');
+      cy.login({ username: 'kute', password: '123' });
     });
 
     it('a new blog can be created', function() {
