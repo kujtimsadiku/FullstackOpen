@@ -38,6 +38,7 @@ describe('Blog', function() {
     cy.get('html').should('not.contain', 'kujtim is logged in');
   });
 
+  // not using login command for the cause of the test that the button works for loggin
   it('User can log in', function() {
     cy.contains('Login').click();
 
