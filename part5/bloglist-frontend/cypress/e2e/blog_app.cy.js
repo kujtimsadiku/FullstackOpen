@@ -1,6 +1,6 @@
 describe('Blog', function() {
   beforeEach(function() {
-    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`);
 
     const user = {
       name: 'kujtim',
@@ -8,7 +8,7 @@ describe('Blog', function() {
       password: '123',
     }
 
-    cy.request('POST', 'http://localhost:3001/api/users/', user);
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user);
     cy.visit('');
   });
 
