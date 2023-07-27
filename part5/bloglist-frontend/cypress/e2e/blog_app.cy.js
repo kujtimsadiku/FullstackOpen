@@ -67,9 +67,19 @@ describe('Blog', function() {
       cy.get('#url-input').type('https://test.com');
 
       cy.get('.create-btn').click();
-
-      cy.contains('A new blog Around the world by Test McAfee');
-      cy.contains('Around the world - Test McAfee');
     });
+
+    describe('and a blog exists', function() {
+      beforeEach(function() {
+        const title = 'Around the world';
+        const author = 'Test McAfee';
+        const url = 'https://test.com';
+        const likes = 0;
+
+        cy.createBlog({ title: title, author: author, url: url, like: likes })
+        cy.contains('A new blog Around the world by Test McAfee');
+        cy.contains('Around the world - Test McAfee');
+      })
+    })
   })
 })
