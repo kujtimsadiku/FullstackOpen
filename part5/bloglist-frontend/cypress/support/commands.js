@@ -29,20 +29,18 @@ Cypress.Commands.add('login', ({ username, password }) => {
         username, password
   }).then(({ body }) => {
     localStorage.setItem('loggedBlogappUser', JSON.stringify(body));
-    cy.visit('http://localhost:3000');
+    cy.visit('');
   });
 });
 
-Cypress.Commands.add('createBlog', ({ title, author, url, like }) => {
+Cypress.Commands.add('createBlog', ({ title, author, url }) => {
 	cy.request({
 		url: 'http://localhost:3001/api/blogs',
 		method: 'POST',
-		body: { title, author, url, like },
+		body: { title, author, url, likes: 0 },
 		headers: {
-			'Authorization': `Bearer
-			${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
+			'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
 		}
-	});
-
-	cy.visit('http://localhost/3000');
+	})
+	cy.visit('');
 });

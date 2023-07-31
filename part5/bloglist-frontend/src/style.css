@@ -44,7 +44,8 @@
 	border-radius: 2px;
 }
 
-.view-btn
-.hide-btn {
-	padding: 1em;
+.view-btn,
+.hide-btn,
+.like-btn {
+	margin-left: 4px;
 }

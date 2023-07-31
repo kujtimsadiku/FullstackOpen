@@ -33,16 +33,16 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
         <span className='title'>{blog.title}</span>
         <span> - </span>
         <span className='author'>{blog.author}</span>
-        <button onClick={toggleVisibility} style={{ marginLeft: '4px' }}>view</button>
+        <button id='view.btn' onClick={toggleVisibility} className='view-btn'>view</button>
       </div>
       <div style={showWhenVisible}>
         { blog.title } - { blog.author }
-        <button onClick={toggleVisibility} style={{ marginLeft: '4px' }}>hide</button>
+        <button id='hide.btn' onClick={toggleVisibility} className='hide-btn'>hide</button>
         <div>
           <div>{ blog.url }</div>
           <div>
             Likes: { blog.likes }
-            <button onClick={handleLikes} style={{ marginLeft: '4px' }}>like</button>
+            <button id='like.btn' onClick={handleLikes} className='like-btn'>like</button>
           </div>
           <div>{ blog.user.name }</div>
         </div>

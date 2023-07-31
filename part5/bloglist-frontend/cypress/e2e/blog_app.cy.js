@@ -1,4 +1,4 @@
-describe('Blog', function() {
+describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`);
 
@@ -25,61 +25,123 @@ describe('Blog', function() {
     cy.contains('Cancel');
   });
 
-  it('Log in fails with wrong password', function() {
-    cy.contains('Login').click();
-
-    cy.get('#username').type('kute');
-    cy.get('#password').type('321');
-    cy.get('#login-button').click();
-
-    cy.get('.error-message').should('contain', 'Wrong credentials')
+  describe('Login', function() {
+    it('fail with wrong credentials', function() {
+      cy.contains('Login').click();
+      
+      cy.get('#username').type('kute');
+      cy.get('#password').type('321');
+      cy.get('#login-button').click();
+      
+      cy.get('.error-message').should('contain', 'Wrong credentials')
       .and('have.css', 'color', 'rgb(255, 0, 0)');
-
-    cy.get('html').should('not.contain', 'kujtim is logged in');
-  });
-
-  // not using login command for the cause of the test that the button works for loggin
-  it('User can log in', function() {
-    cy.contains('Login').click();
-
-    cy.get('#username').type('kute');
-    cy.get('#password').type('123');
-    cy.get('#login-button').click();
-
-    cy.contains('kujtim is logged in');
-  });
+      
+      cy.get('html').should('not.contain', 'kujtim is logged in');
+    });
+    
+    // not using login command for the cause of the test that the button works for loggin
+    it('succeeds with correct credentials', function() {
+      cy.contains('Login').click();
+      
+      cy.get('#username').type('kute');
+      cy.get('#password').type('123');
+      cy.get('#login-button').click();
+      
+      cy.contains('kujtim is logged in');
+    });
+  })
 
   describe('When logged in', function() {
+    let blog;
     beforeEach(function() {
       cy.login({ username: 'kute', password: '123' });
+
+      blog = {
+        title: "Around the world",
+        author: "Test McAfee",
+        url: "www.test.com"
+      };
     });
 
-    it('a new blog can be created', function() {
-      cy.contains('Create Blog').click();
+    it('blog can be created', function() {
+      cy.createBlog({
+        title: blog.title,
+        author: blog.author,
+        url: blog.url
+      });
 
-      cy.contains('title:');
-      cy.get('#title-input').type('Around the world');
-
-      cy.contains('author:');
-      cy.get('#author-input').type('Test McAfee');
-
-      cy.contains('url:');
-      cy.get('#url-input').type('https://test.com');
-
-      cy.get('.create-btn').click();
+      cy.contains('Around the world - Test McAfee');
     });
 
-    describe('and a blog exists', function() {
-      beforeEach(function() {
-        const title = 'Around the world';
-        const author = 'Test McAfee';
-        const url = 'https://test.com';
-        const likes = 0;
+    it('blog can be liked', async function() {
+      cy.createBlog({
+        title: blog.title,
+        author: blog.author,
+        url: blog.url
+      });
 
-        cy.createBlog({ title: title, author: author, url: url, like: likes })
-        cy.contains('A new blog Around the world by Test McAfee');
-        cy.contains('Around the world - Test McAfee');
-      })
-    })
-  })
-})
+      cy.contains('view').click();
+
+      cy.contains('like')
+        .click()
+        .wait(1000)
+        .click()
+        .wait(1000)
+        .click();
+
+      cy.contains('Likes: 3');
+    });
+
+    it('blog can be removed', function() {
+      cy.createBlog({
+        title: blog.title,
+        author: blog.author,
+        url: blog.url
+      });
+
+      cy.contains('view');
+      cy.contains('view').click();
+      
+      cy.contains('Remove');
+      cy.contains('Remove').click();
+
+      // after removing blog should not exist anymore
+      cy.contains(`${blog.title} - ${blog.author}`).should('not.exist');
+    });
+
+    it.only('blogs in the most liked order', async function() {
+      cy.createBlog({
+        title: "Blog 1",
+        author: "Author1",
+        url: "url1"
+      });
+
+      cy.createBlog({
+        title: "Blog 2",
+        author: "Author2",
+        url: "url2"
+      });
+
+      cy.createBlog({
+        title: "Blog 3",
+        author: "Author3",
+        url: "url3"
+      });
+
+      cy.contains('Blog 3').parent().contains('view').click().contains('like');
+
+
+      // cy.contains('hide').click();
+
+      // cy.contains('Blog 2').parent().find('button').click();
+      // cy.contains('like')
+      //   .click()
+      //   .wait(1000)
+      //   .click()
+      //   .wait(1000)
+      //   .click();
+
+      // cy.contains('hide').click();
+    });
+  });
+});

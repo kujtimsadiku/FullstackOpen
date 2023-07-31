@@ -3,8 +3,6 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from '../components/Blog'
-import Togglable from '../components/Togglable'
-
 
 describe('<Blog /> component test', () => {
   const blog = {
