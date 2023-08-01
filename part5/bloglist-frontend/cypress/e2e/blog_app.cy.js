@@ -109,7 +109,7 @@ describe('Blog app', function() {
       cy.contains(`${blog.title} - ${blog.author}`).should('not.exist');
     });
 
-    it.only('blogs in the most liked order', async function() {
+    it.only('blogs in the most liked order', function() {
       cy.createBlog({
         title: "Blog 1",
         author: "Author1",
@@ -128,20 +128,25 @@ describe('Blog app', function() {
         url: "url3"
       });
 
-      cy.contains('Blog 3').parent().contains('view').click().contains('like');
+      cy.contains('Blog 3').parent().contains('view').click();
 
+      cy.get('.like-btn').should('be.visible');
+      cy.get('.like-btn')
+        .eq(2)
+        .click()
+        .click();
 
-      // cy.contains('hide').click();
+      cy.get('.hide-btn').should('be.visible');
+      cy.get('.hide-btn').eq(0).click();
 
-      // cy.contains('Blog 2').parent().find('button').click();
-      // cy.contains('like')
-      //   .click()
-      //   .wait(1000)
-      //   .click()
-      //   .wait(1000)
-      //   .click();
-
-      // cy.contains('hide').click();
+      cy.contains('Blog 2').parent().contains('view').click();
+      
+      cy.get('.like-btn').should('be.visible');
+      cy.get('.like-btn')
+        .eq(2)
+        .click()
+        .click()
+        .click();
     });
   });
 });
