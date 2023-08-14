@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { addAnecdote } from '../reducers/anecdoteReducer'; // Update the path as needed
 
-
 const AnecdotesForm = () => {
   const dispatch = useDispatch();
 
