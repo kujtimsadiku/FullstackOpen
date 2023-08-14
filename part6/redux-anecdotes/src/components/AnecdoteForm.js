@@ -1,25 +1,28 @@
 import { useDispatch } from 'react-redux';
-import { addAnecdote } from '../reducers/anecdoteReducer'; // Update the path as needed
+import { createAnecdote } from '../reducers/anecdoteReducer'; // Update the path as needed
 
 const AnecdotesForm = () => {
   const dispatch = useDispatch();
 
-	const addAnecdotes = (event) => {
+	const createHandler = (event) => {
 		event.preventDefault();
 		const content = event.target.anecdotes.value;
+
 		console.log('Anecdotes to add:', content);
 
-		content === ''
-			? console.log('Content is empty')
-			: dispatch(addAnecdote(content));
+		if (content === '') {
+			console.log('Content is empty')
+			return ;
+		}
 
+		dispatch(createAnecdote(content));
 		event.target.anecdotes.value = '';
 	}
 
 	return (
 		<div>
 			<h2>create new</h2>
-			<form onSubmit={addAnecdotes}>
+			<form onSubmit={createHandler}>
 				<div><input name='anecdotes'/></div>
 				<button type='submit'>create</button>
 			</form>

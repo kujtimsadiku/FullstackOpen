@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { filterChange } from "../reducers/filterReducer";
+import { filterReducer } from "../reducers/filterReducer";
 
 const Filter = () => {
 	const dispatch = useDispatch();
@@ -7,7 +7,7 @@ const Filter = () => {
   const handleChange = (event) => {
     // input-kentän arvo muuttujassa event.target.value
 		event.preventDefault();
-		dispatch(filterChange(event.target.value))
+		dispatch(filterReducer(event.target.value));
   }
 
   const style = {

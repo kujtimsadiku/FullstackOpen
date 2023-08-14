@@ -17,9 +17,9 @@ const Anecdote = ({ anecdote, handleClick }) => {
 }
 
 const AnecdotesList = () => {	
-	const anecdotes = useSelector(state => state.anecdoteReducer);
-	const filter = useSelector(state => state.filterReducer);
 	const dispatch = useDispatch();
+	const anecdotes = useSelector(state => state.anecdote);
+	const filter = useSelector(state => state.filter);
 
 	const filteredAnecdotes = anecdotes.filter(anecdote => 
 		anecdote.content.toLowerCase().includes(filter.toLowerCase())
