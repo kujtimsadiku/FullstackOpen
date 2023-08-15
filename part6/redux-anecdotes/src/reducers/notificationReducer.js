@@ -46,7 +46,7 @@ export const showNotificationWithTimeout = (message, duration) => (dispatch, get
 	const timeoutId = setTimeout(() => {
 		console.log('Message timeoutId:', timeoutId);
 		dispatch(resetNotification())
-	}, duration)
+	}, duration * 1000)
 
 	dispatch(renderNotification({ message, timeoutId }));
 }
