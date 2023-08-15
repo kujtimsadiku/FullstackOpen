@@ -22,7 +22,7 @@ const AnecdotesList = () => {
 	const anecdotes = useSelector(state => state.anecdote);
 	const filter = useSelector(state => state.filter);
 
-	const filteredAnecdotes = anecdotes.filter(anecdote => 
+	const filteredAnecdotes = anecdotes.filter(anecdote =>
 		anecdote.content.toLowerCase().includes(filter.toLowerCase())
 	)
 

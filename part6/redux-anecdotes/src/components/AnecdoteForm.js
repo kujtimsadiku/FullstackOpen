@@ -1,13 +1,15 @@
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer'; // Update the path as needed
 import { showNotificationWithTimeout } from '../reducers/notificationReducer';
+import anecdoteService from '../services/anecdote';
 
 const AnecdotesForm = () => {
   const dispatch = useDispatch();
 
-	const createHandler = (event) => {
+	const createHandler = async (event) => {
 		event.preventDefault();
 		const content = event.target.anecdotes.value;
+		event.target.anecdotes.value = '';
 
 		console.log('Anecdotes to add:', content);
 
@@ -16,10 +18,10 @@ const AnecdotesForm = () => {
 			return ;
 		}
 
-		dispatch(createAnecdote(content));
-		dispatch(showNotificationWithTimeout(`You created anecdote: ${content}`, 5000))
+		const newAnecdote = await anecdoteService.createNew(content)
 
-		event.target.anecdotes.value = '';
+		dispatch(createAnecdote(newAnecdote));
+		dispatch(showNotificationWithTimeout(`You created anecdote: ${newAnecdote.content}`, 5000))
 	}
 
 	return (
