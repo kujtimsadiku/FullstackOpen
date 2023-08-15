@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer'; // Update the path as needed
+import { showNotificationWithTimeout } from '../reducers/notificationReducer';
 
 const AnecdotesForm = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const AnecdotesForm = () => {
 		}
 
 		dispatch(createAnecdote(content));
+		dispatch(showNotificationWithTimeout(`You created anecdote: ${content}`, 5000))
+
 		event.target.anecdotes.value = '';
 	}
 

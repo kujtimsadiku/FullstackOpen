@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { voteFor } from '../reducers/anecdoteReducer';
+import { showNotificationWithTimeout } from '../reducers/notificationReducer';
 
 const Anecdote = ({ anecdote, handleClick }) => {
 	return (
@@ -25,6 +26,11 @@ const AnecdotesList = () => {
 		anecdote.content.toLowerCase().includes(filter.toLowerCase())
 	)
 
+	const handleVote = (id, content) => {
+		dispatch(voteFor(id));
+		dispatch(showNotificationWithTimeout(`You voted: ${content}`, 5000));
+	}
+
 	return (
 		<ul>
       {filteredAnecdotes.sort((min, max) => max.votes - min.votes)
@@ -32,7 +38,7 @@ const AnecdotesList = () => {
           <Anecdote 
 						key={anecdote.id}
 						anecdote={anecdote}
-						handleClick={() => dispatch(voteFor(anecdote.id))}
+						handleClick={() => handleVote(anecdote.id, anecdote.content)}
 					/>
         )
       }

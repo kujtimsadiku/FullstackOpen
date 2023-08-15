@@ -32,6 +32,7 @@ const anecdoteSlice = createSlice({
         ...anecdoteToVote,
         votes: anecdoteToVote.votes + 1
       }
+
       return state.map(anecdote =>
         anecdote.id === id ? votedAnecdote : anecdote
       )
