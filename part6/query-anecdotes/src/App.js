@@ -34,10 +34,9 @@ const App = () => {
   return (
     <div>
       <h3>Anecdote app</h3>
-    
       <Notification />
       <AnecdoteForm />
-      {anecdotes.data.map(anecdote =>
+      {anecdotes.data.sort((min, max) => max.votes - min.votes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
