@@ -20,10 +20,15 @@ const AnecdoteForm = () => {
 
     newAnecdoteMutation.mutate({ content, votes: 0 });
 
-    if (newAnecdoteMutation.isSuccess) {
+    if (content.length <= 4) {
+      notificationDispatch({ type: 'SHORTANECDOTE' })
+      setTimeout(() => {
+        notificationDispatch({ type: 'CLEARNOTIFICATION' });
+      }, 5000)
+    } else if (!newAnecdoteMutation.isError) {
       notificationDispatch({ type: 'NEWCREATED', message: content })
       setTimeout(() => {
-        notificationDispatch('CLEARNOTIFICATION');
+        notificationDispatch({ type: 'CLEARNOTIFICATION' });
       }, 5000)
     }
 }

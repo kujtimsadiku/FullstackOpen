@@ -15,14 +15,15 @@ const App = () => {
   });
 
   const handleVote = (anecdote) => {
-    newVotedMutation.mutate({ anecdote, votes: anecdote.votes + 1 });
+    newVotedMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 });
+
     notificationDispatch({ type: 'VOTED', message: anecdote.content });
     setTimeout(() => {
       notificationDispatch({ type: 'CLEARNOTIFICATION' });
     }, 5000)
   }
 
-  const anecdotes = useQuery(
+  const anecdotes = useQuery( 
     'anecdotes',
     getAll,
     { retry: 1 }
@@ -42,7 +43,7 @@ const App = () => {
       <Notification />
       <AnecdoteForm />
       {anecdotes.data.sort((min, max) => max.votes - min.votes).map(anecdote =>
-        <div key={anecdote.id}>
+        <div key={anecdote.id} style={{margin: '10px 0px 0px 0px'}}>
           <div>
             {anecdote.content}
           </div>

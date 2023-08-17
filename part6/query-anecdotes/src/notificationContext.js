@@ -3,12 +3,11 @@ import { createContext, useReducer, useContext } from 'react'
 const notificationReducer = (state, action) => {
 	switch (action.type) {
 		case 'VOTED':
-			console.log(action.message);
 			return `anecdote '${action.message} voted'`;
 		case 'NEWCREATED':
 			return `new anecdote created '${action.message}'`;
 		case 'SHORTANECDOTE':
-			return state
+			return 'anecdote was short, it must be length of 5 character'
 		case 'CLEARNOTIFICATION':
 			return '';
 		default: return state;
@@ -21,8 +20,8 @@ export const NotificationContextProvider = (props) => {
 	const [notification, notificationDispatch] = useReducer(notificationReducer, '');
 
 	return (
-		<NotificationContext.Provider value={ [notification, notificationDispatch] }>
-			{props.chilren}
+		<NotificationContext.Provider value={[notification, notificationDispatch] }>
+			{props.children}
 		</NotificationContext.Provider>
 	)
 }
