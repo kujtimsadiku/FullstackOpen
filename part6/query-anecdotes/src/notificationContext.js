@@ -1,4 +1,5 @@
 import { createContext, useReducer, useContext } from 'react'
+import { useRef, useState } from 'react';
 
 const notificationReducer = (state, action) => {
 	switch (action.type) {
@@ -7,7 +8,7 @@ const notificationReducer = (state, action) => {
 		case 'NEWCREATED':
 			return `new anecdote created '${action.message}'`;
 		case 'SHORTANECDOTE':
-			return 'anecdote was short, it must be length of 5 character'
+			return 'too short anecdote, must have length 5 or more'
 		case 'CLEARNOTIFICATION':
 			return '';
 		default: return state;
@@ -31,9 +32,43 @@ export const useNotificationValue = () => {
 	return notificationAndDispatch[0];
 }
 
+
 export const useNotificationDispatch = () => {
 	const notificationAndDispatch = useContext(NotificationContext);
 	return notificationAndDispatch[1];
+}
+
+export const useNotificationDispatchWithTimeout = () => {
+	const dispatch = useNotificationDispatch();
+	const timeoutIdRef = useRef(null);
+	const [resetTriggered, setResetTriggered] = useState(null);
+
+	const showNotificationWithTimeout = (type, message, duration) => {
+		if (timeoutIdRef.current) {
+			clearTimeout(timeoutIdRef.current);
+		} 
+
+		if (message === null)
+			dispatch({ type:type })
+		else
+			dispatch({ type: type, message: message});
+
+		timeoutIdRef.current = setTimeout(() => {
+			dispatch({ type: 'CLEARNOTIFICATION' })
+			setResetTriggered(false);
+		}, duration * 1000);
+
+		if (!resetTriggered) {
+			setResetTriggered(true);
+			timeoutIdRef.current = setTimeout(() => {
+				setResetTriggered(false);
+			}, duration * 1000);
+		}
+		
+		return timeoutIdRef.current;
+	}
+
+	return showNotificationWithTimeout
 }
 
 export default NotificationContext;
