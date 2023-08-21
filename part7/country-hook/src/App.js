@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+
 const useField = (type) => {
   const [value, setValue] = useState('')
 
@@ -17,8 +18,19 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
+  const url = `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (name) {
+      axios.get(url).then(response => {
+        setCountry([{...response.data, found: true}])
+      })
+      .catch(e => {
+        console.log(`Error at fetching ${name}`, e);
+        setCountry([name, {found: false}]);
+      })
+    }
+  }, [name])
 
   return country
 }
@@ -27,8 +39,8 @@ const Country = ({ country }) => {
   if (!country) {
     return null
   }
-
-  if (!country.found) {
+  
+  if (!country[0].found) {
     return (
       <div>
         not found...
@@ -36,12 +48,19 @@ const Country = ({ country }) => {
     )
   }
 
+  const countryData = {
+    name: country[0].name.common,
+    capital: country[0].capital[0],
+    population: country[0].population,
+    flag: country[0].flags.svg,
+  }
+
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <h3>{countryData.name} </h3>
+      <div>capital {countryData.capital} </div>
+      <div>population {countryData.population}</div> 
+      <img src={countryData.flag} height='100' alt={`flag of ${countryData.name}`}/>  
     </div>
   )
 }
