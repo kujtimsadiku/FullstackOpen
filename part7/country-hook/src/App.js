@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-
 const useField = (type) => {
   const [value, setValue] = useState('')
 
@@ -18,9 +17,10 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
-  const url = `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
 
   useEffect(() => {
+    const url = `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
+
     if (name) {
       axios.get(url).then(response => {
         setCountry([{...response.data, found: true}])
