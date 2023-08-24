@@ -1,6 +1,3 @@
-// Delete button will be added. I need to figure out where i call update
-// for updated blogs to be removed without refreshing the page.
-// solution is to update the useState
 import { useState } from "react";
 import PropTypes from "prop-types";
 
