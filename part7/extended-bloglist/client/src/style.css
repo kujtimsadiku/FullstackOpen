@@ -1,51 +1,51 @@
 .error-message {
-	color: red;
-	border-radius: 8px;
-	border: 4px solid red;
-	padding: 0.101em;
-	margin-bottom: 8px;
-	background-color: lightgrey;
+  color: red;
+  border-radius: 8px;
+  border: 4px solid red;
+  padding: 0.101em;
+  margin-bottom: 8px;
+  background-color: lightgrey;
 }
 
 .success-message {
-	color: green;
-	border-radius: 8px;
-	border: 4px solid green;
-	padding: 0.101em;
-	background-color: lightgrey;
+  color: green;
+  border-radius: 8px;
+  border: 4px solid green;
+  padding: 0.101em;
+  background-color: lightgrey;
 }
 
 .success-message,
 .error-message {
-	font-size: 28px;
+  font-size: 28px;
 }
 
 .loggedIn {
-	font-weight: bold;
-	margin: 0px 0px 20px 0px;
+  font-weight: bold;
+  margin: 0px 0px 20px 0px;
 }
 
 .loggedOut-btn {
-	margin: 0px 0px 0px 3px;
+  margin: 0px 0px 0px 3px;
 }
 
 .create-btn {
-	margin: 10px 0px 0px 0px;
+  margin: 10px 0px 0px 0px;
 }
 
 .cancel-btn {
-	margin: 0px 0px 10px 0px;
+  margin: 0px 0px 10px 0px;
 }
 
 #viewing-model {
-	margin: 3px 0px 5px 0px;
-	border: 1px solid black;
-	padding: 0.101em;
-	border-radius: 2px;
+  margin: 3px 0px 5px 0px;
+  border: 1px solid black;
+  padding: 0.101em;
+  border-radius: 2px;
 }
 
 .view-btn,
 .hide-btn,
 .like-btn {
-	margin-left: 4px;
+  margin-left: 4px;
 }

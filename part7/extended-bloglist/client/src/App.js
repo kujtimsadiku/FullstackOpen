@@ -1,26 +1,26 @@
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
-import Notification from "./components/Notification";
-import LoginForm from "./components/LoginForm";
-import Togglable from "./components/Togglable";
-import BlogForm from "./components/BlogForm";
+import { useState, useEffect, useRef } from 'react';
+import Blog from './components/Blog';
+import blogService from './services/blogs';
+import loginService from './services/login';
+import Notification from './components/Notification';
+import LoginForm from './components/LoginForm';
+import Togglable from './components/Togglable';
+import BlogForm from './components/BlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
@@ -38,24 +38,24 @@ const App = () => {
         password,
       });
 
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
 
       blogService.setToken(user.token);
       setUser(user);
-      setUsername("");
-      setPassword("");
+      setUsername('');
+      setPassword('');
     } catch (exception) {
-      setErrorMessage("Wrong credentials");
+      setErrorMessage('Wrong credentials');
       setTimeout(() => {
         setErrorMessage(null);
       }, 3000);
     }
-    console.log("Logging in with", username, password);
+    console.log('Logging in with', username, password);
   };
 
   const logOut = () => {
-    if (window.confirm("Do you want to log out")) {
-      window.localStorage.clear("loggedBlogappUser");
+    if (window.confirm('Do you want to log out')) {
+      window.localStorage.clear('loggedBlogappUser');
       setUser(null);
     }
   };
@@ -86,7 +86,7 @@ const App = () => {
         setMessage(null);
       }, 3000);
     } catch (exception) {
-      setErrorMessage("Error");
+      setErrorMessage('Error');
       setTimeout(() => {
         setErrorMessage(null);
       }, 3000);
@@ -103,7 +103,7 @@ const App = () => {
         )
       );
     } catch (exception) {
-      setErrorMessage("Error on updating likes");
+      setErrorMessage('Error on updating likes');
       setTimeout(() => {
         setErrorMessage(null);
       }, 3000);
@@ -121,7 +121,7 @@ const App = () => {
         await blogService.remove(blogToRemove.id);
         setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id));
       } catch (exception) {
-        console.log("Error deleting " + exception);
+        console.log('Error deleting ' + exception);
       }
     } else return;
   };

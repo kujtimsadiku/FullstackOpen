@@ -24,3 +24,5 @@ yarn-error.log*
 
 cypress.config.js
 cypress/videos
+
+.prettierignore

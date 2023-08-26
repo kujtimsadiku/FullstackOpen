@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const LoginForm = ({
   handleSubmit,
@@ -17,7 +17,7 @@ const LoginForm = ({
         <div>
           Password
           <input
-            style={{ margin: "3.5px" }}
+            style={{ margin: '3.5px' }}
             id="password"
             value={password}
             onChange={handlePassword}

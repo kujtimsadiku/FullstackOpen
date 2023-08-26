@@ -8,6 +8,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.1.2",
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "web-vitals": "^2.1.4"
@@ -21,7 +22,9 @@
     "jesttest": "CI=true npm test -- --coverage",
     "cypress:open": "cypress open",
     "start:test": "NODE_ENV=test node index.js",
-    "test:e2e": "cypress run"
+    "test:e2e": "cypress run",
+    "prettier-write": "npx prettier . --write",
+    "prettier-check": "npx prettier . --check"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +50,9 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "cypress": "^12.17.2",
-    "eslint-plugin-jest": "^27.2.3"
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-jest": "^27.2.3",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "3.0.2"
   }
 }

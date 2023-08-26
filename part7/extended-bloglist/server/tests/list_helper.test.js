@@ -132,7 +132,7 @@ describe("Most likes", () => {
   ];
 
   const mostLikedBlog = blogs.reduce((max, current) =>
-    max > current.likes ? max : current.likes
+    max > current.likes ? max : current.likes,
   );
 
   test("Most likes", () => {

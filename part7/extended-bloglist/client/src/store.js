@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
-import blogService from "./services/blogs";
-import blogReducer, { initializeBlogs } from "./reducers/blogReducer";
+import { configureStore } from '@reduxjs/toolkit';
+import blogService from './services/blogs';
+import blogReducer, { initializeBlogs } from './reducers/blogReducer';
 
 const store = configureStore({
   reducer: {
@@ -8,10 +8,10 @@ const store = configureStore({
   },
 });
 
-console.log("store.getState():", store.getState());
+console.log('store.getState():', store.getState());
 
 store.subscribe(() => {
-  console.log("Store Updated!", store.getState());
+  console.log('Store Updated!', store.getState());
 });
 
 blogService.getAll(() => {

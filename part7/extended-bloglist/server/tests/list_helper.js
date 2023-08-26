@@ -5,7 +5,7 @@ const blogLikesReducer = (blogs) =>
 
 const mostLikes = (blogs) =>
   blogs.reduce((blog, currentBlog) =>
-    currentBlog.likes > blog.likes ? currentBlog : blog
+    currentBlog.likes > blog.likes ? currentBlog : blog,
   );
 
 module.exports = {
