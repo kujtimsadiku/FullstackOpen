@@ -1,5 +1,5 @@
-import axios from 'axios';
-const baseUrl = '/api/blogs';
+import axios from "axios";
+const baseUrl = "/api/blogs";
 
 let token = null;
 
@@ -29,7 +29,7 @@ const update = async (id, newObject) => {
 
 const remove = async (id) => {
   const response = await axios.delete(`/api/blogs/${id}`);
-  console.log('here is the request of axios.delete', response.data);
+  console.log("here is the request of axios.delete", response.data);
   return response.data;
 };
 
