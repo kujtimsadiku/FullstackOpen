@@ -12,8 +12,6 @@ import { initializeBlogs, createBlog } from "./reducers/blogReducer";
 
 const App = () => {
   const dispatch = useDispatch();
-  // eslint-disable-next-line no-unused-vars
-  // const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -99,27 +97,11 @@ const App = () => {
     }
   };
 
-  // const updateBlogLikes = async (id, blog) => {
-  //   try {
-  //     const blogLiked = await blogService.update(id, blog);
-
-  //     setBlogs((prevBlogs) =>
-  //       prevBlogs.map((blog) =>
-  //         blog.id === id ? { ...blog, likes: blogLiked.likes } : blog,
-  //       ),
-  //     );
-  //   } catch (exception) {
-  //     dispatch(
-  //       showNotificationWithTimeout("Error on updating likes", "error", 3),
-  //     );
-  //   }
-  // };
-
   const blogFormRef = useRef();
 
-  return (
-    <div>
-      {!user && (
+  if (!user) {
+    return (
+      <div>
         <Togglable btnName="Login" ref={blogFormRef}>
           <h2>Log in to application</h2>
           <Notification />
@@ -134,7 +116,12 @@ const App = () => {
             Cancel
           </button>
         </Togglable>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div>
       {user && (
         <div>
           <h2>Blogs</h2>

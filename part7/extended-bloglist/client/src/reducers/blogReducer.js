@@ -25,8 +25,6 @@ const blogSlice = createSlice({
 
 const { setBlogs, appendBlog, updateBlog, removeBlog } = blogSlice.actions;
 
-// maybe add message also in parameter same as at part 6 redux expect to intializeBLog
-
 export const initializeBlogs = () => {
   return async (dispatch) => {
     const blogs = await blogService.getAll();

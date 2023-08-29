@@ -14,35 +14,20 @@ const Blog = ({ blog }) => {
   };
 
   const handleLikes = () => {
-    const blogToUpdate = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-      user: blog.user,
-    };
+    const blogToUpdate = { ...blog, likes: blog.likes + 1 };
 
     dispatch(updateLike(blog.id, blogToUpdate));
   };
 
   const handleRemove = () => {
-    if (
-      window.confirm(
-        `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`,
-      )
-    ) {
-      try {
-        dispatch(blogToRemove(blog));
-      } catch (exception) {
-        console.log("Error deleting " + exception);
-      }
-    } else return;
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      dispatch(blogToRemove(blog));
+    }
   };
 
   return (
     <div id="viewing-model">
       <div style={hideWhenVisible}>
-        {/* { blog.title } - { blog.author } */}
         <span className="title">{blog.title}</span>
         <span> - </span>
         <span className="author">{blog.author}</span>
@@ -59,11 +44,7 @@ const Blog = ({ blog }) => {
           <div>{blog.url}</div>
           <div>
             Likes: {blog.likes}
-            <button
-              id="like.btn"
-              onClick={() => handleLikes()}
-              className="like-btn"
-            >
+            <button id="like.btn" onClick={handleLikes} className="like-btn">
               like
             </button>
           </div>
