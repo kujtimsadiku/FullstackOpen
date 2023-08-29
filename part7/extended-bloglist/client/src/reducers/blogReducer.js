@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import blogService from "../services/blogs";
+import { blogService } from "../services/blogs";
 
 const blogSlice = createSlice({
   name: "blogs",
@@ -41,9 +41,10 @@ export const createBlog = (blog) => {
   };
 };
 
-export const updateLike = (blog) => {
+export const updateLike = (id, blog) => {
   return async (dispatch) => {
-    const likedBlog = await blogService.update(blog.id, blog);
+    console.log(blog);
+    const likedBlog = await blogService.update(id, blog);
     dispatch(updateBlog(likedBlog));
   };
 };

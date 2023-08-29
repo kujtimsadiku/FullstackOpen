@@ -29,7 +29,6 @@ const Togglable = forwardRef(({ children, btnName }, ref) => {
 
 Togglable.propTypes = {
   btnName: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
 };
 
 Togglable.displayName = "Togglable";

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { blogToRemove, updateLike } from "../reducers/blogReducer";
 
-const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
@@ -20,7 +22,22 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
       user: blog.user,
     };
 
-    updateBlogLikes(blog.id, blogToUpdate);
+    dispatch(updateLike(blog.id, blogToUpdate));
+    // updateBlogLikes(blog.id, blogToUpdate);
+  };
+
+  const handleRemove = () => {
+    if (
+      window.confirm(
+        `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`,
+      )
+    ) {
+      try {
+        dispatch(blogToRemove(blog));
+      } catch (exception) {
+        console.log("Error deleting " + exception);
+      }
+    } else return;
   };
 
   return (
@@ -49,16 +66,10 @@ const Blog = ({ blog, updateBlogLikes, removeBlog }) => {
           </div>
           <div>{blog.user.name}</div>
         </div>
-        <button onClick={() => removeBlog(blog)}>Remove</button>
+        <button onClick={handleRemove}>Remove</button>
       </div>
     </div>
   );
-};
-
-Blog.propTypes = {
-  blog: PropTypes.array.isRequired,
-  updateBlogLikes: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired,
 };
 
 export default Blog;

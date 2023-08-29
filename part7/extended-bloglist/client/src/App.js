@@ -1,23 +1,26 @@
 import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+import Blogs from "./components/Blogs";
+import { blogService } from "./services/blogs";
+import { loginService } from "./services/login";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
+import { useDispatch } from "react-redux";
+import { showNotificationWithTimeout } from "./reducers/notificationReducer";
+import { initializeBlogs, createBlog } from "./reducers/blogReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [message, setMessage] = useState(null);
+  const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
+  // const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -45,10 +48,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setErrorMessage("Wrong credentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
+      dispatch(showNotificationWithTimeout("Wrong credentials", "error", 3));
     }
     console.log("Logging in with", username, password);
   };
@@ -71,60 +71,49 @@ const App = () => {
     );
   };
 
-  const handleBlog = async (newBlog) => {
+  const handleBlog = (newBlog) => {
     blogFormRef.current.toggleVisibility();
 
     try {
-      const blog = await blogService.create(newBlog);
+      dispatch(createBlog(newBlog));
 
       // Fetch the updated list of blogs from the server
-      const updatedBlogs = await blogService.getAll();
-      setBlogs([...updatedBlogs, blog]);
+      // const updatedBlogs = await blogService.getAll();
+      // setBlogs([...updatedBlogs, newBlog]);
 
-      setMessage(`A new blog ${blog.title} by ${blog.author}`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 3000);
-    } catch (exception) {
-      setErrorMessage("Error");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
-    }
-  };
-
-  const updateBlogLikes = async (id, blog) => {
-    try {
-      const blogLiked = await blogService.update(id, blog);
-
-      setBlogs((prevBlogs) =>
-        prevBlogs.map((blog) =>
-          blog.id === id ? { ...blog, likes: blogLiked.likes } : blog
-        )
+      dispatch(
+        showNotificationWithTimeout(
+          `A new blog ${newBlog.title} by ${newBlog.author}`,
+          "success",
+          3,
+        ),
       );
     } catch (exception) {
-      setErrorMessage("Error on updating likes");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
+      dispatch(
+        showNotificationWithTimeout(
+          "Error trying to create new blog",
+          "error",
+          3,
+        ),
+      );
     }
   };
 
-  // Removes a blog
-  const deleteBlog = async (blogToRemove) => {
-    if (
-      window.confirm(
-        `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`
-      )
-    ) {
-      try {
-        await blogService.remove(blogToRemove.id);
-        setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id));
-      } catch (exception) {
-        console.log("Error deleting " + exception);
-      }
-    } else return;
-  };
+  // const updateBlogLikes = async (id, blog) => {
+  //   try {
+  //     const blogLiked = await blogService.update(id, blog);
+
+  //     setBlogs((prevBlogs) =>
+  //       prevBlogs.map((blog) =>
+  //         blog.id === id ? { ...blog, likes: blogLiked.likes } : blog,
+  //       ),
+  //     );
+  //   } catch (exception) {
+  //     dispatch(
+  //       showNotificationWithTimeout("Error on updating likes", "error", 3),
+  //     );
+  //   }
+  // };
 
   const blogFormRef = useRef();
 
@@ -133,7 +122,7 @@ const App = () => {
       {!user && (
         <Togglable btnName="Login" ref={blogFormRef}>
           <h2>Log in to application</h2>
-          <Notification message={message} errorMessage={errorMessage} />
+          <Notification />
           <LoginForm
             username={username}
             password={password}
@@ -150,35 +139,17 @@ const App = () => {
         <div>
           <h2>Blogs</h2>
           {loggedIn()}
-          <Notification message={message} errorMessage={errorMessage} />
+          <Notification />
           <Togglable btnName="Create Blog" ref={blogFormRef}>
             <BlogForm createBlog={handleBlog} />
             <button
               onClick={() => blogFormRef.current.toggleVisibility()}
-              className="cancel-btn">
+              className="cancel-btn"
+            >
               Cancel
             </button>
           </Togglable>
-          {blogs
-            .sort((min, max) => max.likes - min.likes)
-            .map((blog) => {
-              if (
-                blog.user &&
-                blog.user.username &&
-                blog.user.username === user.username
-              ) {
-                return (
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    updateBlogLikes={updateBlogLikes}
-                    removeBlog={deleteBlog}
-                  />
-                );
-              } else {
-                return null;
-              }
-            })}
+          <Blogs username={user.username} />
         </div>
       )}
     </div>

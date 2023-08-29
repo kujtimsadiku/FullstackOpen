@@ -1,21 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import blogService from "./services/blogs";
-import blogReducer, { initializeBlogs } from "./reducers/blogReducer";
+import blogReducer from "./reducers/blogReducer";
+import notificationReducer from "./reducers/notificationReducer";
 
 const store = configureStore({
   reducer: {
     blog: blogReducer,
+    notification: notificationReducer,
   },
-});
-
-console.log("store.getState():", store.getState());
-
-store.subscribe(() => {
-  console.log("Store Updated!", store.getState());
-});
-
-blogService.getAll(() => {
-  store.dispatch(initializeBlogs());
 });
 
 export default store;
