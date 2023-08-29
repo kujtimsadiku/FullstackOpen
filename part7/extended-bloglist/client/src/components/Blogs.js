@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 const Blogs = ({ username }) => {
   const blogs = useSelector(({ blogs }) => blogs);
+
   return (
     <>
       {blogs
