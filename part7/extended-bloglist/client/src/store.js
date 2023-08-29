@@ -9,4 +9,6 @@ const store = configureStore({
   },
 });
 
+store.subscribe(() => console.log("Store updated!", store.getState()));
+
 export default store;

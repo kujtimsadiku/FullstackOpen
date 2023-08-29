@@ -23,7 +23,6 @@ const Blog = ({ blog }) => {
     };
 
     dispatch(updateLike(blog.id, blogToUpdate));
-    // updateBlogLikes(blog.id, blogToUpdate);
   };
 
   const handleRemove = () => {
@@ -60,7 +59,11 @@ const Blog = ({ blog }) => {
           <div>{blog.url}</div>
           <div>
             Likes: {blog.likes}
-            <button id="like.btn" onClick={handleLikes} className="like-btn">
+            <button
+              id="like.btn"
+              onClick={() => handleLikes()}
+              className="like-btn"
+            >
               like
             </button>
           </div>

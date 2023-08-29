@@ -12,9 +12,9 @@ const blogSlice = createSlice({
       state.push(action.payload);
     },
     updateBlog(state, action) {
-      const updatedBlog = action.payload;
-      const id = updatedBlog.id;
-      return state.map((blog) => (blog.id !== id ? blog : updatedBlog));
+      return state.map((blog) =>
+        blog.id === action.payload.id ? action.payload : blog,
+      );
     },
     removeBlog(state, action) {
       const id = action.payload.id;
@@ -43,7 +43,6 @@ export const createBlog = (blog) => {
 
 export const updateLike = (id, blog) => {
   return async (dispatch) => {
-    console.log(blog);
     const likedBlog = await blogService.update(id, blog);
     dispatch(updateBlog(likedBlog));
   };

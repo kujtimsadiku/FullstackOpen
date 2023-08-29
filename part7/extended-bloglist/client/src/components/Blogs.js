@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 const Blogs = ({ username }) => {
   const blogs = useSelector(({ blog }) => blog);
 
-  console.log(blogs);
   return blogs
     .slice()
     .sort((min, max) => max.likes - min.likes)
