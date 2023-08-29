@@ -74,11 +74,6 @@ const App = () => {
 
     try {
       dispatch(createBlog(newBlog));
-
-      // Fetch the updated list of blogs from the server
-      // const updatedBlogs = await blogService.getAll();
-      // setBlogs([...updatedBlogs, newBlog]);
-
       dispatch(
         showNotificationWithTimeout(
           `A new blog ${newBlog.title} by ${newBlog.author}`,
