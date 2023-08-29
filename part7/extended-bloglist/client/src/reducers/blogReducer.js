@@ -23,7 +23,8 @@ const blogSlice = createSlice({
   },
 });
 
-const { setBlogs, appendBlog, updateBlog, removeBlog } = blogSlice.actions;
+export const { setBlogs, appendBlog, updateBlog, removeBlog } =
+  blogSlice.actions;
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
