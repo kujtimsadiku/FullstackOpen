@@ -122,23 +122,19 @@ const App = () => {
 
   return (
     <div>
-      {user && (
-        <div>
-          <h2>Blogs</h2>
-          {loggedIn()}
-          <Notification />
-          <Togglable btnName="Create Blog" ref={blogFormRef}>
-            <BlogForm createBlog={handleBlog} />
-            <button
-              onClick={() => blogFormRef.current.toggleVisibility()}
-              className="cancel-btn"
-            >
-              Cancel
-            </button>
-          </Togglable>
-          <Blogs username={user.username} />
-        </div>
-      )}
+      <h2>Blogs</h2>
+      {loggedIn()}
+      <Notification />
+      <Togglable btnName="Create Blog" ref={blogFormRef}>
+        <BlogForm createBlog={handleBlog} />
+        <button
+          onClick={() => blogFormRef.current.toggleVisibility()}
+          className="cancel-btn"
+        >
+          Cancel
+        </button>
+      </Togglable>
+      <Blogs username={user.username} />
     </div>
   );
 };

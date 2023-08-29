@@ -25,7 +25,11 @@ const create = async (newObject) => {
 
 const update = async (id, newObject) => {
   const response = await axios.put(`${baseUrl}/${id}`, newObject);
-  return response.data;
+  const updated = {
+    ...response.data,
+    user: newObject.user,
+  };
+  return updated;
 };
 
 const remove = async (id) => {
