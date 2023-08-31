@@ -10,7 +10,7 @@ const getAll = async () => {
 
 const create = async (newObject) => {
   const config = {
-    headers: { Authorization: userService.getToken() },
+    headers: { Authorization: `Bearer ${userService.getToken()}` },
   };
 
   const response = await axios.post(baseUrl, newObject, config);
@@ -23,6 +23,7 @@ const update = async (id, newObject) => {
     ...response.data,
     user: newObject.user,
   };
+
   return updated;
 };
 

@@ -38,7 +38,7 @@ export const createBlog = (blog) => {
   return async (dispatch) => {
     try {
       const newBlog = await blogService.create(blog);
-      console.log("Blog tried to create", newBlog);
+      console.log(newBlog);
       dispatch(appendBlog(newBlog));
       dispatch(
         showNotificationWithTimeout(
