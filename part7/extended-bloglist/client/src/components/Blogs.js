@@ -9,17 +9,13 @@ const Blogs = ({ username }) => {
       {blogs
         .slice()
         .sort((min, max) => max.likes - min.likes)
-        .map((blog) => {
-          if (
-            blog.user &&
-            blog.user.username &&
-            blog.user.username === username
-          ) {
-            return <Blog key={blog.id} blog={blog} />;
-          } else {
-            return null;
-          }
-        })}
+        .map((blog) =>
+          blog.user ? (
+            blog.user.username === username ? (
+              <Blog key={blog.id} blog={blog} />
+            ) : null
+          ) : null,
+        )}
     </>
   );
 };
