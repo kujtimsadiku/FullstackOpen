@@ -1,18 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import Blogs from "./components/Blogs";
-import { blogService } from "./services/blogs";
+import { userService } from "./services/users";
 import { loginService } from "./services/login";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showNotificationWithTimeout } from "./reducers/notificationReducer";
 import { initializeBlogs, createBlog } from "./reducers/blogReducer";
+import { setUser } from "./reducers/userReducer";
 
 const App = () => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
+  const user = useSelector(({ user }) => user);
+  // const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,35 +23,13 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    const loggedUserJSON = userService.getLocalStorageUser("loggedBlogappUser");
 
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      dispatch(setUser(user));
     }
+    // eslint-disable-next-line
   }, []);
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-
-      blogService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      dispatch(showNotificationWithTimeout("Wrong credentials", "error", 3));
-    }
-    console.log("Logging in with", username, password);
-  };
 
   const logOut = () => {
     if (window.confirm("Do you want to log out")) {
@@ -100,13 +80,7 @@ const App = () => {
         <Togglable btnName="Login" ref={blogFormRef}>
           <h2>Log in to application</h2>
           <Notification />
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsername={({ target }) => setUsername(target.value)}
-            handlePassword={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
+          <LoginForm />
           <button onClick={() => blogFormRef.current.toggleVisibility()}>
             Cancel
           </button>
