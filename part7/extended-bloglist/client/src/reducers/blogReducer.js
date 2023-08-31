@@ -34,12 +34,22 @@ export const initializeBlogs = () => {
   };
 };
 
-export const createBlog = (blog) => {
+export const createBlog = (blog, user) => {
   return async (dispatch) => {
     try {
       const newBlog = await blogService.create(blog);
-      console.log(newBlog);
-      dispatch(appendBlog(newBlog));
+
+      console.log("newwwe", newBlog);
+      dispatch(
+        appendBlog({
+          ...newBlog,
+          user: {
+            username: user.username,
+            name: user.name,
+            id: newBlog.user,
+          },
+        }),
+      );
       dispatch(
         showNotificationWithTimeout(
           `A new blog ${newBlog.title} by ${newBlog.author}`,

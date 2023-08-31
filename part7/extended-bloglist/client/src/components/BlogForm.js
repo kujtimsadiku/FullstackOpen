@@ -1,5 +1,5 @@
 import { useField } from "../hooks/index";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "../reducers/blogReducer";
 
 const BlogForm = () => {
@@ -7,6 +7,7 @@ const BlogForm = () => {
   const title = useField("text");
   const author = useField("text");
   const url = useField("text");
+  const logged = useSelector(({ login }) => login);
 
   const handleBlog = (event) => {
     event.preventDefault();
@@ -18,7 +19,9 @@ const BlogForm = () => {
       likes: 0,
     };
 
-    dispatch(createBlog(newBlog));
+    dispatch(
+      createBlog(newBlog, { username: logged.username, name: logged.name }),
+    );
 
     title.reset();
     author.reset();
