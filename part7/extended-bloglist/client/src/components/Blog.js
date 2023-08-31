@@ -15,7 +15,6 @@ const Blog = ({ blog }) => {
 
   const handleLikes = () => {
     const blogToUpdate = { ...blog, likes: blog.likes + 1 };
-    console.log("blogToUpdate variable at Blog.js - 18 row = ", blogToUpdate);
 
     dispatch(updateLike(blog.id, blogToUpdate));
   };
