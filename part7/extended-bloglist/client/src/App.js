@@ -44,8 +44,6 @@ const App = () => {
   };
 
   const handleBlog = (newBlog) => {
-    blogFormRef.current.toggleVisibility();
-
     try {
       dispatch(createBlog(newBlog));
       dispatch(
@@ -89,7 +87,7 @@ const App = () => {
       {loggedIn()}
       <Notification />
       <Togglable btnName="Create Blog" ref={blogFormRef}>
-        <BlogForm createBlog={handleBlog} />
+        <BlogForm />
         <button
           onClick={() => blogFormRef.current.toggleVisibility()}
           className="cancel-btn"

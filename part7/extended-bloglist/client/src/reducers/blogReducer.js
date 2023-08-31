@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { blogService } from "../services/blogs";
+import { showNotificationWithTimeout } from "./notificationReducer";
 
 const blogSlice = createSlice({
   name: "blogs",
@@ -35,8 +36,26 @@ export const initializeBlogs = () => {
 
 export const createBlog = (blog) => {
   return async (dispatch) => {
-    const newBlog = await blogService.create(blog);
-    dispatch(appendBlog(newBlog));
+    try {
+      const newBlog = await blogService.create(blog);
+      console.log("Blog tried to create", newBlog);
+      dispatch(appendBlog(newBlog));
+      dispatch(
+        showNotificationWithTimeout(
+          `A new blog ${newBlog.title} by ${newBlog.author}`,
+          "success",
+          3,
+        ),
+      );
+    } catch {
+      dispatch(
+        showNotificationWithTimeout(
+          "Error trying to create new blog",
+          "error",
+          3,
+        ),
+      );
+    }
   };
 };
 
