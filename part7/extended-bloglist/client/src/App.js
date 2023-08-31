@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Blogs from "./components/Blogs";
 import { userService } from "./services/users";
-import { loginService } from "./services/login";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
@@ -9,40 +8,35 @@ import BlogForm from "./components/BlogForm";
 import { useDispatch, useSelector } from "react-redux";
 import { showNotificationWithTimeout } from "./reducers/notificationReducer";
 import { initializeBlogs, createBlog } from "./reducers/blogReducer";
-import { setUser } from "./reducers/userReducer";
+import { initializeUser } from "./reducers/userReducer";
+import { login, logOut } from "./reducers/loginReducer";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector(({ user }) => user);
-  // const [user, setUser] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const loginUser = useSelector(({ login }) => login);
 
   useEffect(() => {
     dispatch(initializeBlogs());
-  }, [dispatch]);
-
-  useEffect(() => {
-    const loggedUserJSON = userService.getLocalStorageUser("loggedBlogappUser");
+    dispatch(initializeUser());
+    const loggedUserJSON = userService.getLocalStorageUser();
 
     if (loggedUserJSON) {
-      dispatch(setUser(user));
+      dispatch(login(loggedUserJSON));
     }
     // eslint-disable-next-line
   }, []);
 
-  const logOut = () => {
+  const logOutUser = () => {
     if (window.confirm("Do you want to log out")) {
-      window.localStorage.clear("loggedBlogappUser");
-      setUser(null);
+      dispatch(logOut());
     }
   };
 
   const loggedIn = () => {
     return (
       <div className="loggedIn">
-        {user.name} is logged in
-        <button onClick={logOut} className="loggedOut-btn">
+        {loginUser.name} is logged in
+        <button onClick={logOutUser} className="loggedOut-btn">
           Logout
         </button>
       </div>
@@ -74,7 +68,7 @@ const App = () => {
 
   const blogFormRef = useRef();
 
-  if (!user) {
+  if (loginUser === null) {
     return (
       <div>
         <Togglable btnName="Login" ref={blogFormRef}>
@@ -103,7 +97,7 @@ const App = () => {
           Cancel
         </button>
       </Togglable>
-      <Blogs username={user.username} />
+      <Blogs username={loginUser.username} />
     </div>
   );
 };

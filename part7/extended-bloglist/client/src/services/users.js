@@ -1,5 +1,4 @@
 import axios from "axios";
-import { blogService } from "./blogs";
 
 const baseUrl = "/api/users";
 
@@ -11,8 +10,8 @@ const setToken = (newToken) => {
 
 const getToken = () => token;
 
-const getLocalStorageUser = (storage) => {
-  const loggedUserJSON = window.localStorage.getItem(storage);
+const getLocalStorageUser = () => {
+  const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
 
   if (loggedUserJSON) {
     const user = JSON.parse(loggedUserJSON);
@@ -20,11 +19,17 @@ const getLocalStorageUser = (storage) => {
 
     return user;
   }
+  return null;
+};
+
+const setLocalStorageUser = (user) => {
+  window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+  token = user.token;
 };
 
 const clearLocalStorageUser = () => {
   window.localStorage.clear("loggedBlogappUser");
-  blogService.setToken(null);
+  token = null;
 };
 
 const getAll = async () => {
@@ -44,4 +49,5 @@ export const userService = {
   setToken,
   getLocalStorageUser,
   clearLocalStorageUser,
+  setLocalStorageUser,
 };
