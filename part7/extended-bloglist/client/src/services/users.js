@@ -15,7 +15,6 @@ const getLocalStorageUser = () => {
 
   if (loggedUserJSON) {
     const user = JSON.parse(loggedUserJSON);
-    token = user.token;
 
     return user;
   }
@@ -24,7 +23,7 @@ const getLocalStorageUser = () => {
 
 const setLocalStorageUser = (user) => {
   window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-  token = user.token;
+  // setToken(user.token);
 };
 
 const clearLocalStorageUser = () => {

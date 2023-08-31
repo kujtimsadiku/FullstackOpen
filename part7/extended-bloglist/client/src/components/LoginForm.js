@@ -1,19 +1,18 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logIn } from "../reducers/loginReducer";
+import { useField } from "../hooks";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const username = useField("text");
+  const password = useField("Password");
 
   const handleLogin = (event) => {
     event.preventDefault();
 
-    dispatch(logIn({ username: username, password: password }));
-    setUsername("");
-    setPassword("");
-    console.log("Logging in with", username, password);
+    dispatch(logIn({ username: username.value, password: password.value }));
+    username.reset();
+    password.reset();
   };
 
   return (
@@ -21,20 +20,14 @@ const LoginForm = () => {
       <form onSubmit={handleLogin}>
         <div>
           Username
-          <input
-            id="username"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          <input id="username" {...username.inputProps} />
         </div>
         <div>
           Password
           <input
             style={{ margin: "3.5px" }}
             id="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-            type="Password"
+            {...password.inputProps}
           />
         </div>
         <button id="login-button" type="submit">

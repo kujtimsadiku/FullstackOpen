@@ -21,6 +21,7 @@ const App = () => {
 
     if (loggedUserJSON) {
       dispatch(login(loggedUserJSON));
+      userService.setToken(loggedUserJSON.token);
     }
     // eslint-disable-next-line
   }, []);
