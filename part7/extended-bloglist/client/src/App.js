@@ -6,8 +6,7 @@ import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 import { useDispatch, useSelector } from "react-redux";
-import { showNotificationWithTimeout } from "./reducers/notificationReducer";
-import { initializeBlogs, createBlog } from "./reducers/blogReducer";
+import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUser } from "./reducers/userReducer";
 import { login, logOut } from "./reducers/loginReducer";
 
@@ -41,27 +40,6 @@ const App = () => {
         </button>
       </div>
     );
-  };
-
-  const handleBlog = (newBlog) => {
-    try {
-      dispatch(createBlog(newBlog));
-      dispatch(
-        showNotificationWithTimeout(
-          `A new blog ${newBlog.title} by ${newBlog.author}`,
-          "success",
-          3,
-        ),
-      );
-    } catch (exception) {
-      dispatch(
-        showNotificationWithTimeout(
-          "Error trying to create new blog",
-          "error",
-          3,
-        ),
-      );
-    }
   };
 
   const blogFormRef = useRef();
