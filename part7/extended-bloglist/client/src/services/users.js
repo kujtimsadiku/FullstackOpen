@@ -23,7 +23,7 @@ const getLocalStorageUser = () => {
 
 const setLocalStorageUser = (user) => {
   window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-  // setToken(user.token);
+  setToken(user.token);
 };
 
 const clearLocalStorageUser = () => {
