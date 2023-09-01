@@ -5,7 +5,7 @@ import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
-import Users from "./components/User";
+import Users from "./components/Users";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUser } from "./reducers/userReducer";
