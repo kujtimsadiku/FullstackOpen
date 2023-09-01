@@ -5,10 +5,12 @@ import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
+import Users from "./components/User";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUser } from "./reducers/userReducer";
 import { login, logOut } from "./reducers/loginReducer";
+import { Route, Routes } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,9 +38,11 @@ const App = () => {
     return (
       <div className="loggedIn">
         {loginUser.name} is logged in
-        <button onClick={logOutUser} className="loggedOut-btn">
-          Logout
-        </button>
+        <div>
+          <button onClick={logOutUser} className="loggedOut-btn">
+            Logout
+          </button>
+        </div>
       </div>
     );
   };
@@ -65,7 +69,7 @@ const App = () => {
       <h2>Blogs</h2>
       {loggedIn()}
       <Notification />
-      <Togglable btnName="Create Blog" ref={blogFormRef}>
+      {/* <Togglable btnName="Create Blog" ref={blogFormRef}>
         <BlogForm />
         <button
           onClick={() => blogFormRef.current.toggleVisibility()}
@@ -73,8 +77,11 @@ const App = () => {
         >
           Cancel
         </button>
-      </Togglable>
-      <Blogs username={loginUser.username} />
+      </Togglable> */}
+      <Routes>
+        <Route path="/users" element={<Users />} />
+      </Routes>
+      {/* // <Blogs username={loginUser.username} /> */}
     </div>
   );
 };
