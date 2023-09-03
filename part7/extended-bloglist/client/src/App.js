@@ -12,9 +12,11 @@ import { initializeUser } from "./reducers/userReducer";
 import { login, logOut } from "./reducers/loginReducer";
 import { Route, Routes } from "react-router-dom";
 import User from "./components/User";
+import Blog from "./components/Blog";
 
 const App = () => {
   const dispatch = useDispatch();
+  const blogFormRef = useRef();
   const loginUser = useSelector(({ login }) => login);
 
   useEffect(() => {
@@ -52,8 +54,6 @@ const App = () => {
     );
   };
 
-  const blogFormRef = useRef();
-
   const Container = (props) => {
     return <div className="table-container">{props.children}</div>;
   };
@@ -76,7 +76,7 @@ const App = () => {
       <h2>Blogs</h2>
       {loggedIn()}
       <Notification />
-      {/* <Togglable btnName="Create Blog" ref={blogFormRef}>
+      <Togglable btnName="Create Blog" ref={blogFormRef}>
         <BlogForm />
         <button
           onClick={() => blogFormRef.current.toggleVisibility()}
@@ -84,13 +84,13 @@ const App = () => {
         >
           Cancel
         </button>
-      </Togglable> */}
+      </Togglable>
       <Routes>
         <Route path="/" element={<Blogs />} />
+        <Route path="/blogs/:id" element={<Blog />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />
       </Routes>
-      {/* // <Blogs username={loginUser.username} /> */}
     </div>
   );
 };

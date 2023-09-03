@@ -30,26 +30,24 @@ const BlogForm = () => {
 
   return (
     <div>
-      <div>
-        <h2>Create new</h2>
-        <form onSubmit={handleBlog}>
-          <div>
-            title:
-            <input id="title-input" {...title.inputProps} />
-          </div>
-          <div>
-            author:
-            <input id="author-input" {...author.inputProps} />
-          </div>
-          <div>
-            url:
-            <input id="url-input" {...url.inputProps} />
-          </div>
-          <button className="create-btn" type="submit">
-            Create
-          </button>
-        </form>
-      </div>
+      <h2>Create new</h2>
+      <form onSubmit={handleBlog}>
+        <div>
+          title:
+          <input id="title-input" {...title.inputProps} />
+        </div>
+        <div>
+          author:
+          <input id="author-input" {...author.inputProps} />
+        </div>
+        <div>
+          url:
+          <input id="url-input" {...url.inputProps} />
+        </div>
+        <button className="create-btn" type="submit">
+          Create
+        </button>
+      </form>
     </div>
   );
 };

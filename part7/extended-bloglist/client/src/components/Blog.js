@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { blogToRemove, updateLike } from "../reducers/blogReducer";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Blog = ({ blog }) => {
+const Blog = () => {
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
+  const { id } = useParams();
+  const user = useSelector((state) => state.login);
+  const blog = useSelector((state) => {
+    return state.blogs.find((b) => b.id === id);
+  });
+  const navigate = useNavigate();
 
-  const hideWhenVisible = { display: visible ? "none" : "" };
-  const showWhenVisible = { display: visible ? "" : "none" };
-
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+  if (!blog) return;
 
   const handleLikes = () => {
     const blogToUpdate = { ...blog, likes: blog.likes + 1 };
@@ -22,40 +22,36 @@ const Blog = ({ blog }) => {
   const handleRemove = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       dispatch(blogToRemove(blog));
+      navigate("/");
     }
   };
 
   return (
-    <div id="viewing-model">
-      <div style={hideWhenVisible}>
-        <span className="title">{blog.title}</span>
-        <span> - </span>
-        <span className="author">{blog.author}</span>
-        <button id="view.btn" onClick={toggleVisibility} className="view-btn">
-          view
-        </button>
+    <div>
+      <h2>
+        {blog.title} {blog.author}
+      </h2>
+      <div>
+        <a href={blog.url}>{blog.url}</a>
       </div>
-      <div style={showWhenVisible}>
-        {blog.title} - {blog.author}
-        <button id="hide.btn" onClick={toggleVisibility} className="hide-btn">
-          hide
-        </button>
+      <div>
+        Likes: {blog.likes}
+        {user.username === blog.user.username && (
+          <button
+            id="like.btn"
+            onClick={() => handleLikes()}
+            className="like-btn"
+          >
+            like
+          </button>
+        )}
+      </div>
+      <div>added by {blog.user.name}</div>
+      {user.username === blog.user.username && (
         <div>
-          <div>{blog.url}</div>
-          <div>
-            Likes: {blog.likes}
-            <button
-              id="like.btn"
-              onClick={() => handleLikes()}
-              className="like-btn"
-            >
-              like
-            </button>
-          </div>
-          <div>{blog.user.name}</div>
+          <button onClick={() => handleRemove()}>Remove</button>
         </div>
-        <button onClick={() => handleRemove()}>Remove</button>
-      </div>
+      )}
     </div>
   );
 };
