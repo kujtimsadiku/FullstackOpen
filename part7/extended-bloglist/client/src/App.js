@@ -54,18 +54,20 @@ const App = () => {
 
   const blogFormRef = useRef();
 
+  const Container = (props) => {
+    return <div className="table-container">{props.children}</div>;
+  };
+
   if (loginUser === null) {
     return (
-      <div>
+      <Container>
         <Togglable btnName="Login" ref={blogFormRef}>
-          <h2>Log in to application</h2>
-          <Notification />
           <LoginForm />
           <button onClick={() => blogFormRef.current.toggleVisibility()}>
             Cancel
           </button>
         </Togglable>
-      </div>
+      </Container>
     );
   }
 
@@ -84,6 +86,7 @@ const App = () => {
         </button>
       </Togglable> */}
       <Routes>
+        <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />
       </Routes>

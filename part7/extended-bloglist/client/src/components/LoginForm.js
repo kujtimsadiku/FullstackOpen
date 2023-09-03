@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { logIn } from "../reducers/loginReducer";
 import { useField } from "../hooks";
+import Notification from "./Notification";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const LoginForm = () => {
 
   return (
     <div>
+      <h2>Log in to application</h2>
+      <Notification />
       <form onSubmit={handleLogin}>
         <div>
           Username

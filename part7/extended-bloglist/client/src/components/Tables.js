@@ -1,5 +1,5 @@
 export const TableContainer = (table) => (
-  <table className="table-container">{table.children}</table>
+  <table className="container">{table.children}</table>
 );
 
 export const TableData = (data) => <td>{data.children}</td>;

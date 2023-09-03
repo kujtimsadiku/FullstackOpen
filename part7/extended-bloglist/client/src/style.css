@@ -21,6 +21,12 @@
   padding: 16px;
 }
 
+.container {
+  border: 1px solid #ccc;
+  margin-bottom: 6px;
+  padding: 5px;
+}
+
 .success-message,
 .error-message {
   font-size: 28px;
