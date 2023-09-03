@@ -11,6 +11,7 @@ import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUser } from "./reducers/userReducer";
 import { login, logOut } from "./reducers/loginReducer";
 import { Route, Routes } from "react-router-dom";
+import User from "./components/User";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,10 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs());
     dispatch(initializeUser());
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     const loggedUserJSON = userService.getLocalStorageUser();
 
     if (loggedUserJSON) {
@@ -80,6 +85,7 @@ const App = () => {
       </Togglable> */}
       <Routes>
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
       {/* // <Blogs username={loginUser.username} /> */}
     </div>
