@@ -1,13 +1,12 @@
 import React from "react";
-import { useField } from "../hooks";
 import { Header } from "./Header";
+import CommentForm from "./CommentForm";
 
-const Comments = () => {
-  const comment = useField();
-
+const Comments = ({ blog }) => {
   return (
     <React.Fragment>
       <Header tag="h2" text="Comments" />
+      <CommentForm blog={blog} />
     </React.Fragment>
   );
 };

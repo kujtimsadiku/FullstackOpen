@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { blogToRemove, updateLike } from "../reducers/blogReducer";
 import { useNavigate, useParams } from "react-router-dom";
+import Comments from "./Comments";
 
 const Blog = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const Blog = () => {
           <button onClick={() => handleRemove()}>Remove</button>
         </div>
       )}
+      <Comments blog={blog} />
     </div>
   );
 };
