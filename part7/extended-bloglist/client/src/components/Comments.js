@@ -8,7 +8,6 @@ const Comments = () => {
   return (
     <React.Fragment>
       <Header tag="h2" text="Comments" />
-      <></>
     </React.Fragment>
   );
 };
