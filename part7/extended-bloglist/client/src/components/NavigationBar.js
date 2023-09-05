@@ -1,7 +1,17 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { logOut } from "../reducers/loginReducer";
+
+const logUserOut = (dispatch) => {
+  if (window.confirm("Do you want to log out")) {
+    dispatch(logOut());
+  }
+};
 
 const NavigationBar = () => {
+  const dispatch = useDispatch();
+
   return (
     <nav className="nav">
       <ul>
@@ -16,7 +26,7 @@ const NavigationBar = () => {
           </NavLink>
         </li>
       </ul>
-      <p>Log Out</p>
+      <button>Log Out</button>
     </nav>
   );
 };

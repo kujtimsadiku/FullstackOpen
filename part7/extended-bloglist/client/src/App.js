@@ -16,6 +16,7 @@ import Blog from "./components/Blog";
 import NavigationBar from "./components/NavigationBar";
 import Logged from "./components/Logged";
 import { Header } from "./components/Header";
+import Greetings from "./components/Greetings";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,6 @@ const App = () => {
   const Home = () => {
     return (
       <React.Fragment>
-        <Logged name={loginUser.name} dispatch={dispatch} />
         <Togglable btnName="Create new" ref={blogFormRef}>
           <BlogForm />
         </Togglable>
@@ -62,6 +62,7 @@ const App = () => {
     <div>
       <NavigationBar />
       <Header tag="h2" text="Blogs"></Header>
+      <Greetings />
       <Notification />
       <Routes>
         <Route path="/" element={<Home />} />
