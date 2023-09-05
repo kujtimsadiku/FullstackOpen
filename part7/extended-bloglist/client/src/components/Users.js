@@ -7,6 +7,7 @@ import {
   TableBody,
   TableHead,
 } from "./Tables";
+import { Header } from "./Header";
 
 const Users = () => {
   const users = useSelector((state) => state.user);
@@ -15,7 +16,7 @@ const Users = () => {
 
   return (
     <>
-      <h2>Users</h2>
+      <Header tag="h2" text="Users" />
       <TableContainer>
         <TableHead>
           <TableRow>

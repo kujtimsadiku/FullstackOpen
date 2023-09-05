@@ -40,9 +40,9 @@ const App = () => {
 
   if (loginUser === null) {
     return (
-      <React.Fragment>
+      <div>
         <LoginForm />
-      </React.Fragment>
+      </div>
     );
   }
 

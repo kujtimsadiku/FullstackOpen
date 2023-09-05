@@ -17,25 +17,29 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <Notification />
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
-          Username
-          <input id="username" {...username.inputProps} />
-        </div>
-        <div>
-          Password
           <input
-            style={{ margin: "3.5px" }}
-            id="password"
-            {...password.inputProps}
+            id="username"
+            {...username.inputProps}
+            placeholder="Username"
           />
         </div>
-        <button id="login-button" type="submit">
-          Login
-        </button>
+        <div>
+          <input
+            id="password"
+            {...password.inputProps}
+            placeholder="Password"
+          />
+        </div>
+        <div>
+          <button className="login" type="submit">
+            Login
+          </button>
+        </div>
       </form>
     </div>
   );
