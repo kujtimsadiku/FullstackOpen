@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Blogs from "./components/Blogs";
 import { userService } from "./services/users";
 import Notification from "./components/Notification";
@@ -9,14 +9,16 @@ import Users from "./components/Users";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUser } from "./reducers/userReducer";
-import { login, logOut } from "./reducers/loginReducer";
-import { useMatch, Route, Routes } from "react-router-dom";
+import { login } from "./reducers/loginReducer";
+import { Route, Routes } from "react-router-dom";
 import User from "./components/User";
 import Blog from "./components/Blog";
+import NavigationBar from "./components/NavigationBar";
+import Logged from "./components/Logged";
+import { Header } from "./components/Header";
 
 const App = () => {
   const dispatch = useDispatch();
-  const match = useMatch("/blogs/:id"); // also need for /users or /users/:id i need to find better solution
   const blogFormRef = useRef();
   const loginUser = useSelector(({ login }) => login);
 
@@ -36,60 +38,33 @@ const App = () => {
     // eslint-disable-next-line
   }, []);
 
-  const logOutUser = () => {
-    if (window.confirm("Do you want to log out")) {
-      dispatch(logOut());
-    }
-  };
-
-  const loggedIn = () => {
-    return (
-      <div className="loggedIn">
-        {loginUser.name} is logged in
-        <div>
-          <button onClick={logOutUser} className="loggedOut-btn">
-            Logout
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  const Container = (props) => {
-    return <div className="table-container">{props.children}</div>;
-  };
-
   if (loginUser === null) {
     return (
-      <Container>
-        <Togglable btnName="Login" ref={blogFormRef}>
-          <LoginForm />
-          <button onClick={() => blogFormRef.current.toggleVisibility()}>
-            Cancel
-          </button>
-        </Togglable>
-      </Container>
+      <React.Fragment>
+        <LoginForm />
+      </React.Fragment>
     );
   }
 
+  const Home = () => {
+    return (
+      <React.Fragment>
+        <Logged name={loginUser.name} dispatch={dispatch} />
+        <Togglable btnName="Create new" ref={blogFormRef}>
+          <BlogForm />
+        </Togglable>
+        <Blogs />
+      </React.Fragment>
+    );
+  };
+
   return (
     <div>
-      <h2>Blogs</h2>
-      {loggedIn()}
+      <NavigationBar />
+      <Header tag="h2" text="Blogs"></Header>
       <Notification />
-      {!match ? (
-        <Togglable btnName="Create Blog" ref={blogFormRef}>
-          <BlogForm />
-          <button
-            onClick={() => blogFormRef.current.toggleVisibility()}
-            className="cancel-btn"
-          >
-            Cancel
-          </button>
-        </Togglable>
-      ) : null}
       <Routes>
-        <Route path="/" element={<Blogs />} />
+        <Route path="/" element={<Home />} />
         <Route path="/blogs/:id" element={<Blog />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />

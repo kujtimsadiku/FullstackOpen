@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import React from "react";
 
 const Blogs = () => {
   const blogs = useSelector(({ blogs }) => blogs);
 
   return (
-    <div>
+    <>
       {blogs
         .slice()
         .sort((min, max) => max.likes - min.likes)
@@ -14,7 +15,7 @@ const Blogs = () => {
             <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
           </div>
         ))}
-    </div>
+    </>
   );
 };
 
