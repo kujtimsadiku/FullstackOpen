@@ -25,8 +25,15 @@ const NavigationBar = () => {
             Users
           </NavLink>
         </li>
+        <li>
+          <button
+            className="logout-button"
+            onClick={() => logUserOut(dispatch)}
+          >
+            Log out
+          </button>
+        </li>
       </ul>
-      <button>Log Out</button>
     </nav>
   );
 };

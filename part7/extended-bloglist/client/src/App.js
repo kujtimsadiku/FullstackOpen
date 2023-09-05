@@ -14,7 +14,6 @@ import { Route, Routes } from "react-router-dom";
 import User from "./components/User";
 import Blog from "./components/Blog";
 import NavigationBar from "./components/NavigationBar";
-import Logged from "./components/Logged";
 import { Header } from "./components/Header";
 import Greetings from "./components/Greetings";
 
@@ -61,15 +60,17 @@ const App = () => {
   return (
     <div>
       <NavigationBar />
-      <Header tag="h2" text="Blogs"></Header>
-      <Greetings />
-      <Notification />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blogs/:id" element={<Blog />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<User />} />
-      </Routes>
+      <div className="content-body">
+        <Header tag="h2" text="Blogs"></Header>
+        <Greetings />
+        <Notification />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blogs/:id" element={<Blog />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<User />} />
+        </Routes>
+      </div>
     </div>
   );
 };
