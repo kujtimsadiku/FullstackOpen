@@ -17,28 +17,36 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-container">
+    // <div className="flex justify-center">
+    <div className="wrapper">
       <Notification />
-      <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
-        <div>
+        <h1>Login</h1>
+        <div className="input-box">
           <input
             id="username"
             {...username.inputProps}
             placeholder="Username"
+            required
           />
+          <i class="bx bxs-user"></i>
         </div>
-        <div>
+        <div className="input-box">
           <input
             id="password"
             {...password.inputProps}
             placeholder="Password"
+            required
           />
+          <i class="bx bxs-lock-alt"></i>
         </div>
-        <div>
-          <button className="login" type="submit">
-            Login
-          </button>
+        <button className="btn" type="submit">
+          Login
+        </button>
+        <div className="register-link">
+          <p>
+            Dont' have an account? <a href="#">Register</a>
+          </p>
         </div>
       </form>
     </div>

@@ -13,19 +13,19 @@ const NavigationBar = () => {
   const dispatch = useDispatch();
 
   return (
-    <nav className="nav">
-      <ul>
-        <li>
+    <nav className="nav-bar">
+      <ul className="unorder-list">
+        <li className="list">
           <NavLink to="/" activeclassname="active">
             Blogs
           </NavLink>
         </li>
-        <li>
+        <li className="list">
           <NavLink to="/users" activeclassname="active">
             Users
           </NavLink>
         </li>
-        <li>
+        <li className="list">
           <button
             className="logout-button"
             onClick={() => logUserOut(dispatch)}

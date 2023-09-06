@@ -40,7 +40,7 @@ const App = () => {
 
   if (loginUser === null) {
     return (
-      <div>
+      <div className="login-container">
         <LoginForm />
       </div>
     );
@@ -58,7 +58,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <NavigationBar />
       <div className="content-body">
         <Header tag="h2" text="Blogs"></Header>
@@ -71,7 +71,7 @@ const App = () => {
           <Route path="/users/:id" element={<User />} />
         </Routes>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
