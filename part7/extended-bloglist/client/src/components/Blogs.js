@@ -6,16 +6,16 @@ const Blogs = () => {
   const blogs = useSelector(({ blogs }) => blogs);
 
   return (
-    <>
+    <div className="blog-container">
       {blogs
         .slice()
         .sort((min, max) => max.likes - min.likes)
         .map((blog) => (
-          <div className="container" key={blog.id}>
+          <div className="blog-title" key={blog.id}>
             <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
           </div>
         ))}
-    </>
+    </div>
   );
 };
 

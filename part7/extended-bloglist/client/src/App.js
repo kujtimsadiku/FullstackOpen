@@ -61,7 +61,7 @@ const App = () => {
     <React.Fragment>
       <NavigationBar />
       <div className="content-body">
-        <Header tag="h2" text="Blogs"></Header>
+        <Header tag="h1" text="Blogs"></Header>
         <Greetings />
         <Notification />
         <Routes>

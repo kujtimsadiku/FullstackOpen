@@ -29,24 +29,29 @@ const BlogForm = () => {
   };
 
   return (
-    <div>
-      <h2>Create new</h2>
+    <div className="blogform-container">
+      <h2 className="create-new-header">Create new</h2>
       <form onSubmit={handleBlog}>
-        <div>
-          title:
-          <input id="title-input" {...title.inputProps} />
+        <div className="input-title">
+          <input
+            id="title-input"
+            placeholder="Title..."
+            required
+            {...title.inputProps}
+          />
         </div>
-        <div>
-          author:
-          <input id="author-input" {...author.inputProps} />
+        <div className="input-author">
+          <input
+            id="author-input"
+            placeholder="Author..."
+            required
+            {...author.inputProps}
+          />
         </div>
-        <div>
-          url:
-          <input id="url-input" {...url.inputProps} />
+        <div className="input-url">
+          <input id="url-input" placeholder="URL..." {...url.inputProps} />
         </div>
-        <button className="create-btn" type="submit">
-          Create
-        </button>
+        <button type="submit">Create</button>
       </form>
     </div>
   );
