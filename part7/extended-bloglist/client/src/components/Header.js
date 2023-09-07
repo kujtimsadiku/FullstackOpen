@@ -1,5 +1,5 @@
-export const Header = ({ tag, text }) => {
+export const Header = ({ tag, text, className }) => {
   const Htag = tag;
 
-  return <Htag>{text}</Htag>;
+  return <Htag className={className ? className : null}>{text}</Htag>;
 };

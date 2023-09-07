@@ -17,10 +17,12 @@ const CommentForm = ({ blog }) => {
     dispatch(createComment(blog.id, { comments: commentInput.value }));
   };
   return (
-    <React.Fragment>
+    <div className="comment-wrapper">
       <form onSubmit={handleComment}>
-        <input id="comment-input" {...commentInput.inputProps} />
-        <Button type="submit">add comment</Button>
+        <div className="comment-container">
+        <input className="comment-input" placeholder="add comment" {...commentInput.inputProps} required />
+        <Button type="submit" className="comment-button">{!commentInput.value ? <i class='bx bx-message-square-add'></i> : <i class='bx bx-message-square-add bx-tada' ></i>}</Button>
+        </div>
         {blog.comments.length > 0 ? (
           <ul>
             {blog.comments.map((cmt, index) => (
@@ -31,7 +33,7 @@ const CommentForm = ({ blog }) => {
           <p>No comments</p>
         )}
       </form>
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import { useField } from "../hooks/index";
 import { useDispatch, useSelector } from "react-redux";
 import { createBlog } from "../reducers/blogReducer";
 
-const BlogForm = () => {
+const BlogForm = ({ toggleVisibility }) => {
   const dispatch = useDispatch();
   const title = useField("text");
   const author = useField("text");
@@ -23,14 +23,20 @@ const BlogForm = () => {
       createBlog(newBlog, { username: logged.username, name: logged.name }),
     );
 
+    reset();
+  };
+
+  const reset = (visible) => {
     title.reset();
     author.reset();
     url.reset();
-  };
+
+    if (visible) return toggleVisibility();
+  }
 
   return (
-    <div className="blogform-container">
-      <h2 className="create-new-header">Create new</h2>
+    <>
+      <h2 className="header-home">Create New</h2>
       <form onSubmit={handleBlog}>
         <div className="input-title">
           <input
@@ -51,9 +57,12 @@ const BlogForm = () => {
         <div className="input-url">
           <input id="url-input" placeholder="URL..." {...url.inputProps} />
         </div>
-        <button type="submit">Create</button>
+        <div className="create-cancel-button">
+          <button type="submit">Create</button>
+          <button onClick={() => reset(true)}>Cancel</button>
+        </div>
       </form>
-    </div>
+    </>
   );
 };
 

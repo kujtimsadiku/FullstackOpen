@@ -5,8 +5,7 @@ const Greetings = () => {
 
   return (
     <p className="greetings">
-      <i class="bx bxs-user"></i>
-      {userLogged.name} logged in
+      {userLogged.name} is logged in
     </p>
   );
 };

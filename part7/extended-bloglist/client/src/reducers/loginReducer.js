@@ -36,7 +36,7 @@ export const logIn = (credentials) => {
 export const logOut = () => {
   return (dispatch) => {
     userService.clearLocalStorageUser();
-    dispatch(logout(null));
+    dispatch(logout(null)); 
   };
 };
 

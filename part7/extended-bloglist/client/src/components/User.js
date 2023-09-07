@@ -9,9 +9,8 @@ const User = () => {
   if (!user) return;
 
   return (
-    <div>
-      <Header tag="h2" text={user.name} />
-      <strong>added blogs</strong>
+    <div className="user-container">
+      <Header tag="h2" text={`${user.name}'s blogs`} className="user-header"/>
       <ul>
         {user.blogs.map((blog) => (
           <li key={blog.id}>{blog.title}</li>

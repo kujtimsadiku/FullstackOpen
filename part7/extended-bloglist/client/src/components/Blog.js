@@ -28,32 +28,34 @@ const Blog = () => {
   };
 
   return (
-    <div>
-      <h2>
+    <div className="blog-container">
+      <div className="blog-wrapper">
+      <h2 className="title-author-header">
         {blog.title} {blog.author}
       </h2>
-      <div>
+      <div className="url-blog">
         <a href={blog.url}>{blog.url}</a>
       </div>
-      <div>
+      <div className="like-blog">
         Likes: {blog.likes}
         {user.username === blog.user.username && (
           <button
-            id="like.btn"
-            onClick={() => handleLikes()}
-            className="like-btn"
-          >
+          id="like.btn"
+          onClick={() => handleLikes()}
+            className="like-button"
+            >
             like
           </button>
         )}
       </div>
-      <div>added by {blog.user.name}</div>
+      <div className="user-blog">added by {blog.user.name}</div>
       {user.username === blog.user.username && (
         <div>
-          <button onClick={() => handleRemove()}>Remove</button>
+          <button className="remove-button" onClick={() => handleRemove()}>Remove</button>
         </div>
       )}
       <Comments blog={blog} />
+      </div>
     </div>
   );
 };

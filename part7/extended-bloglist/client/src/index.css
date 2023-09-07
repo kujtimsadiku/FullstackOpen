@@ -13,10 +13,11 @@
 
 /* login form STARTS */
 
-body .login-container {
+body {
   background: url("./img/flower-backround.jpg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 
 .login-container {
@@ -116,14 +117,7 @@ body .login-container {
 
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&display=swap');
 
-.content-img {
-  background: url('./img/sky.jpg');
-  background-size: cover;
-  background-position: right;
-  height: 100vh;
-}
-
-.content-body {
+.content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,7 +127,6 @@ body .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: blueviolet;
   width: auto;
   height: auto;
   margin-top: 40px;
@@ -141,16 +134,20 @@ body .login-container {
   border-radius: 10px;
   padding: 50px;
   background: transparent;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(7px);
 }
 
 .blog-container a {
-  color: #fff;
+  color: #464646c7;
   font-family: 'Libre Baskerville', serif;
 }
 
 .blog-title {
   margin: 5px;
+}
+
+.blog-container a:visited {
+  color:rgba(207, 123, 185, 0.907);
 }
 
 
@@ -162,8 +159,6 @@ body .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('./img/pink-flower.jpg');
-  background-size: cover;
   width: 100%;
   height: 70px;
 }
@@ -184,10 +179,11 @@ body .login-container {
   display: inline-flex;
   align-items: center;
   margin: 0 5px;
-  background: rgba(255, 218, 185, 0.511);
+  background: rgba(234, 185, 255, 0.511);
   height: auto;
   border-radius: 6px;
   text-align: center;
+  box-shadow: 2px 3px #333;
 }
 
 .logout-button {
@@ -201,45 +197,227 @@ body .login-container {
 }
 
 .nav-bar li:hover {
-  background: peachpuff; 
+  background: peachpuff;
+  box-shadow: none;
 }
 
 
 /* nav bar ENDS */
 /*----------------------------------*/
+/* Header STARTS HOMEPAGE*/
+
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+.header-home {
+  font-family: 'Lora', serif;
+  color: rgba(255, 183, 236, 0.923);
+  text-shadow: 2px 1px #78787881;
+}
+/* Header ENDS HOMEPAGE*/
+/*----------------------------------*/
 /* greetings STARTS */
+
+.greetings {
+  text-align: center;
+  padding: 10px 0px;
+  font-family: 'Lora', serif;
+}
 
 /* greetings ENDS */
 /*----------------------------------*/
 /* blogform STARTS */
+
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap');
 
 .blogform-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 30px;
-  border: 2px solid rgba(210, 29, 56, 0.2);
   border-radius: 10px;
-  background: purple;
+  background: transparent;
+  backdrop-filter: blur(.5px);
 }
 
 .blogform-container input {
   border-radius: 5px;
   border: none;
-  color: #333;
-  font-size: 17px;
+  font-size: 17px; 
+  outline: none;
+  font-family: 'Dosis', sans-serif;
 }
 
 .blogform-container div {
   padding: 3px;
 }
 
-.create-new-header {
-  color: peachpuff;
+.blogform-container input::placeholder {
+  color: #333;
+  font-family: 'Dosis', sans-serif;
 }
 
-.blogform-container input::placeholder {
-  color: peachpuff;
-  opacity: 60%;
-  padding-left: 5px;
+.create-cancel-button {
+  display: flex;
+  justify-content: space-between;
 }
+
+.blogform-container button {
+  background: none;
+  border: -2rem;
+  padding: 4px;
+  box-shadow: 2px 2px #510;
+  border-radius: 0.3em;
+  border-color: rgba(131, 158, 211, 0.461);
+}
+
+.blogform-container button:hover {
+  background-color: #fff;
+  border: 0;
+  box-shadow: none;
+}
+
+.create-new-button {
+  border: none;
+  padding: 6px;
+  border-radius: 5px;
+  background-color: rgba(104, 207, 207, 0.289);
+  opacity: 0.6;
+}
+
+.create-new-button:hover {
+  background-color: #fff;
+}
+
+/* blogform ENDS*/
+/*----------------------------------*/
+/* users Page STARTS */
+
+.users-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-evenly;
+  width: 70%;
+  height: 15vh;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+  height: 10vh;
+}
+
+.table-container p {
+  padding-left: 120px;
+  font-family: 'Lora', serif;
+  font-weight: 200;
+}
+
+.table-container a {
+  color: #464646c7;
+  padding-right: 80px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.table-container a:visited {
+  color:rgba(207, 123, 185, 0.907);
+}
+
+/* users Page ENDS */
+
+/* user page STARTS */
+
+.user-container {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  margin-top: 1.1em;
+  border-color: #fff;
+  border: 2px solid #555;
+  border-radius: 1em;
+  border-color: #fff;
+  background: transparent;
+  backdrop-filter: blur(5px);
+}
+
+.user-header {
+  font-family: 'Lora', serif;
+  transform: translateY(-60%);
+  text-align: center;
+}
+
+.user-container li {
+  font-family: 'Libre Baskerville', serif;
+  color: rgba(0, 0, 0, 0.519);
+}
+
+/* user page ENDS */
+
+/* blog page STARTS */
+
+.blog-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blog-wrapper div {
+  padding: 3px;
+}
+
+.like-button {
+  margin-left: 10px;
+  width: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.title-author-header {
+  transform: translateY(-50%);
+}
+
+.remove-button {
+  padding: 0px 8px;
+  background-color: rgba(255, 85, 85, 0.796);
+  color: #fff;
+}
+
+.remove-button:hover {
+  background-color: rgba(255, 85, 85, 0.944);
+}
+
+/* blog page ENDS */
+/*-----------------------------*/
+/* commentform STARTS */
+
+.comment-container {
+  display: flex;
+  justify-content: center;
+}
+
+.comment-input {
+  position: relative;
+  border-radius: 4px;
+  border: none;
+  font-size: 16px;
+}
+
+.comment-button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  margin-left: 5px; 
+}
+
+.comment-button i {
+  font-size: 30px;
+}
+
+.comment-wrapper li {
+  margin: 5px 0 5px 1em;
+}
+
+/* commentsform ENDS */

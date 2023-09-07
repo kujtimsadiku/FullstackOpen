@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUser } from "./reducers/userReducer";
 import { login } from "./reducers/loginReducer";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import User from "./components/User";
 import Blog from "./components/Blog";
 import NavigationBar from "./components/NavigationBar";
@@ -39,6 +39,7 @@ const App = () => {
   }, []);
 
   if (loginUser === null) {
+
     return (
       <div className="login-container">
         <LoginForm />
@@ -61,8 +62,8 @@ const App = () => {
     <React.Fragment>
       <NavigationBar />
       <div className="content-img">
-        <div className="content-body">
-          <Header tag="h1" text="Blogs"></Header>
+        <div className="content-wrapper">
+          <Header tag="h1" text="Blogs" className="header-home"></Header>
           <Greetings />
           <Notification />
           <Routes>

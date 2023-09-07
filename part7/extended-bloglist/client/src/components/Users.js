@@ -7,6 +7,7 @@ import {
   TableBody,
   TableHead,
 } from "./Tables";
+import React from "react";
 import { Header } from "./Header";
 
 const Users = () => {
@@ -15,14 +16,14 @@ const Users = () => {
   console.log("users sets:", users);
 
   return (
-    <>
-      <Header tag="h2" text="Users" />
+    <React.Fragment>
+      <div className="users-container">
+      <Header tag="h2" text="Users" className="header-home header-user"/>
       <TableContainer>
         <TableHead>
           <TableRow>
-            <TableData></TableData>
             <TableData>
-              <strong>Blogs Created</strong>
+              <p>Blogs Created</p>
             </TableData>
           </TableRow>
         </TableHead>
@@ -37,7 +38,8 @@ const Users = () => {
           ))}
         </TableBody>
       </TableContainer>
-    </>
+      </div>
+    </React.Fragment>
   );
 };
 

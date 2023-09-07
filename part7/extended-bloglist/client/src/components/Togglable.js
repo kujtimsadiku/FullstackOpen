@@ -1,8 +1,9 @@
 import { useState, useImperativeHandle, forwardRef } from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
+import BlogForm from "./BlogForm";
 
-const Togglable = forwardRef(({ children, btnName }, ref) => {
+const Togglable = forwardRef(({ btnName }, ref) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
@@ -21,13 +22,10 @@ const Togglable = forwardRef(({ children, btnName }, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <Button onClick={toggleVisibility}>{btnName}</Button>
+        <Button className="create-new-button" onClick={toggleVisibility}>{btnName}</Button>
       </div>
-      <div style={showWhenVisible}>
-        {children}
-        <Button className="" onClick={toggleVisibility}>
-          Cancel
-        </Button>
+      <div style={showWhenVisible} className="blogform-container">
+        <BlogForm toggleVisibility={toggleVisibility} />
       </div>
     </div>
   );
