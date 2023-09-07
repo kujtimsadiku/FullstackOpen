@@ -420,4 +420,7 @@ body {
   margin: 5px 0 5px 1em;
 }
 
+.comment-wrapper p {
+  margin-left: 3px;
+}
 /* commentsform ENDS */

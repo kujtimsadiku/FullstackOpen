@@ -20,8 +20,8 @@ const CommentForm = ({ blog }) => {
     <div className="comment-wrapper">
       <form onSubmit={handleComment}>
         <div className="comment-container">
-        <input className="comment-input" placeholder="add comment" {...commentInput.inputProps} required />
-        <Button type="submit" className="comment-button">{!commentInput.value ? <i class='bx bx-message-square-add'></i> : <i class='bx bx-message-square-add bx-tada' ></i>}</Button>
+          <input className="comment-input" placeholder="add comment" {...commentInput.inputProps} required />
+          <Button type="submit" className="comment-button">{!commentInput.value ? <i class='bx bx-message-square-add'></i> : <i class='bx bx-message-square-add bx-tada' ></i>}</Button>
         </div>
         {blog.comments.length > 0 ? (
           <ul>
