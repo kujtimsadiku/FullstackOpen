@@ -60,16 +60,18 @@ const App = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <div className="content-body">
-        <Header tag="h1" text="Blogs"></Header>
-        <Greetings />
-        <Notification />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/blogs/:id" element={<Blog />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/users/:id" element={<User />} />
-        </Routes>
+      <div className="content-img">
+        <div className="content-body">
+          <Header tag="h1" text="Blogs"></Header>
+          <Greetings />
+          <Notification />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/blogs/:id" element={<Blog />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User />} />
+          </Routes>
+        </div>
       </div>
     </React.Fragment>
   );

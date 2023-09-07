@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities; */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -112,51 +114,20 @@ body .login-container {
 /*----------------------------------*/
 /* content body on Home STARTS*/
 
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&display=swap');
+
+.content-img {
+  background: url('./img/sky.jpg');
+  background-size: cover;
+  background-position: right;
+  height: 100vh;
+}
+
 .content-body {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-/* ENDS */
-/*----------------------------------*/
-/* nav bar STARTS */
-
-.nav-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: blue;
-  width: 100%;
-  height: 60px;
-}
-
-.nav-bar button,
-a {
-  color: #fff;
-}
-
-.list {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 5px;
-  padding: 5px;
-  background: peachpuff;
-  height: 60px;
-}
-
-.logout-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  border-radius: 40px;
-}
-
-.nav-bar .list:hover {
-  color: #fff;
-}
-
-/* nav bar ENDS */
 
 .blog-container {
   display: flex;
@@ -166,19 +137,75 @@ a {
   width: auto;
   height: auto;
   margin-top: 40px;
-  border: 2px solid rgba(210, 29, 56, 0.2);
+  border: 2px solid rgba(210, 29, 189, 0.2);
   border-radius: 10px;
+  padding: 50px;
+  background: transparent;
+  backdrop-filter: blur(10px);
 }
 
 .blog-container a {
   color: #fff;
+  font-family: 'Libre Baskerville', serif;
 }
 
 .blog-title {
   margin: 5px;
 }
 
-/* greetings END */
+
+/* ENDS */
+/*----------------------------------*/
+/* nav bar STARTS */
+
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('./img/pink-flower.jpg');
+  background-size: cover;
+  width: 100%;
+  height: 70px;
+}
+
+.nav-bar a, .nav-bar button {
+  display: block;
+  color: #fff;
+  padding: 5px;
+  text-decoration: none;
+  font-family: 'Roboto Slab', serif;
+}
+
+.list button {
+  height: 31px;
+}
+
+.list {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 5px;
+  background: rgba(255, 218, 185, 0.511);
+  height: auto;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.logout-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.nav-bar button:hover, .nav-bar a:hover {
+  color: rgba(255, 183, 236, 0.737);
+}
+
+.nav-bar li:hover {
+  background: peachpuff; 
+}
+
+
+/* nav bar ENDS */
 /*----------------------------------*/
 /* greetings STARTS */
 
