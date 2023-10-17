@@ -135,6 +135,7 @@ const resolvers = {
       );
 
       books = books.concat(book);
+
       if (authorIndex === -1) {
         const newAuthor = {
           name: args.author,
