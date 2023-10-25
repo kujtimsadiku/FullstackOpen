@@ -124,7 +124,12 @@ const resolvers = {
       }
       return books;
     },
-    allAuthors: () => authors,
+    allAuthors: () => {
+      return authors.map((author) => ({
+        ...author,
+        bookCount: books.filter((book) => book.author === author.name).length,
+      }));
+    },
   },
   Mutation: {
     addBook: (root, args) => {

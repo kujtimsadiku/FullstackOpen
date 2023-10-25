@@ -1,14 +1,12 @@
-import { ALL_AUTHORS, COUNT_AUTHOR_BOOKS } from "../queries";
+import { ALL_AUTHORS } from "../queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 
 const Authors = (props) => {
   const [authorToSearch, setAuthorToSearch] = useState("");
   const authors = useQuery(ALL_AUTHORS);
-  const bookCount = useQuery(COUNT_AUTHOR_BOOKS, {
-    variables: authorToSearch,
-    skip: !authorToSearch,
-  });
+
+  console.log(authors);
 
   if (authors.loading) {
     return <div>Loading...</div>;
