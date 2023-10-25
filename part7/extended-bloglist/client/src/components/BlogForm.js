@@ -32,7 +32,7 @@ const BlogForm = ({ toggleVisibility }) => {
     url.reset();
 
     if (visible) return toggleVisibility();
-  }
+  };
 
   return (
     <>
