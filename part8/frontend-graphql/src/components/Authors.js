@@ -1,8 +1,22 @@
+import { ALL_AUTHORS, COUNT_AUTHOR_BOOKS } from "../queries";
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
+
 const Authors = (props) => {
-  if (!props.show) {
-    return null
+  const [authorToSearch, setAuthorToSearch] = useState("");
+  const authors = useQuery(ALL_AUTHORS);
+  const bookCount = useQuery(COUNT_AUTHOR_BOOKS, {
+    variables: authorToSearch,
+    skip: !authorToSearch,
+  });
+
+  if (authors.loading) {
+    return <div>Loading...</div>;
   }
-  const authors = []
+
+  if (!props.show) {
+    return null;
+  }
 
   return (
     <div>
@@ -14,7 +28,7 @@ const Authors = (props) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {authors.map((a) => (
+          {authors.data.allAuthors.map((a) => (
             <tr key={a.name}>
               <td>{a.name}</td>
               <td>{a.born}</td>
@@ -24,7 +38,7 @@ const Authors = (props) => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default Authors
+export default Authors;
