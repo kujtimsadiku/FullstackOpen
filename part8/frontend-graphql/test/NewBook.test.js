@@ -34,7 +34,7 @@ describe("NewBook component", () => {
   it("submits a new book", async () => {
     render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <NewBook show={true} />
+        <NewBook />
       </MockedProvider>
     );
 
