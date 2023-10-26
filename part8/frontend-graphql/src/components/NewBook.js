@@ -18,7 +18,14 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    createBook({ variables: { title, author, published, genres } });
+    await createBook({
+      variables: {
+        title,
+        author,
+        published: parseInt(published, 10),
+        genres,
+      },
+    });
 
     setTitle("");
     setPublished("");
@@ -38,6 +45,7 @@ const NewBook = (props) => {
         <div>
           title
           <input
+            id="title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -45,6 +53,7 @@ const NewBook = (props) => {
         <div>
           author
           <input
+            id="author"
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
@@ -52,6 +61,7 @@ const NewBook = (props) => {
         <div>
           published
           <input
+            id="published"
             type="number"
             value={published}
             onChange={({ target }) => setPublished(target.value)}
@@ -59,6 +69,7 @@ const NewBook = (props) => {
         </div>
         <div>
           <input
+            id="genre"
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />

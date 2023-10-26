@@ -102,7 +102,7 @@ const typeDefs = `
 		addBook(
 			title: String!
 			author: String!
-			published: Int!
+			published: Int
 			genres: [String!]!
 		): Book,
 		editAuthor(
@@ -138,7 +138,7 @@ const resolvers = {
       const authorIndex = authors.findIndex(
         (author) => author.name === args.author
       );
-
+      console.log("here is the book", book);
       books = books.concat(book);
 
       if (authorIndex === -1) {
