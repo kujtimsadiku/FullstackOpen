@@ -1,9 +1,7 @@
 import { ALL_AUTHORS } from "../queries";
 import { useQuery } from "@apollo/client";
-import { useState } from "react";
 
 const Authors = (props) => {
-  const [authorToSearch, setAuthorToSearch] = useState("");
   const authors = useQuery(ALL_AUTHORS);
 
   console.log(authors);
