@@ -3,9 +3,7 @@ import { useQuery } from "@apollo/client";
 import UpdateBirth from "./UpdateBirth";
 
 const Authors = (props) => {
-  const authors = useQuery(ALL_AUTHORS, {
-    pollInterval: 1,
-  });
+  const authors = useQuery(ALL_AUTHORS);
 
   console.log(authors);
 
