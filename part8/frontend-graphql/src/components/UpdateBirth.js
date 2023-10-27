@@ -14,6 +14,7 @@ const UpdateBirth = () => {
     await updateBirthyear({
       variables: { name, setBornTo: parseInt(birth, 10) },
     });
+
     setBirth("");
     setName("");
   };
@@ -23,7 +24,7 @@ const UpdateBirth = () => {
       <h1>Set birthyear</h1>
       <form onSubmit={submit}>
         <div>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">name</label>
           <input
             id="name"
             value={name}
@@ -31,7 +32,7 @@ const UpdateBirth = () => {
           />
         </div>
         <div>
-          <label htmlFor="born">Born</label>
+          <label htmlFor="born">born</label>
           <input
             id="born"
             type="number"
