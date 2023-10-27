@@ -41,7 +41,10 @@ const UpdateBirth = () => {
         <Select options={options} value={value} onChange={handleSelect} />
         <label htmlFor="born">
           born
-          <input onChange={({ target }) => setBirth(target.value)} />
+          <input
+            value={birth}
+            onChange={({ target }) => setBirth(target.value)}
+          />
         </label>
         <div>
           <button type="submit">update author</button>
