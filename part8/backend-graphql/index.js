@@ -158,6 +158,7 @@ const resolvers = {
     addBook: async (root, args) => {
       const book = new Book({ ...args });
 
+      console.log(book);
       try {
         await book.save();
       } catch (e) {
@@ -170,11 +171,11 @@ const resolvers = {
         });
       }
 
-      const author = await Author.find({ id: book.author });
+      const author = await Author.find({ id: args.author });
 
       console.log(author);
       if (author.length === 0) {
-        const newAuthor = new Author({ name: book.author });
+        const newAuthor = new Author({ name: args.author });
         await newAuthor.save();
       }
       // if (authorIndex === -1) {
