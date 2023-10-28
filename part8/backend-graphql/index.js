@@ -88,10 +88,11 @@ const typeDefs = `
 		allAuthors: [Author]
   },
 	type Book {
-		title: String
-		published: Int
-		author: String
-		genres: [String]
+		title: String!
+		published: Int!
+		author: String!
+		genres: [String!]!
+    id: ID!
 	},
 	type Author {
 		name: String
