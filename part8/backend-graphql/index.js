@@ -139,13 +139,30 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments,
     authorCount: async () => Author.collection.countDocuments,
     allBooks: async (root, args) => {
-      if (args.author) {
-        return books.filter((book) => book.author === args.author);
-      } else if (args.genres) {
-        return books.filter((book) => book.genres.includes(args.genres));
-      }
+      try {
+        const books = await Book.find({});
 
-      return books;
+        if (args.author) {
+          const authorToReturn = await Author.find({ name: args.author });
+          if (authorToReturn) {
+            return books.filter(
+              (book) => book.author.toString() === authorToReturn._id.toString()
+            );
+          }
+        } else if (args.genres) {
+          return books.filter((book) => book.genres.includes(args.genres));
+        }
+
+        return books;
+      } catch (e) {
+        throw new GraphQLError("Fetching books failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.author,
+            error,
+          },
+        });
+      }
     },
     allAuthors: () => {
       return authors.map((author) => ({
@@ -172,24 +189,16 @@ const resolvers = {
       }
 
       const author = await Author.find({ id: args.author });
-
-      console.log(author);
+      // if author dont exist create new.
+      // if it exist while adding a book then increase bookCount by one
       if (author.length === 0) {
-        const newAuthor = new Author({ name: args.author });
+        const newAuthor = new Author({ name: args.author, bookCount: 1 });
         await newAuthor.save();
+      } else {
+        (author.bookCount || 0) + 1;
+        await author.save();
       }
-      // if (authorIndex === -1) {
-      //   const newAuthor = {
-      //     name: args.author,
-      //     born: args.born,
-      //     bookCount: 1,
-      //     id: uuid(),
-      //   };
-      //   authors = authors.concat(newAuthor);
-      // } else {
-      //   authors[authorIndex].bookCount =
-      //     (authors[authorIndex].bookCount || 0) + 1;
-      // }
+
       return book;
     },
     editAuthor: (root, args) => {
