@@ -140,22 +140,23 @@ const resolvers = {
     authorCount: async () => Author.collection.countDocuments,
     allBooks: async (root, args) => {
       try {
-        const books = await Book.find({});
+        let books = await Book.find({});
 
         if (args.author) {
-          const authorToReturn = await Author.find({ name: args.author });
-          if (authorToReturn) {
-            return books.filter(
-              (book) => book.author.toString() === authorToReturn._id.toString()
-            );
+          authorBooks = await Author.find({ name: args.author });
+
+          if (authorBooks) {
+            books = Book.find();
+          } else {
+            books = [];
           }
         } else if (args.genres) {
-          return books.filter((book) => book.genres.includes(args.genres));
+          return await Book.find({ genres: { $all: [args.genres] } });
         }
 
         return books;
-      } catch (e) {
-        throw new GraphQLError("Fetching books failed", {
+      } catch (error) {
+        throw new GraphQLError("Error on fetching allBooks", {
           extensions: {
             code: "BAD_USER_INPUT",
             invalidArgs: args.author,
