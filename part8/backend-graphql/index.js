@@ -176,7 +176,6 @@ const resolvers = {
     addBook: async (root, args) => {
       const book = new Book({ ...args });
 
-      console.log(book);
       try {
         await book.save();
       } catch (e) {
@@ -193,7 +192,11 @@ const resolvers = {
       // if author dont exist create new.
       // if it exist while adding a book then increase bookCount by one
       if (author.length === 0) {
-        const newAuthor = new Author({ name: args.author, bookCount: 1 });
+        const newAuthor = new Author({
+          name: args.author,
+          bookCount: 1,
+        });
+        console.log(newAuthor);
         await newAuthor.save();
       } else {
         (author.bookCount || 0) + 1;
