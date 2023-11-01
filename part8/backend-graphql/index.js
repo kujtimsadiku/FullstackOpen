@@ -143,10 +143,10 @@ const resolvers = {
         let books = await Book.find({});
 
         if (args.author) {
-          const authorBooks = await Author.find({ name: args.author });
+          const authorBooks = await Author.findOne({ name: args.author });
 
           if (authorBooks) {
-            books = Book.find();
+            books = await Book.find({ author: authorBooks._id });
           } else {
             books = [];
           }
@@ -165,11 +165,25 @@ const resolvers = {
         });
       }
     },
-    allAuthors: () => {
-      return authors.map((author) => ({
-        ...author,
-        bookCount: books.filter((book) => book.author === author.name).length,
-      }));
+    allAuthors: async () => {
+      const authors = await Author.aggregate([
+        {
+          $lookup: {
+            from: "books", // The name of the 'books' collection
+            localField: "_id", // The field to match in the 'authors' collection
+            foreignField: "author", // The field to match in the 'books' collection
+            as: "books",
+          },
+        },
+        {
+          $project: {
+            name: 1,
+            born: 1,
+            bookCount: { $size: "$books" }, // Count the size of the 'books' array
+          },
+        },
+      ]);
+      return authors;
     },
   },
   Mutation: {
