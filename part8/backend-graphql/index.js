@@ -139,6 +139,15 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments,
     authorCount: async () => Author.collection.countDocuments,
     allBooks: async (root, args) => {
+      if (args.author.length < 4) {
+        throw new GraphQLError("Author name is too short", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.author,
+          },
+        });
+      }
+
       try {
         let books = await Book.find({});
 
@@ -158,7 +167,7 @@ const resolvers = {
       } catch (error) {
         throw new GraphQLError("Error on fetching allBooks", {
           extensions: {
-            code: "BAD_USER_INPUT",
+            code: "ERROR_AT_FETCHING",
             invalidArgs: args.author,
             error,
           },
@@ -188,6 +197,15 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
+      if (args.title.length < 5) {
+        throw new GraphQLError("Book title is too short", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.title,
+          },
+        });
+      }
+
       try {
         let author = await Author.findOne({ name: args.author });
 
@@ -207,10 +225,10 @@ const resolvers = {
 
         return book;
       } catch (error) {
-        throw new GraphQLError("Saving person failed", {
+        throw new GraphQLError("Saving book failed", {
           extensions: {
             code: "BAD_USER_INPUT",
-            invalidArgs: args.name,
+            invalidArgs: { ...args },
             error,
           },
         });
