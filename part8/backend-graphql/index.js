@@ -77,7 +77,6 @@ const resolvers = {
       }
 
       const authorBooks = await Author.findOne({ name: args.author });
-
       // to check if the name of the author couldn't be found if its null we continue
       if (!authorBooks && args.author) {
         throw new GraphQLError("Author was not found", {
@@ -88,16 +87,16 @@ const resolvers = {
         });
       }
 
-      if (authorBooks && args.genres) {
-        return await Book.find({
-          author: authorBooks._id,
-          genres: { $in: [args.genres] },
-        });
-      } else if (authorBooks) {
-        return await Book.find({ author: authorBooks._id });
-      } else if (args.genres) {
-        return await Book.find({ genres: [args.genres] });
+      const query = {};
+
+      if (authorBooks) {
+        query.author = authorBooks._id;
       }
+      if (args.genres) {
+        query.genres = { $in: [args.genres] };
+      }
+
+      return await Book.find(query);
     },
     allAuthors: async () => {
       const authors = await Author.aggregate([
