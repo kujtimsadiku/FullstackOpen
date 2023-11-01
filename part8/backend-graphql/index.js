@@ -61,7 +61,13 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments,
     authorCount: async () => Author.collection.countDocuments,
     allBooks: async (root, args) => {
-      if (args.author.length < 4) {
+      if (!args.author && !args.genres) {
+        // to optimize the code
+        return await Book.find({});
+      }
+
+      // to check the input is bigger or equal to 4 if not return error
+      if (args.author && args.author.length < 4) {
         throw new GraphQLError("Author name is too short", {
           extensions: {
             code: "BAD_USER_INPUT",
@@ -70,30 +76,27 @@ const resolvers = {
         });
       }
 
-      try {
-        let books = await Book.find({});
+      const authorBooks = await Author.findOne({ name: args.author });
 
-        if (args.author) {
-          const authorBooks = await Author.findOne({ name: args.author });
-
-          if (authorBooks) {
-            books = await Book.find({ author: authorBooks._id });
-          } else {
-            books = [];
-          }
-        } else if (args.genres) {
-          return await Book.find({ genres: { $all: [args.genres] } });
-        }
-
-        return books;
-      } catch (error) {
-        throw new GraphQLError("Error on fetching allBooks", {
+      // to check if the name of the author couldn't be found if its null we continue
+      if (!authorBooks && args.author) {
+        throw new GraphQLError("Author was not found", {
           extensions: {
-            code: "ERROR_AT_FETCHING",
+            code: "BAD_USER_INPUT",
             invalidArgs: args.author,
-            error,
           },
         });
+      }
+
+      if (authorBooks && args.genres) {
+        return await Book.find({
+          author: authorBooks._id,
+          genres: { $in: [args.genres] },
+        });
+      } else if (authorBooks) {
+        return await Book.find({ author: authorBooks._id });
+      } else if (args.genres) {
+        return await Book.find({ genres: [args.genres] });
       }
     },
     allAuthors: async () => {
