@@ -143,7 +143,7 @@ const resolvers = {
         let books = await Book.find({});
 
         if (args.author) {
-          authorBooks = await Author.find({ name: args.author });
+          const authorBooks = await Author.find({ name: args.author });
 
           if (authorBooks) {
             books = Book.find();
@@ -174,11 +174,25 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      const book = new Book({ ...args });
-
       try {
+        let author = await Author.findOne({ name: args.author });
+
+        if (!author) {
+          author = new Author({
+            name: args.author,
+            bookCount: 1,
+          });
+        } else {
+          author.bookCount = (author.bookCount || 0) + 1;
+        }
+
+        await author.save();
+
+        const book = new Book({ ...args, author: author._id });
         await book.save();
-      } catch (e) {
+
+        return book;
+      } catch (error) {
         throw new GraphQLError("Saving person failed", {
           extensions: {
             code: "BAD_USER_INPUT",
@@ -187,23 +201,6 @@ const resolvers = {
           },
         });
       }
-
-      const author = await Author.find({ id: args.author });
-      // if author dont exist create new.
-      // if it exist while adding a book then increase bookCount by one
-      if (author.length === 0) {
-        const newAuthor = new Author({
-          name: args.author,
-          bookCount: 1,
-        });
-        console.log(newAuthor);
-        await newAuthor.save();
-      } else {
-        (author.bookCount || 0) + 1;
-        await author.save();
-      }
-
-      return book;
     },
     editAuthor: (root, args) => {
       if (!args.setBornTo) {
