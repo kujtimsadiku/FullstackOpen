@@ -178,13 +178,17 @@ const resolvers = {
       }
 
       authorToEdit.born = args.born;
+      authorToEdit.bookCount = await Book.countDocuments({
+        author: authorToEdit._id,
+      });
 
       try {
         await authorToEdit.save();
+        //
       } catch (error) {
-        throw new GraphQLError("Editing author failed", {
+        throw new GraphQLError("Saving author failed", {
           extensions: {
-            code: "EDIT_AUTHOR_FAIL",
+            code: "SAVING_AUTHOR_FAILED",
             error,
           },
         });
