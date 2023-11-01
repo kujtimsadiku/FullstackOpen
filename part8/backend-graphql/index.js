@@ -129,7 +129,7 @@ const typeDefs = `
 		): Book,
 		editAuthor(
 			name: String!
-			setBornTo: Int
+			born: Int
 		): Author
 	}
 `;
@@ -234,17 +234,40 @@ const resolvers = {
         });
       }
     },
-    editAuthor: (root, args) => {
-      if (!args.setBornTo) {
-        return null;
+    editAuthor: async (root, args) => {
+      if (!args.born) {
+        throw new GraphQLError("Born: is empty please add a value", {
+          extensions: {
+            code: "BAD_BORN_VALUE",
+            invalidArgs: args.setBornTo + " born is empty",
+          },
+        });
       }
 
-      const authorIndex = authors.findIndex(
-        (author) => author.name === args.name
-      );
-      authors[authorIndex].born = args.setBornTo;
+      const authorToEdit = await Author.findOne({ name: args.name });
 
-      return authors[authorIndex];
+      if (!authorToEdit) {
+        throw new GraphQLError("Author was not found", {
+          extensions: {
+            code: "BAD_AUTHOR_NOT_FOUND",
+            invalidArgs: args.name,
+          },
+        });
+      }
+
+      authorToEdit.born = args.born;
+
+      try {
+        await authorToEdit.save();
+      } catch (error) {
+        throw new GraphQLError("Editing author failed", {
+          extensions: {
+            code: "EDIT_AUTHOR_FAIL",
+            error,
+          },
+        });
+      }
+      return authorToEdit;
     },
   },
 };
