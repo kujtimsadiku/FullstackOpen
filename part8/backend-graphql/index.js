@@ -38,7 +38,7 @@ const typeDefs = `
 	type Book {
 		title: String!
 		published: Int!
-		author: String!
+		author: Author!
 		genres: [String!]!
     id: ID!
 	},
@@ -46,6 +46,7 @@ const typeDefs = `
 		name: String
 		born: Int
 		bookCount: Int
+    id: ID!
 	},
   type User {
     username: String!
@@ -84,7 +85,7 @@ const resolvers = {
     allBooks: async (root, args) => {
       if (!args.author && !args.genres) {
         // to optimize the code
-        return await Book.find({});
+        return await Book.find({}).populate("author");
       }
 
       // to check the input is bigger or equal to 4 if not return error
@@ -117,7 +118,7 @@ const resolvers = {
         query.genres = { $in: [args.genres] };
       }
 
-      return await Book.find(query);
+      return await Book.find(query).populate("author");
     },
     allAuthors: async () => {
       const authors = await Author.aggregate([
