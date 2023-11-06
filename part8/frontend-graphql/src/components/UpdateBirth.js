@@ -3,6 +3,9 @@ import { ALL_AUTHORS, UPDATE_BIRTH } from "../queries";
 import React, { useState } from "react";
 import Select from "react-select";
 
+// need to add the token for authentication to change the birthyear
+// without it won't change
+
 const UpdateBirth = () => {
   const [birth, setBirth] = useState("");
   const [value, setValue] = useState(null);
