@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
-import NewBook from "./components/NewBook";
-import LoginForm from "./components/LoginForm";
+import Login from "./components/Login";
 // import { Route, Routes } from "react-router-dom";
 // import { authorService } from "./service/author";
 
 const App = () => {
   const [page, setPage] = useState("home");
+  const [token, setToken] = useState("");
 
   return (
     <div>
@@ -21,7 +21,7 @@ const App = () => {
 
       <Books show={page === "books"} />
 
-      <LoginForm show={page === "login"} />
+      <Login show={page === "login"} />
     </div>
   );
 };
