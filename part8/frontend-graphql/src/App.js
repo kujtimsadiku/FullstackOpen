@@ -5,7 +5,6 @@ import LoginForm from "./components/LoginForm";
 import { useApolloClient } from "@apollo/client";
 import NewBook from "./components/NewBook";
 // import { Route, Routes } from "react-router-dom";
-// import { authorService } from "./service/author";
 
 const App = () => {
   const [page, setPage] = useState("home");
