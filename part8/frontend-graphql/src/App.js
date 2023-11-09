@@ -3,6 +3,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import LoginForm from "./components/LoginForm";
 import { useApolloClient } from "@apollo/client";
+import NewBook from "./components/NewBook";
 // import { Route, Routes } from "react-router-dom";
 // import { authorService } from "./service/author";
 
@@ -30,12 +31,15 @@ const App = () => {
       <div>
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
+        <button onClick={() => setPage("add book")}>add book</button>
         <button onClick={logout}>logout</button>
       </div>
 
       <Authors show={page === "authors"} />
 
       <Books show={page === "books"} />
+
+      <NewBook show={page === "add book"} />
     </div>
   );
 };

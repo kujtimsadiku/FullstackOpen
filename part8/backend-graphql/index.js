@@ -146,6 +146,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
+      console.log(1);
       const currentUser = context.currentUser;
 
       if (!currentUser) {
@@ -179,7 +180,7 @@ const resolvers = {
 
         await author.save();
 
-        const book = new Book({ ...args, author: author._id });
+        const book = new Book({ ...args, author: author });
         await book.save();
 
         return book;
