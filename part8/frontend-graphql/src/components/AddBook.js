@@ -8,24 +8,61 @@ const AddBook = () => {
     genre: [],
   });
 
-  const handleBook = () => {};
+  const handleBookChange = (e) => {
+    setBook({
+      ...book,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    setBook(null);
+  };
 
   return (
     <div>
-      <div>
-        <label>title</label>
-      </div>
-      <div>
-        <label>author</label>
-      </div>
-      <div>
-        <label>published</label>
-      </div>
-      <div>
-        <label>title</label>
-        <input type="text" />
-        <button onClick={() => set}></button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>title</label>
+          <input
+            type="text"
+            value={book.title}
+            onChange={handleBook}
+            name="title"
+          />
+        </div>
+        <div>
+          <label>author</label>
+          <input
+            type="text"
+            value={book.author}
+            onChange={handleBook}
+            name="author"
+          />
+        </div>
+        <div>
+          <label>published</label>
+          <input
+            type="number"
+            value={book.published}
+            onChange={handleBook}
+            name="published"
+          />
+        </div>
+        <div>
+          <label>genre</label>
+          <input
+            type="text"
+            value={book.genre}
+            onChange={handleBook}
+            name="genre"
+          />
+          <button onClick={() => set}></button>
+        </div>
+        <button type="submit">add</button>
+      </form>
     </div>
   );
 };
