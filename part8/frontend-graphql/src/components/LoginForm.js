@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { LOGIN } from "../queries";
 
 const LoginForm = ({ setToken }) => {
@@ -8,23 +8,21 @@ const LoginForm = ({ setToken }) => {
 
   const [login, result] = useMutation(LOGIN);
 
-  useEffect(() => {
-    if (result.data) {
+  const submit = (event) => {
+    event.preventDefault();
+
+    login({ variables: { username, password } });
+
+    if (result) {
       const token = result.data.login.value;
       setToken(token);
       localStorage.setItem("user-token", token);
     }
-  }, [result.data]);
-
-  const handleLogin = (event) => {
-    event.preventDefault();
-
-    login({ variables: { username, password } });
   };
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={submit}>
         <div>
           <label htmlFor="username">username</label>
           <input
