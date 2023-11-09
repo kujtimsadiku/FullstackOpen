@@ -2,22 +2,19 @@ import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { LOGIN } from "../queries";
 
-const LoginForm = (props) => {
+const LoginForm = ({ setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
 
   const [login, result] = useMutation(LOGIN);
 
   useEffect(() => {
     if (result.data) {
-      const tokenReq = result.data.login.token;
-      setToken(tokenReq);
+      const token = result.data.login.value;
+      setToken(token);
       localStorage.setItem("user-token", token);
     }
   }, [result.data]);
-
-  if (!props.show) return null;
 
   const handleLogin = (event) => {
     event.preventDefault();
