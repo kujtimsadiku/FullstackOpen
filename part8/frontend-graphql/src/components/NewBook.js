@@ -31,18 +31,17 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    try {
-      await addBook({
-        variables: {
-          title: book.title,
-          author: book.author,
-          published: parseInt(book.published),
-          genres: book.genres,
-        },
-      });
-    } catch {
-      console.log("Creating book failed");
-    }
+    const { title, author, published, genres } = book;
+
+    const res = await addBook({
+      variables: {
+        title,
+        author,
+        published: parseInt(published),
+        genres,
+      },
+    });
+    console.log("res data", res.data);
 
     setBook(nullBook);
     setGenre("");
@@ -56,8 +55,6 @@ const NewBook = (props) => {
       [e.target.name]: book.genres.concat(genre),
     });
 
-    console.log("name", e.target.name);
-    console.log("genre", genre);
     setGenre("");
   };
 

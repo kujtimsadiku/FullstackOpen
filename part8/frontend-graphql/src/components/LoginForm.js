@@ -14,12 +14,12 @@ const LoginForm = ({ setToken }) => {
       setToken(token);
       localStorage.setItem("user-token", token);
     }
-  }, [result.data, setToken]);
+  }, [result.data]);
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
 
-    login({ variables: { username, password } });
+    await login({ variables: { username, password } });
   };
 
   return (

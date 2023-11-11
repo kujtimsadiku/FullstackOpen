@@ -146,7 +146,6 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
-      console.log(1);
       const currentUser = context.currentUser;
 
       if (!currentUser) {
@@ -179,10 +178,13 @@ const resolvers = {
         }
 
         await author.save();
+        console.log(1);
 
         const book = new Book({ ...args, author: author });
         await book.save();
 
+        console.log(2);
+        console.log(book);
         return book;
       } catch (error) {
         throw new GraphQLError("Saving book failed", {
@@ -291,8 +293,8 @@ startStandaloneServer(server, {
         auth.substring(7),
         process.env.JWT_SECRET
       );
-
       const currentUser = await User.findById(decodedToken.id);
+
       return { currentUser };
     }
   },
