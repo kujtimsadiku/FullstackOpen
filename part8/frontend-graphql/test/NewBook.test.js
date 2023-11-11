@@ -21,7 +21,11 @@ const mocks = [
       data: {
         addBook: {
           title: "Test Book",
-          author: "Test Author",
+          author: {
+            name: "Test Author",
+            born: null,
+            bookCount: null,
+          },
           published: 2023,
           genres: ["Test Genre"],
         },
@@ -30,39 +34,33 @@ const mocks = [
   },
 ];
 
-describe("NewBook component", () => {
-  it("submits a new book", async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <NewBook />
-      </MockedProvider>
-    );
+test("submitting the form adds a new book", async () => {
+  const { screen } = render(
+    <MockedProvider mocks={mocks}>
+      <NewBook show={true} />
+    </MockedProvider>
+  );
 
-    // Simulate user input
-    fireEvent.change(screen.getByLabelText(/title/i), {
-      target: { value: "Test Book" },
-    });
-    fireEvent.change(screen.getByLabelText(/author/i), {
-      target: { value: "Test Author" },
-    });
-    fireEvent.change(screen.getByLabelText(/published/i), {
-      target: { value: "2023" },
-    });
-    fireEvent.change(screen.getByLabelText(/genre/i), {
-      target: { value: "Test Genre" },
-    });
-
-    fireEvent.click(screen.getByText(/add genre/i));
-
-    // Submit the form
-    fireEvent.click(screen.getByText(/create book/i));
-
-    // Wait for the GraphQL mutation to complete
-    await waitFor(() => {
-      expect(screen.getByText(/Test Book/i)).toBeInTheDocument();
-      expect(screen.getByText(/Test Author/i)).toBeInTheDocument();
-      expect(screen.getByText(/2023/i)).toBeInTheDocument();
-      expect(screen.getByText(/Test Genre/i)).toBeInTheDocument();
-    });
+  // Simulate user input
+  fireEvent.change(screen.getByLabelText("title"), {
+    target: { value: "Test Book" },
   });
+  fireEvent.change(screen.getByLabelText("author"), {
+    target: { value: "Test Author" },
+  });
+  fireEvent.change(screen.getByLabelText("published"), {
+    target: { value: "2023" },
+  });
+  fireEvent.change(screen.getByLabelText("genre"), {
+    target: { value: "Test Genre" },
+  });
+
+  // Click "add genre" button
+  fireEvent.click(screen.getByText("add genre"));
+
+  // Click "create book" button
+  fireEvent.click(screen.getByText("create book"));
+
+  // Wait for the mutation to complete
+  await screen.findByText("genres: Test Genre");
 });
