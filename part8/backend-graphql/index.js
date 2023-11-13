@@ -148,6 +148,7 @@ const resolvers = {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser;
 
+      console.log("current user:", currentUser);
       if (!currentUser) {
         throw new GraphQLError("Not authenticated", {
           extensions: {
@@ -178,13 +179,10 @@ const resolvers = {
         }
 
         await author.save();
-        console.log(1);
 
         const book = new Book({ ...args, author: author });
         await book.save();
 
-        console.log(2);
-        console.log(book);
         return book;
       } catch (error) {
         throw new GraphQLError("Saving book failed", {
@@ -293,8 +291,8 @@ startStandaloneServer(server, {
         auth.substring(7),
         process.env.JWT_SECRET
       );
-      const currentUser = await User.findById(decodedToken.id);
 
+      const currentUser = await User.findById(decodedToken.id);
       return { currentUser };
     }
   },

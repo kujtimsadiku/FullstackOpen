@@ -9,7 +9,6 @@ const NewBook = (props) => {
     published: "",
     genres: [],
   });
-
   const [genre, setGenre] = useState("");
 
   const nullBook = { title: "", author: "", published: "", genres: [] };
@@ -18,7 +17,7 @@ const NewBook = (props) => {
     update: (cache, response) => {
       cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
         return {
-          allBooks: allBooks.concat(response.data.allBooks),
+          allBooks: allBooks.concat(response.data.addBook),
         };
       });
     },
@@ -33,16 +32,19 @@ const NewBook = (props) => {
 
     const { title, author, published, genres } = book;
 
-    const res = await addBook({
-      variables: {
-        title,
-        author,
-        published: parseInt(published),
-        genres,
-      },
-    });
-    console.log("res data", res.data);
-
+    try {
+      const res = await addBook({
+        variables: {
+          title,
+          author,
+          published: parseInt(published),
+          genres,
+        },
+      });
+      console.log("res data", res.data);
+    } catch (error) {
+      console.log("Mutation Failed!", error);
+    }
     setBook(nullBook);
     setGenre("");
   };
@@ -63,7 +65,6 @@ const NewBook = (props) => {
       ...book,
       [e.target.name]: e.target.value,
     });
-    console.log(book);
   };
 
   return (
