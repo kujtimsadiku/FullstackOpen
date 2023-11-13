@@ -11,7 +11,7 @@ const UpdateBirth = () => {
   const [value, setValue] = useState(null);
 
   const authors = useQuery(ALL_AUTHORS);
-  console.log(authors.data.allAuthors);
+  //console.log(authors.data.allAuthors);
 
   const [updateBirthyear] = useMutation(UPDATE_BIRTH, {
     refetchQueries: [{ query: ALL_AUTHORS }],

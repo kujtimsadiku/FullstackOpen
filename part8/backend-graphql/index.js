@@ -32,7 +32,7 @@ const typeDefs = `
 		bookCount: Int!
 		authorCount: Int!
 		allBooks(author: String, genres: String): [Book]
-		allAuthors: [Author]
+		allAuthors: [Author!]!
     me: User
   },
 	type Book {
@@ -63,6 +63,12 @@ const typeDefs = `
 			published: Int!
 			genres: [String!]!
 		): Book,
+    removeBook(
+      id: ID!
+    ): Book,
+    removeAuthor(
+      id: ID!
+    ): Author,
 		editAuthor(
 			name: String!
 			born: Int
@@ -121,24 +127,7 @@ const resolvers = {
       return await Book.find(query).populate("author");
     },
     allAuthors: async () => {
-      const authors = await Author.aggregate([
-        {
-          $lookup: {
-            from: "books", // The name of the 'books' collection
-            localField: "_id", // The field to match in the 'authors' collection
-            foreignField: "author", // The field to match in the 'books' collection
-            as: "books",
-          },
-        },
-        {
-          $project: {
-            name: 1,
-            born: 1,
-            bookCount: { $size: "$books" }, // Count the size of the 'books' array
-          },
-        },
-      ]);
-      return authors;
+      return await Author.find({});
     },
     me: (root, args, context) => {
       return context.currentUser;
@@ -148,7 +137,6 @@ const resolvers = {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser;
 
-      console.log("current user:", currentUser);
       if (!currentUser) {
         throw new GraphQLError("Not authenticated", {
           extensions: {
@@ -193,6 +181,17 @@ const resolvers = {
           },
         });
       }
+    },
+    removeBook: async (root, args) => {
+      // add later maybe the context for authentication to remove
+      const book = await Book.findByIdAndRemove(args.id);
+      console.log(book);
+      return book;
+    },
+    removeAuthor: async (root, args) => {
+      console.log("removeAuthor id", args.id);
+      const author = await Author.findByIdAndRemove(args.id);
+      return author;
     },
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser;
@@ -286,6 +285,7 @@ startStandaloneServer(server, {
   listen: { port: 4000 },
   context: async ({ req, res }) => {
     const auth = req ? req.headers.authorization : null;
+
     if (auth && auth.startsWith("Bearer ")) {
       const decodedToken = jwt.verify(
         auth.substring(7),

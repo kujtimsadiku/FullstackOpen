@@ -6,6 +6,18 @@ export const ALL_AUTHORS = gql`
       name
       born
       bookCount
+      id
+    }
+  }
+`;
+
+export const REMOVE_AUTHOR = gql`
+  mutation removeAuthor($id: ID!) {
+    removeAuthor(id: $id) {
+      name
+      born
+      bookCount
+      id
     }
   }
 `;
@@ -18,8 +30,10 @@ export const ALL_BOOKS = gql`
         name
         born
         bookCount
+        id
       }
       published
+      id
     }
   }
 `;
@@ -43,6 +57,22 @@ export const CREATE_BOOK = gql`
         born
         bookCount
         id
+      }
+      published
+      genres
+      id
+    }
+  }
+`;
+
+export const REMOVE_BOOK = gql`
+  mutation removeBook($id: ID!) {
+    removeBook(id: $id) {
+      title
+      author {
+        name
+        born
+        bookCount
       }
       published
       genres

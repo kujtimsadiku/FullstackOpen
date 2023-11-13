@@ -1,11 +1,14 @@
-import { ALL_AUTHORS } from "../queries";
-import { useQuery } from "@apollo/client";
+import { ALL_AUTHORS, REMOVE_AUTHOR } from "../queries";
+import { useMutation, useQuery } from "@apollo/client";
 import UpdateBirth from "./UpdateBirth";
 
 const Authors = (props) => {
   const authors = useQuery(ALL_AUTHORS);
+  const [removeAuthor, result] = useMutation(REMOVE_AUTHOR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+  });
 
-  console.log(authors);
+  console.log("dwadaw", result);
 
   if (authors.loading) {
     return <div>Loading...</div>;
@@ -14,6 +17,18 @@ const Authors = (props) => {
   if (!props.show) {
     return null;
   }
+
+  const handleRemove = async (author) => {
+    console.log("author id:", author);
+    try {
+      const removedAuthor = await removeAuthor({
+        variables: { id: author.id },
+      });
+      console.log(removedAuthor);
+    } catch (error) {
+      console.log("author removed failed", error);
+    }
+  };
 
   return (
     <div>
@@ -30,6 +45,9 @@ const Authors = (props) => {
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
+              <td>
+                <button onClick={() => handleRemove(a)}>delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
