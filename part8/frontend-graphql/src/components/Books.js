@@ -1,8 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { ALL_BOOKS, REMOVE_BOOK } from "../queries";
+import { useState } from "react";
 
 const Books = (props) => {
   const { loading, error, data } = useQuery(ALL_BOOKS);
+  const [filter, setFilter] = useState("all genres");
 
   const [removeBook] = useMutation(REMOVE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
@@ -11,6 +13,32 @@ const Books = (props) => {
   if (!props.show) {
     return null;
   }
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const mapGenres = data.allBooks.map((g) => g.genres).flat();
+
+  const duplicateGenres = new Set(
+    mapGenres.map((genre) => genre.toLowerCase())
+  );
+
+  const genres = Array.from(duplicateGenres).map((genre) =>
+    genre === "sci-fi"
+      ? "Sci-Fi"
+      : genre.charAt(0).toUpperCase() + genre.slice(1)
+  );
+  genres.push("all genres");
+
+  // check if the selected filter is with "Sci-Fi" and just to check that if the book
+  // has a smaller case "sci-fi"
+  const filteredBook = data.allBooks.filter((book) =>
+    filter === "all genres"
+      ? book
+      : filter.toLowerCase() === "sci-fi"
+      ? book.genres.includes("Sci-Fi") || book.genres.includes("sci-fi")
+      : book.genres.includes(filter)
+  );
 
   const removeHandler = async (book) => {
     console.log("id:", book.id);
@@ -36,8 +64,8 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {data &&
-            data.allBooks.map((a) => (
+          {filteredBook &&
+            filteredBook.map((a) => (
               <tr key={a.title}>
                 <td>{a.title}</td>
                 <td>{a.author.name}</td>
@@ -49,6 +77,13 @@ const Books = (props) => {
             ))}
         </tbody>
       </table>
+      <div>
+        {genres.map((genre, i) => (
+          <button onClick={() => setFilter(genre)} key={genre + i}>
+            {genre}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
