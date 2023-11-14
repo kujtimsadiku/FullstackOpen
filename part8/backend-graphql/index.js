@@ -130,6 +130,7 @@ const resolvers = {
       return await Author.find({});
     },
     me: (root, args, context) => {
+      console.log("current user", context.currentUser);
       return context.currentUser;
     },
   },

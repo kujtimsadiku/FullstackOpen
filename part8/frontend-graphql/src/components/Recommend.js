@@ -5,13 +5,19 @@ import { ALL_BOOKS, CURRENT_USER } from "../queries";
 const Recommend = (props) => {
   const currentUser = useQuery(CURRENT_USER);
   const { loading, error, data } = useQuery(ALL_BOOKS);
-  console.log(data.allBooks);
-  console.log(currentUser);
 
   if (!props.show) return null;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  const filteredBook = data.allBooks.filter((book) =>
+    book.genres.includes(currentUser.favoriteGenre)
+  );
+
+  console.log("me", currentUser);
+  console.log(data.allBooks);
+  console.log(filteredBook);
 
   return (
     <div>
@@ -25,14 +31,13 @@ const Recommend = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-            {data.allBooks.map((book) =>
-              book.genres.includes(currentUser.favoriteGenre) ? (
-                <tr>
-
-                <td key={book.title}></td>
-              ) : null
-                </tr>
-            )}
+          {filteredBook.map((book) => (
+            <tr>
+              <td>{book.title}</td>
+              <td>{book.author}</td>
+              <td>{book.published}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

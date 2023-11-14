@@ -4,11 +4,9 @@ import UpdateBirth from "./UpdateBirth";
 
 const Authors = (props) => {
   const authors = useQuery(ALL_AUTHORS);
-  const [removeAuthor, result] = useMutation(REMOVE_AUTHOR, {
+  const [removeAuthor] = useMutation(REMOVE_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
   });
-
-  console.log("dwadaw", result);
 
   if (authors.loading) {
     return <div>Loading...</div>;

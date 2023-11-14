@@ -40,7 +40,7 @@ export const ALL_BOOKS = gql`
 `;
 
 export const CURRENT_USER = gql`
-  query currentUser {
+  query {
     me {
       username
       favoriteGenre
