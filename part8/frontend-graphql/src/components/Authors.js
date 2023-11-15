@@ -1,12 +1,9 @@
-import { ALL_AUTHORS, REMOVE_AUTHOR, UPDATE_BIRTH } from "../queries";
+import { ALL_AUTHORS, REMOVE_AUTHOR } from "../queries";
 import { useMutation, useQuery } from "@apollo/client";
 import UpdateBirth from "./UpdateBirth";
 
 const Authors = (props) => {
   const authors = useQuery(ALL_AUTHORS);
-  const [editAuthor] = useMutation(UPDATE_BIRTH, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
-  });
   const [removeAuthor] = useMutation(REMOVE_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
   });

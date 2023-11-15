@@ -13,7 +13,7 @@ const UpdateBirth = () => {
   const authors = useQuery(ALL_AUTHORS);
   //console.log(authors.data.allAuthors);
 
-  const [updateBirthyear] = useMutation(UPDATE_BIRTH, {
+  const [editAuthor] = useMutation(UPDATE_BIRTH, {
     refetchQueries: [{ query: ALL_AUTHORS }],
   });
 
@@ -25,7 +25,7 @@ const UpdateBirth = () => {
     event.preventDefault();
 
     const { name } = value;
-    await updateBirthyear({
+    await editAuthor({
       variables: { name, setBornTo: parseInt(birth, 10) },
     });
 

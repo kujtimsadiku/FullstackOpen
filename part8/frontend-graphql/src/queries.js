@@ -93,7 +93,7 @@ export const REMOVE_BOOK = gql`
 
 export const UPDATE_BIRTH = gql`
   mutation updateBirthyear($name: String!, $setBornTo: Int) {
-    editAuthor(name: $name, setBornTo: $setBornTo) {
+    editAuthor(name: $name, born: $setBornTo) {
       name
       born
       bookCount
