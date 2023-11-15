@@ -121,7 +121,7 @@ const resolvers = {
         query.author = authorBooks._id;
       }
       if (args.genres) {
-        query.genres = { $in: [args.genres] };
+        if (args.genres !== "all genres") query.genres = { $in: [args.genres] };
       }
 
       return await Book.find(query).populate("author");
@@ -129,7 +129,7 @@ const resolvers = {
     allAuthors: async () => {
       return await Author.find({});
     },
-    me: (root, args, context) => {
+    me: async (root, args, context) => {
       console.log("current user", context.currentUser);
       return context.currentUser;
     },

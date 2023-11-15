@@ -3,8 +3,10 @@ import { ALL_BOOKS, REMOVE_BOOK } from "../queries";
 import { useState } from "react";
 
 const Books = (props) => {
-  const { loading, error, data } = useQuery(ALL_BOOKS);
   const [filter, setFilter] = useState("all genres");
+  const { data } = useQuery(ALL_BOOKS, {
+    variables: { filter },
+  });
 
   const [removeBook] = useMutation(REMOVE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
@@ -13,9 +15,6 @@ const Books = (props) => {
   if (!props.show) {
     return null;
   }
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   const mapGenres = data.allBooks.map((g) => g.genres).flat();
 

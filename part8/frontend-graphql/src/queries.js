@@ -23,8 +23,8 @@ export const REMOVE_AUTHOR = gql`
 `;
 
 export const ALL_BOOKS = gql`
-  query allBooks {
-    allBooks {
+  query allBooks($author: String, $genres: String) {
+    allBooks(author: $author, genres: $genres) {
       title
       author {
         name
