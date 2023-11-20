@@ -25,13 +25,16 @@ const Recommend = ({ show, user }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {data.allBooks.map((book, i) => (
-            <tr key={book.title + i}>
-              <td>{book.title}</td>
-              <td>{book.author.name}</td>
-              <td>{book.published}</td>
-            </tr>
-          ))}
+          {data &&
+            data.allBooks.map((book, i) =>
+              book.genres.includes(favoriteGenre) ? (
+                <tr key={book.title + i}>
+                  <td>{book.title}</td>
+                  <td>{book.author.name}</td>
+                  <td>{book.published}</td>
+                </tr>
+              ) : null
+            )}
         </tbody>
       </table>
     </div>

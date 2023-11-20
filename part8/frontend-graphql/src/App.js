@@ -14,6 +14,7 @@ const App = () => {
   const user = useQuery(CURRENT_USER, {
     fetchPolicy: "network-only",
   });
+
   const client = useApolloClient();
 
   const logout = () => {
