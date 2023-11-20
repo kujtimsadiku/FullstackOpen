@@ -1,42 +1,52 @@
 import { gql } from "@apollo/client";
 
+const AuthorDetails = gql`
+  fragment AuthorDetails on Author {
+    name
+    born
+    bookCount
+    id
+  }
+`;
+
+const BookDetails = gql`
+  fragment BookDetails on Book {
+    author {
+      ...AuthorDetails
+    }
+    genres
+    id
+    published
+    title
+  }
+  ${AuthorDetails}
+`;
+
 export const ALL_AUTHORS = gql`
   query getAuthor {
     allAuthors {
-      name
-      born
-      bookCount
-      id
+      ...AuthorDetails
     }
   }
+  ${AuthorDetails}
 `;
 
 export const REMOVE_AUTHOR = gql`
   mutation removeAuthor($id: ID!) {
     removeAuthor(id: $id) {
-      name
-      born
-      bookCount
-      id
+      ...AuthorDetails
     }
   }
+  ${AuthorDetails}
 `;
 
 export const ALL_BOOKS = gql`
   query allBooks($author: String, $genres: String) {
     allBooks(author: $author, genres: $genres) {
-      title
-      author {
-        name
-        born
-        bookCount
-        id
-      }
-      published
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BookDetails}
 `;
 
 export const CURRENT_USER = gql`
@@ -61,44 +71,28 @@ export const CREATE_BOOK = gql`
       published: $published
       genres: $genres
     ) {
-      title
-      author {
-        name
-        born
-        bookCount
-        id
-      }
-      published
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BookDetails}
 `;
 
 export const REMOVE_BOOK = gql`
   mutation removeBook($id: ID!) {
     removeBook(id: $id) {
-      title
-      author {
-        name
-        born
-        bookCount
-      }
-      published
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BookDetails}
 `;
 
 export const UPDATE_BIRTH = gql`
   mutation updateBirthyear($name: String!, $setBornTo: Int) {
     editAuthor(name: $name, born: $setBornTo) {
-      name
-      born
-      bookCount
+      ...AuthorDetails
     }
   }
+  ${AuthorDetails}
 `;
 
 export const LOGIN = gql`

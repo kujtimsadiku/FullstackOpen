@@ -19,8 +19,7 @@ const LoginForm = ({ setToken }) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    const loginValue = await login({ variables: { username, password } });
-    console.log(loginValue);
+    await login({ variables: { username, password } });
   };
 
   return (
