@@ -4,9 +4,9 @@ import UpdateBirth from "./UpdateBirth";
 
 const Authors = (props) => {
   const authors = useQuery(ALL_AUTHORS);
-  const [removeAuthor] = useMutation(REMOVE_AUTHOR, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
-  });
+  // const [removeAuthor] = useMutation(REMOVE_AUTHOR, {
+  //   refetchQueries: [{ query: ALL_AUTHORS }],
+  // });
 
   if (authors.loading) {
     return <div>Loading...</div>;
@@ -16,17 +16,17 @@ const Authors = (props) => {
     return null;
   }
 
-  const handleRemove = async (author) => {
-    console.log("author id:", author);
-    try {
-      const removedAuthor = await removeAuthor({
-        variables: { id: author.id },
-      });
-      console.log(removedAuthor);
-    } catch (error) {
-      console.log("author removed failed", error);
-    }
-  };
+  // const handleRemove = async (author) => {
+  //   console.log("author id:", author);
+  //   try {
+  //     const removedAuthor = await removeAuthor({
+  //       variables: { id: author.id },
+  //     });
+  //     console.log(removedAuthor);
+  //   } catch (error) {
+  //     console.log("author removed failed", error);
+  //   }
+  // };
 
   return (
     <div>
@@ -43,9 +43,9 @@ const Authors = (props) => {
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
-              <td>
+              {/* <td>
                 <button onClick={() => handleRemove(a)}>delete</button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

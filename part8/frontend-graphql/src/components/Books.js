@@ -8,9 +8,9 @@ const Books = (props) => {
     variables: { filter },
   });
 
-  const [removeBook] = useMutation(REMOVE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }],
-  });
+  // const [removeBook] = useMutation(REMOVE_BOOK, {
+  //   refetchQueries: [{ query: ALL_BOOKS }],
+  // });
 
   if (!props.show) {
     return null;
@@ -39,18 +39,18 @@ const Books = (props) => {
       : book.genres.includes(filter)
   );
 
-  const removeHandler = async (book) => {
-    console.log("id:", book.id);
-    try {
-      console.log(book);
-      const removedBook = await removeBook({
-        variables: { id: book.id },
-      });
-      console.log(removedBook);
-    } catch (error) {
-      console.log("error removing", error);
-    }
-  };
+  // const removeHandler = async (book) => {
+  //   console.log("id:", book.id);
+  //   try {
+  //     console.log(book);
+  //     const removedBook = await removeBook({
+  //       variables: { id: book.id },
+  //     });
+  //     console.log(removedBook);
+  //   } catch (error) {
+  //     console.log("error removing", error);
+  //   }
+  // };
 
   return (
     <div>
@@ -69,9 +69,9 @@ const Books = (props) => {
                 <td>{a.title}</td>
                 <td>{a.author.name}</td>
                 <td>{a.published}</td>
-                <td>
+                {/* <td>
                   <button onClick={() => removeHandler(a)}>delete</button>
-                </td>
+                </td> */}
               </tr>
             ))}
         </tbody>
