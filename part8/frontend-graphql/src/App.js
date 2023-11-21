@@ -2,10 +2,10 @@ import { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import LoginForm from "./components/LoginForm";
-import { useApolloClient, useQuery } from "@apollo/client";
+import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
 import NewBook from "./components/NewBook";
 import Recommend from "./components/Recommend";
-import { CURRENT_USER } from "./queries";
+import { BOOK_ADDED, CURRENT_USER } from "./queries";
 // import { Route, Routes } from "react-router-dom";
 
 const App = () => {
@@ -22,6 +22,15 @@ const App = () => {
     localStorage.clear();
     client.resetStore();
   };
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data);
+    },
+  });
+
+  if (user.loading) return <div>Loading...</div>;
+  if (user.error) return <div>Error: {user.error}</div>;
 
   if (!token) {
     return (

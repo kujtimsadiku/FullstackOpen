@@ -3,6 +3,8 @@ const Author = require("./schema/mongoAuthor");
 const User = require("./schema/mongoUser");
 const jwt = require("jsonwebtoken");
 const { GraphQLError } = require("graphql");
+const { PubSub } = require("graphql-subscriptions");
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
@@ -90,6 +92,8 @@ const resolvers = {
 
         const book = new Book({ ...args, author: author });
         await book.save();
+
+        pubsub.publish("BOOK_ADDED", { bookAdded: book });
 
         return book;
       } catch (error) {
@@ -194,6 +198,11 @@ const resolvers = {
       const userForToken = { username: user.username, id: user._id };
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator("BOOK_ADDED"),
     },
   },
 };
