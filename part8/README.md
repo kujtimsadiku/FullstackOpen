@@ -4,7 +4,7 @@ In this part we will dive more into GraphQL.<br>Facebook's alternative to REST f
 
 GraphQL was invented in 2012 and was released to public at<br>2015 and it is still used at Facebook.
 
-GraphQL is a query languagefor your AP, and serve-side<br>runtime for executing queries using a type<br>system you define for your data.
+GraphQL is a query language for your API, and serve-side<br> runtime for executing queries using a type<br>system you define for your data.
 
 ## Schema
 
