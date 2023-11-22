@@ -1,0 +1,18 @@
+{
+  "name": "part9",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "bmi": "ts-node bmiCalculator.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kujtim Sadiku",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.9.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  }
+}
