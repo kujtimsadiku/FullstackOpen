@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "exercise": "ts-node exerciseCalculator.ts",
+    "calculateExercises": "ts-node exerciseCalculator.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kujtim Sadiku",

@@ -19,6 +19,27 @@ const parseArguments = (args: string[]): BMI => {
   }
 };
 
+const BmiCategory = (bmiValue: number): string => {
+  switch (true) {
+    case bmiValue < 16.0:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Underweight (Severe thinness)`;
+    case bmiValue < 16.9:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Underweight (Moderate thinness)`;
+    case bmiValue < 18.4:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Underweight (Mild thinness)`;
+    case bmiValue < 24.9:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Normal range`;
+    case bmiValue < 29.9:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Overweight (Pre-obese)`;
+    case bmiValue < 34.9:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Obese (Class I)`;
+    case bmiValue < 39.9:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Obese (Class II)`;
+    default:
+      return `Your BMI value: ${bmiValue}\n\nCategory: Obese (Class III)`;
+  }
+};
+
 const calculateBmi = (height: number, kg: number): string => {
   const heightInMeter = height / 100;
 
@@ -27,7 +48,8 @@ const calculateBmi = (height: number, kg: number): string => {
   switch (bmiValue) {
   }
 
-  return `Your BMI value is ${bmiValue}`;
+  return BmiCategory(bmiValue);
+  // return `Your BMI value is ${bmiValue}`;
 };
 
 try {
