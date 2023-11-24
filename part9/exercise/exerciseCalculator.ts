@@ -1,3 +1,5 @@
+import { isNotNumber } from "./utils";
+
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -43,20 +45,22 @@ function CalculateResult<T extends number>(time: T[], target: number): Result {
   return results;
 }
 
+// need to check should i ask user to promp the training days if they are missed or just throw error
 function ParseArguments(args: string[]): Result {
-  if (args.length < 4) {
+  if (args.length < 3) {
     throw new Error("Not too many argmuents");
-  } else if (isNaN(Number(args[3]))) {
-    throw new Error("Target value is not a number.");
+  } else if (args.length === 3) {
+    throw new Error("Please provide the training hours per day.");
   }
 
-  const arrayFromString = JSON.parse(args[2].replace(/'/g, '"'));
+  const target: number = Number(args[2]);
+  const arrayFromString: number[] = args.slice(3).map(Number) as number[];
 
-  if (arrayFromString.some((item: number) => typeof item !== "number")) {
+  if (arrayFromString.some((item: number) => isNotNumber(item))) {
     throw new Error("From provided values the is not a number.");
   }
 
-  return CalculateResult<number>(arrayFromString, Number(args[3]));
+  return CalculateResult<number>(arrayFromString, target);
 }
 
 try {
@@ -68,4 +72,6 @@ try {
     errorMessage += " Error: " + error.message;
   }
   console.log(errorMessage);
+} finally {
+  process.exit(0);
 }
