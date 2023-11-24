@@ -19,17 +19,20 @@ const parseArguments = (args: string[]): BMI => {
   }
 };
 
-const bmiCalculator = (height: number, kg: number): string => {
+const calculateBmi = (height: number, kg: number): string => {
   const heightInMeter = height / 100;
 
   const bmiValue = kg / (heightInMeter * heightInMeter);
+
+  switch (bmiValue) {
+  }
 
   return `Your BMI value is ${bmiValue}`;
 };
 
 try {
   const { height, kg } = parseArguments(process.argv);
-  console.log(bmiCalculator(height, kg));
+  console.log(calculateBmi(height, kg));
 } catch (error: unknown) {
   let errorMessage = "Something bad happened.";
   if (error instanceof Error) {
