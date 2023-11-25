@@ -55,6 +55,7 @@ if (require.main === module) {
     console.log(calculateBmi(height, kg));
   } catch (error: unknown) {
     let errorMessage = "Something bad happened.";
+
     if (error instanceof Error) {
       errorMessage += " Error: " + error.message;
     }
