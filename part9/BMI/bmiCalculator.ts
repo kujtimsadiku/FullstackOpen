@@ -4,6 +4,7 @@ interface BMI {
 }
 
 const parseArguments = (args: string[]): BMI => {
+  console.log(args.length);
   if (args.length < 4) {
     throw new Error("Not too many argmuents");
   } else if (args.length > 4) {
@@ -22,43 +23,41 @@ const parseArguments = (args: string[]): BMI => {
 const BmiCategory = (bmiValue: number): string => {
   switch (true) {
     case bmiValue < 16.0:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Underweight (Severe thinness)`;
+      return `Underweight (Severe thinness)`;
     case bmiValue < 16.9:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Underweight (Moderate thinness)`;
+      return `Underweight (Moderate thinness)`;
     case bmiValue < 18.4:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Underweight (Mild thinness)`;
+      return `Underweight (Mild thinness)`;
     case bmiValue < 24.9:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Normal range`;
+      return `Normal range`;
     case bmiValue < 29.9:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Overweight (Pre-obese)`;
+      return `Overweight (Pre-obese)`;
     case bmiValue < 34.9:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Obese (Class I)`;
+      return `Obese (Class I)`;
     case bmiValue < 39.9:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Obese (Class II)`;
+      return `Obese (Class II)`;
     default:
-      return `Your BMI value: ${bmiValue}\n\nCategory: Obese (Class III)`;
+      return `Obese (Class III)`;
   }
 };
 
-const calculateBmi = (height: number, kg: number): string => {
+export const calculateBmi = (height: number, kg: number): string => {
   const heightInMeter = height / 100;
 
   const bmiValue = kg / (heightInMeter * heightInMeter);
 
-  switch (bmiValue) {
-  }
-
   return BmiCategory(bmiValue);
-  // return `Your BMI value is ${bmiValue}`;
 };
 
-try {
-  const { height, kg } = parseArguments(process.argv);
-  console.log(calculateBmi(height, kg));
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+if (require.main === module) {
+  try {
+    const { height, kg } = parseArguments(process.argv);
+    console.log(calculateBmi(height, kg));
+  } catch (error: unknown) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
