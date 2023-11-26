@@ -1,5 +1,3 @@
-import { isNotNumber } from "./utils";
-
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -16,12 +14,15 @@ function GetRating(rating: number): number {
       return 1;
     case rating >= 0 && rating <= 1.3:
       return 2;
-    case rating > 1.3:
+    default:
       return 3;
   }
 }
 
-function CalculateResult<T extends number>(time: T[], target: number): Result {
+export function CalculateResult<T extends number>(
+  time: T[],
+  target: number
+): Result {
   const zeros: number = time.filter((item) => item === 0).length;
   const averageTime: number =
     time.reduce((previousVal, currentVal) => previousVal + currentVal, 0) /
@@ -54,24 +55,26 @@ function ParseArguments(args: string[]): Result {
   }
 
   const target: number = Number(args[2]);
-  const arrayFromString: number[] = args.slice(3).map(Number) as number[];
+  const arrayFromString: number[] = args.slice(3).map(Number);
 
-  if (arrayFromString.some((item: number) => isNotNumber(item))) {
+  if (arrayFromString.some((item: number) => isNaN(item))) {
     throw new Error("From provided values the is not a number.");
   }
 
   return CalculateResult<number>(arrayFromString, target);
 }
 
-try {
-  const result = ParseArguments(process.argv);
-  console.log(result);
-} catch (error) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+if (require.main === module) {
+  try {
+    const result = ParseArguments(process.argv);
+    console.log(result);
+  } catch (error) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
+  } finally {
+    process.exit(0);
   }
-  console.log(errorMessage);
-} finally {
-  process.exit(0);
 }
