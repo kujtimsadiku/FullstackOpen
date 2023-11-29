@@ -34,8 +34,6 @@ router.post("/", (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
-
-  res.send("Saving patient").status(200);
 });
 
 export default router;
