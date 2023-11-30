@@ -1,21 +1,21 @@
-interface CoursePartBasic {
+interface CoursePartBase {
   name: string;
   exerciseCount: number;
+}
+interface CoursePartDescripton extends CoursePartBase {
   description: string;
+}
+
+interface CoursePartBasic extends CoursePartDescripton {
   kind: "basic";
 }
 
-interface CoursePartGroup {
-  name: string;
-  exerciseCount: number;
+interface CoursePartGroup extends CoursePartBase {
   groupProjectCount: number;
   kind: "group";
 }
 
-interface CoursePartBackground {
-  name: string;
-  exerciseCount: number;
-  description: string;
+interface CoursePartBackground extends CoursePartDescripton {
   backgroundMaterial: string;
   kind: "background";
 }
@@ -51,6 +51,12 @@ function App() {
         "https://type-level-typescript.com/template-literal-types",
       kind: "background",
     },
+    {
+      name: "TypeScript in frontend",
+      exerciseCount: 10,
+      description: "a hard part",
+      kind: "basic",
+    },
   ];
 
   const totalExcercises = coursePart.reduce(
@@ -62,16 +68,67 @@ function App() {
     return <h1>{header}</h1>;
   };
 
+  const assertNever = (value: never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
+  };
+
   const Content = ({ course }: { course: CoursePart[] }) => {
-    return course.map((course) => (
-      <p key={course.name}>
-        {course.name} {course.exerciseCount}
-      </p>
+    return course.map((part) => (
+      <div key={part.name + 1}>
+        <Part course={part} />
+      </div>
     ));
   };
 
   const Total = ({ total }: { total: number }) => {
-    return <p>Number of exercises {total}</p>;
+    return <p>Total number of exercises {total}</p>;
+  };
+
+  const Part = ({ course }: { course: CoursePart }) => {
+    const margin = {
+      margin: 0,
+    };
+
+    switch (course.kind) {
+      case "basic":
+        return (
+          <div>
+            <h4 style={{ marginBottom: 0 }}>
+              {course.name} {course.exerciseCount}
+            </h4>
+            <p style={margin}>
+              <i>{course.description}</i>
+            </p>
+          </div>
+        );
+      case "group":
+        return (
+          <div>
+            <h4 style={{ marginBottom: 0 }}>
+              {course.name} {course.exerciseCount}
+            </h4>
+            <p style={margin}>Project exercises {course.groupProjectCount}</p>
+          </div>
+        );
+      case "background":
+        return (
+          <div>
+            <h4 style={{ marginBottom: 0 }}>
+              {course.name} {course.exerciseCount}
+            </h4>
+            <p style={margin}>
+              <i>{course.description}</i>
+            </p>
+            <p style={margin}>
+              submit to <a href={course.backgroundMaterial}>[ here ]</a>
+            </p>
+          </div>
+        );
+      default:
+        return assertNever(course);
+    }
   };
 
   return (
