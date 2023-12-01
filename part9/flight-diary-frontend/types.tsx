@@ -1,3 +1,5 @@
+import React from "react";
+
 export enum Weather {
   Sunny = "sunny",
   Rainy = "rainy",
@@ -22,10 +24,10 @@ export interface DiaryEntry {
 }
 
 export interface FormField {
-  value: ValueTypes;
+  value: string;
   inputProps: {
-    inputType: ValueTypes;
-    value: ValueTypes;
+    inputType: string;
+    value: string;
     onChange: (event: ChangeEvent) => void;
   };
   onReset: () => void;
@@ -35,7 +37,6 @@ export type NewDiaryEntry = Omit<DiaryEntry, "id">;
 
 export type NonSensitiveDiaryEntry = Omit<DiaryEntry, "comment">;
 
-export type ValueTypes = string | number;
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 export type SetStateDiaryEntry = React.Dispatch<
