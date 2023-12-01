@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <NewEntry setDiaries={setDiaries} />
+      <NewEntry setDiaries={setDiaries} diaries={diaries} />
       <DiaryEntries diaries={diaries} />
     </>
   );

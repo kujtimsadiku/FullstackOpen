@@ -21,6 +21,23 @@ export interface DiaryEntry {
   comment: string;
 }
 
+export interface FormField {
+  value: ValueTypes;
+  inputProps: {
+    inputType: ValueTypes;
+    value: ValueTypes;
+    onChange: (event: ChangeEvent) => void;
+  };
+  onReset: () => void;
+}
+
 export type NewDiaryEntry = Omit<DiaryEntry, "id">;
 
 export type NonSensitiveDiaryEntry = Omit<DiaryEntry, "comment">;
+
+export type ValueTypes = string | number;
+export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
+
+export type SetStateDiaryEntry = React.Dispatch<
+  React.SetStateAction<DiaryEntry[]>
+>;
