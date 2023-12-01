@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   DiaryEntry,
   NewDiaryEntry,
@@ -33,37 +32,36 @@ function NewEntry({
     event.preventDefault();
     // need to be concat with previous ones. Must pass the values here also to concat it
 
+    let newDiary: NewDiaryEntry | NewNonSensitiveDiaryEntry;
+
     if (!comment || comment.value) {
-      const newDiary: NewNonSensitiveDiaryEntry = toNewNonSensitiveDiaryEntry({
+      newDiary = toNewNonSensitiveDiaryEntry({
         date: date.value,
         weather: weather.value,
         visibility: visibility.value,
       });
-
-      await diariesService
-        .createDiary(newDiary)
-        .then((data) => {
-          setDiaries(diaries.concat(data));
-          console.log(data);
-        })
-        .catch((error) => console.log(error));
     } else {
-      const newDiary: NewDiaryEntry = toNewDiaryEntry({
+      newDiary = toNewDiaryEntry({
         date: date.value,
         weather: weather.value,
         visibility: visibility.value,
         comment: comment.value,
       });
-
-      await diariesService
-        .createDiary(newDiary)
-        .then((data) => {
-          setDiaries(diaries.concat(data));
-          console.log(data);
-        })
-        .catch((error) => console.log(error));
     }
 
+    try {
+      const data = await diariesService
+        .createDiary(newDiary)
+        .then((data) => setDiaries(diaries.concat(data)));
+
+      console.log(data);
+    } catch (error) {
+      let message = "Something went wrong.";
+      if (error instanceof Error) {
+        message += " Error: " + error;
+      }
+      console.log(message);
+    }
     const params: FormField[] = [date, weather, visibility, comment];
     defaultValues({ params });
   };
