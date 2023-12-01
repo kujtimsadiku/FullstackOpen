@@ -4,9 +4,12 @@ import {
   NewDiaryEntry,
   SetStateDiaryEntry,
   FormField,
+  NewNonSensitiveDiaryEntry,
 } from "../../types";
 import diariesService from "../service/diaries";
 import { useField } from "../hooks/inputHook";
+import toNewNonSensitiveDiaryEntry from "../utils/toNewNonSensitiveDiaryEntry";
+import toNewDiaryEntry from "../utils/toNewDiaryEntry";
 
 function NewEntry({
   setDiaries,
@@ -15,7 +18,6 @@ function NewEntry({
   setDiaries: SetStateDiaryEntry;
   diaries: DiaryEntry[];
 }) {
-  const [newDiary, setNewDiary] = useState<NewDiaryEntry>({} as NewDiaryEntry);
   const comment = useField("text");
   const weather = useField("text");
   const visibility = useField("text");
@@ -31,10 +33,36 @@ function NewEntry({
     event.preventDefault();
     // need to be concat with previous ones. Must pass the values here also to concat it
 
-    await diariesService
-      .createDiary(newDiary)
-      .then((data) => setDiaries(diaries.concat(data)))
-      .catch((error) => console.log(error));
+    if (!comment || comment.value) {
+      const newDiary: NewNonSensitiveDiaryEntry = toNewNonSensitiveDiaryEntry({
+        date: date.value,
+        weather: weather.value,
+        visibility: visibility.value,
+      });
+
+      await diariesService
+        .createDiary(newDiary)
+        .then((data) => {
+          setDiaries(diaries.concat(data));
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      const newDiary: NewDiaryEntry = toNewDiaryEntry({
+        date: date.value,
+        weather: weather.value,
+        visibility: visibility.value,
+        comment: comment.value,
+      });
+
+      await diariesService
+        .createDiary(newDiary)
+        .then((data) => {
+          setDiaries(diaries.concat(data));
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+    }
 
     const params: FormField[] = [date, weather, visibility, comment];
     defaultValues({ params });

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { ChangeEvent, ValueTypes, FormField } from "../../types";
+import { useState } from "react";
+// import { useEffect } from "react";
+import { ChangeEvent, FormField } from "../../types";
 
 export const useField = (type: string): FormField => {
   // we will handle the number with parseInt()

@@ -36,6 +36,10 @@ export interface FormField {
 export type NewDiaryEntry = Omit<DiaryEntry, "id">;
 
 export type NonSensitiveDiaryEntry = Omit<DiaryEntry, "comment">;
+export type NewNonSensitiveDiaryEntry = Pick<
+  DiaryEntry,
+  "date" | "weather" | "visibility"
+>;
 
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 

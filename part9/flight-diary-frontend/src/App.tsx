@@ -14,7 +14,7 @@ function App() {
       setDiaries(diariesFetched);
     };
 
-    void fetchDiaries();
+    fetchDiaries();
   }, []);
 
   return (
