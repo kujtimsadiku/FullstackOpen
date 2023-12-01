@@ -23,7 +23,7 @@ function NewEntry({
         <div>
           <label htmlFor="date">date</label>
           <input
-            id="date"
+            id="date" // add id to others also since label prefers id over the name
             value={newDiary.date}
             onChange={handleChange}
             name="date"
@@ -53,7 +53,9 @@ function NewEntry({
             name="comment"
           />
         </div>
-        <button type="submit">add</button>
+        <button className=" border-spacing-3 border-blue-300" type="submit">
+          add
+        </button>
       </form>
     </div>
   );
