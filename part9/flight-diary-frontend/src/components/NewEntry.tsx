@@ -2,13 +2,19 @@ import {
   DiaryEntry,
   NewDiaryEntry,
   SetStateDiaryEntry,
-  FormField,
-  NewNonSensitiveDiaryEntry,
+  DiaryFields,
 } from "../../types";
 import diariesService from "../service/diaries";
 import { useField } from "../hooks/inputHook";
-import toNewNonSensitiveDiaryEntry from "../utils/toNewNonSensitiveDiaryEntry";
 import toNewDiaryEntry from "../utils/toNewDiaryEntry";
+
+/* puts FormFields to "" == null or empty */
+function defaultValues(params: DiaryFields): void {
+  params.date.onReset();
+  params.visibility.onReset();
+  params.weather.onReset();
+  params.comment.onReset();
+}
 
 function NewEntry({
   setDiaries,
@@ -17,44 +23,28 @@ function NewEntry({
   setDiaries: SetStateDiaryEntry;
   diaries: DiaryEntry[];
 }) {
-  const comment = useField("text");
-  const weather = useField("text");
-  const visibility = useField("text");
-  const date = useField("text");
-
-  function defaultValues({ params }: { params: FormField[] }): void {
-    Object.values(params).map((reset) => {
-      reset.onReset();
-    });
-  }
+  const diaryFields: DiaryFields = {
+    date: useField("text"),
+    visibility: useField("text"),
+    weather: useField("text"),
+    comment: useField("text"),
+  };
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     // need to be concat with previous ones. Must pass the values here also to concat it
 
-    let newDiary: NewDiaryEntry | NewNonSensitiveDiaryEntry;
-
-    if (!comment || comment.value) {
-      newDiary = toNewNonSensitiveDiaryEntry({
-        date: date.value,
-        weather: weather.value,
-        visibility: visibility.value,
-      });
-    } else {
-      newDiary = toNewDiaryEntry({
-        date: date.value,
-        weather: weather.value,
-        visibility: visibility.value,
-        comment: comment.value,
-      });
-    }
+    const newDiary: NewDiaryEntry = toNewDiaryEntry({
+      date: diaryFields.date.value,
+      weather: diaryFields.weather.value,
+      visibility: diaryFields.visibility.value,
+      comment: diaryFields.comment.value,
+    });
 
     try {
-      const data = await diariesService
+      await diariesService
         .createDiary(newDiary)
         .then((data) => setDiaries(diaries.concat(data)));
-
-      console.log(data);
     } catch (error) {
       let message = "Something went wrong.";
       if (error instanceof Error) {
@@ -62,8 +52,7 @@ function NewEntry({
       }
       console.log(message);
     }
-    const params: FormField[] = [date, weather, visibility, comment];
-    defaultValues({ params });
+    defaultValues(diaryFields);
   };
 
   return (
@@ -77,7 +66,7 @@ function NewEntry({
             id="date" // add id to others also since label prefers id over the name
             name="date"
             className="border rounded border-black focus:bg-gray-300"
-            {...date.inputProps}
+            {...diaryFields.date.inputProps}
           />
         </div>
         <div className="p-1">
@@ -88,7 +77,7 @@ function NewEntry({
             id="visibility"
             name="visibility"
             className="border rounded border-black focus:bg-gray-300"
-            {...visibility.inputProps}
+            {...diaryFields.visibility.inputProps}
           />
         </div>
         <div className="p-1">
@@ -99,7 +88,7 @@ function NewEntry({
             id="weather"
             name="weather"
             className="border rounded border-black focus:bg-gray-300"
-            {...weather.inputProps}
+            {...diaryFields.weather.inputProps}
           />
         </div>
         <div className="p-1">
@@ -110,7 +99,7 @@ function NewEntry({
             id="comment"
             name="comment"
             className="border rounded border-black focus:bg-gray-300"
-            {...comment.inputProps}
+            {...diaryFields.comment.inputProps}
           />
         </div>
         <button

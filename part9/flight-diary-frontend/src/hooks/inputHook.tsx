@@ -22,7 +22,7 @@ export const useField = (type: string): FormField => {
   const inputProps: FormField = {
     value: value,
     inputProps: {
-      inputType: type,
+      type: type,
       value: value,
       onChange,
     },

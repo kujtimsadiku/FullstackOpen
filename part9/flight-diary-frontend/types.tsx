@@ -23,10 +23,17 @@ export interface DiaryEntry {
   comment: string;
 }
 
+export interface DiaryFields {
+  date: FormField;
+  visibility: FormField;
+  weather: FormField;
+  comment: FormField;
+}
+
 export interface FormField {
   value: string;
   inputProps: {
-    inputType: string;
+    type: string;
     value: string;
     onChange: (event: ChangeEvent) => void;
   };
