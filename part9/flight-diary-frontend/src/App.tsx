@@ -21,12 +21,12 @@ function App() {
 
   return (
     <>
+      <ErrorMessage errorMessage={errorMessage} />
       <NewEntry
         setDiaries={setDiaries}
         diaries={diaries}
         setErrorMessage={setErrorMessage}
       />
-      <ErrorMessage errorMessage={errorMessage} />
       <DiaryEntries diaries={diaries} />
     </>
   );
