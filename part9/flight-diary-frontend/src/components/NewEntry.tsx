@@ -3,6 +3,9 @@ import {
   NewDiaryEntry,
   SetStateDiaryEntry,
   DiaryFields,
+  SetStateErrorMessage,
+  Weather,
+  Visibility,
 } from "../../types";
 import diariesService from "../service/diaries";
 import { useField } from "../hooks/inputHook";
@@ -19,9 +22,11 @@ function defaultValues(params: DiaryFields): void {
 function NewEntry({
   setDiaries,
   diaries,
+  setErrorMessage,
 }: {
   setDiaries: SetStateDiaryEntry;
   diaries: DiaryEntry[];
+  setErrorMessage: SetStateErrorMessage;
 }) {
   const diaryFields: DiaryFields = {
     date: useField("text"),
@@ -33,26 +38,33 @@ function NewEntry({
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     // need to be concat with previous ones. Must pass the values here also to concat it
-
-    const newDiary: NewDiaryEntry = toNewDiaryEntry({
-      date: diaryFields.date.value,
-      weather: diaryFields.weather.value,
-      visibility: diaryFields.visibility.value,
-      comment: diaryFields.comment.value,
-    });
-
     try {
+      const newDiary: NewDiaryEntry = toNewDiaryEntry({
+        date: diaryFields.date.value,
+        weather: diaryFields.weather.value as Weather,
+        visibility: diaryFields.visibility.value as Visibility,
+        comment: diaryFields.comment.value,
+      });
+
       await diariesService
         .createDiary(newDiary)
         .then((data) => setDiaries(diaries.concat(data)));
-    } catch (error) {
-      let message = "Something went wrong.";
+
+      // set to default only when it has successfully added
+      // easier for use to modified what he has typed
+      defaultValues(diaryFields);
+    } catch (error: unknown) {
+      let errorMessage = "Something went wrong.";
+
       if (error instanceof Error) {
-        message += " Error: " + error;
+        errorMessage = "" + error;
+        setErrorMessage(errorMessage);
       }
-      console.log(message);
+
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 4000);
     }
-    defaultValues(diaryFields);
   };
 
   return (

@@ -53,3 +53,5 @@ export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type SetStateDiaryEntry = React.Dispatch<
   React.SetStateAction<DiaryEntry[]>
 >;
+
+export type SetStateErrorMessage = React.Dispatch<React.SetStateAction<string>>;
