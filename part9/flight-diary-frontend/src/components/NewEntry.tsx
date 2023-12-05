@@ -68,59 +68,46 @@ function NewEntry({
   };
 
   return (
-    <div className="container">
+    <div>
       <form onSubmit={handleSubmit}>
-        <div className="p-1 relative">
+        <div>
           <label htmlFor="date" />
           <input
             id="date" // add id to others also since label prefers id over the name
             name="date"
-            className="border rounded border-black focus:bg-gray-300 pl-0.5"
             placeholder="date"
             {...diaryFields.date.inputProps}
           />
         </div>
-        <div className="p-1 relative">
+        <div>
           <label htmlFor="visibility" />
           <input
             id="visibility"
             name="visibility"
-            className="border rounded border-black focus:bg-gray-300 pl-0.5"
             placeholder="visibility"
             {...diaryFields.visibility.inputProps}
           />
         </div>
-        <div className="p-1 relative">
+        <div>
           <label htmlFor="weather" />
           <input
             id="weather"
             name="weather"
-            className="border rounded border-black focus:bg-gray-300"
             placeholder="weather"
             {...diaryFields.weather.inputProps}
           />
         </div>
-        <div className="p-1 relative">
-          <label
-            className="absolute pl-1 transform -translate-y-3 duration-300"
-            htmlFor="comment"
-          >
-            comment
-          </label>
+        <div>
+          <label htmlFor="comment">comment</label>
           <input
             id="comment"
             name="comment"
-            className="border rounded border-black focus:bg-gray-300 h-auto before:focus:peer-focus:-translate-y-"
+            placeholder="comment"
             {...diaryFields.comment.inputProps}
           />
         </div>
-        <div className="pl-1">
-          <button
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            type="submit"
-          >
-            add
-          </button>
+        <div>
+          <button type="submit">add</button>
         </div>
       </form>
     </div>
