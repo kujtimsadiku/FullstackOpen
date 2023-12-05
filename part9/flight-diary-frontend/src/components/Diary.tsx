@@ -5,7 +5,7 @@ function Diary({ diary }: { diary: DiaryEntry }) {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold font-sans">{diary.date}</h3>
+      <h3>{diary.date}</h3>
       <p>visibility: {diary.visibility}</p>
       <p>weather: {diary.weather}</p>
     </div>
