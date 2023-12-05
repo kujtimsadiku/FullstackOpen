@@ -20,7 +20,7 @@ function App() {
   }, []);
 
   return (
-    <div className="app__app_container">
+    <div>
       {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
       <DiaryForm
         setDiaries={setDiaries}
