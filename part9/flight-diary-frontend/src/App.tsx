@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import DiaryEntries from "./components/DiaryEntries";
-import NewEntry from "./components/NewEntry";
 import { DiaryEntry } from "../types";
 import diaryService from "./service/diaries";
 import ErrorMessage from "./components/ErrorMessage";
+import DiaryForm from "./components/DiaryForm";
 
 function App() {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
@@ -20,15 +20,15 @@ function App() {
   }, []);
 
   return (
-    <>
-      <ErrorMessage errorMessage={errorMessage} />
-      <NewEntry
+    <div className="app__app_container">
+      {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+      <DiaryForm
         setDiaries={setDiaries}
         diaries={diaries}
         setErrorMessage={setErrorMessage}
       />
       <DiaryEntries diaries={diaries} />
-    </>
+    </div>
   );
 }
 

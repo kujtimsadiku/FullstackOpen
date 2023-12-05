@@ -6,9 +6,7 @@ function DiaryEntries({ diaries }: { diaries: DiaryEntry[] }) {
     <div>
       <h2>Diary entries</h2>
       {diaries.map((diary) => (
-        <div className="m-2" key={diary.id}>
-          <Diary diary={diary} />
-        </div>
+        <Diary diary={diary} key={diary.id} />
       ))}
     </div>
   );
