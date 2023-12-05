@@ -12,7 +12,6 @@ export const useField = (type: string): FormField => {
   // }, [value]);
 
   const onChange = (event: ChangeEvent): void => {
-    console.log(event.target);
     setValue(event.target.value);
   };
 

@@ -11,9 +11,11 @@ import diariesService from "../service/diaries";
 import { useField } from "../hooks/inputHook";
 import toNewDiaryEntry from "../utils/toNewDiaryEntry";
 import {
+  Button,
   FormControl,
   FormControlLabel,
   FormLabel,
+  Grid,
   InputLabel,
   Radio,
   RadioGroup,
@@ -26,6 +28,19 @@ function defaultValues(params: DiaryFields): void {
   params.visibility.onReset();
   params.weather.onReset();
   params.comment.onReset();
+}
+
+function checkInputs(diaries: DiaryFields): boolean {
+  if (
+    !diaries.date.value ||
+    !diaries.visibility.value ||
+    !diaries.weather.value ||
+    !diaries.comment.value
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 function DiaryForm({
@@ -46,7 +61,7 @@ function DiaryForm({
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    // need to be concat with previous ones. Must pass the values here also to concat it
+
     try {
       const newDiary: NewDiaryEntry = toNewDiaryEntry({
         date: diaryFields.date.value,
@@ -60,7 +75,7 @@ function DiaryForm({
         .then((data) => setDiaries(diaries.concat(data)));
 
       // set to default only when it has successfully added
-      // easier for use to modified what he has typed
+      // easier for use to modified what user has typed
       defaultValues(diaryFields);
     } catch (error: unknown) {
       let errorMessage = "Something went wrong.";
@@ -82,7 +97,7 @@ function DiaryForm({
       <form onSubmit={handleSubmit}>
         <div>
           <InputLabel>Date</InputLabel>
-          <TextField {...diaryFields.date.inputProps} />
+          <TextField name="Date" {...diaryFields.date.inputProps} />
         </div>
         <div>
           <FormControl>
@@ -106,7 +121,7 @@ function DiaryForm({
         <div>
           <FormControl>
             <FormLabel>Weather</FormLabel>
-            <RadioGroup row {...diaryFields.weather.inputProps}>
+            <RadioGroup row name="Weather" {...diaryFields.weather.inputProps}>
               {Object.values(Weather).map((w, i) => (
                 <FormControlLabel
                   key={i}
@@ -118,56 +133,27 @@ function DiaryForm({
             </RadioGroup>
           </FormControl>
         </div>
+        <div>
+          <InputLabel>Comment</InputLabel>
+          <TextField
+            fullWidth
+            name="Comment"
+            {...diaryFields.comment.inputProps}
+          />
+        </div>
+
+        <Button
+          style={{ marginTop: 25 }}
+          color="primary"
+          type="submit"
+          variant="contained"
+          disabled={checkInputs(diaryFields)}
+        >
+          Submit
+        </Button>
       </form>
     </div>
   );
-
-  //   return (
-  //     <div>
-  //       <form onSubmit={handleSubmit}>
-  //         <div>
-  //           <label htmlFor="date" />
-  //           <input
-  //             id="date" // add id to others also since label prefers id over the name
-  //             name="date"
-  //             placeholder="date YYYY-MM-DD"
-  //             {...diaryFields.date.inputProps}
-  //           />
-  //         </div>
-  //         <div>
-  //           <label htmlFor="visibility" />
-  //           <input
-  //             id="visibility"
-  //             name="visibility"
-  //             placeholder="visibility"
-  //             {...diaryFields.visibility.inputProps}
-  //           />
-  //         </div>
-  //         <div>
-  //           <label htmlFor="weather" />
-  //           <input
-  //             id="weather"
-  //             name="weather"
-  //             placeholder="weather"
-  //             {...diaryFields.weather.inputProps}
-  //           />
-  //         </div>
-  //         <div>
-  //           <label htmlFor="comment" />
-  //           <input
-  //             id="comment"
-  //             name="comment"
-  //             placeholder="comment"
-  //             {...diaryFields.comment.inputProps}
-  //           />
-  //         </div>
-  //         <div>
-  //           <button type="submit">add</button>
-  //         </div>
-  //       </form>
-  //     </div>
-  //   );
-  // }
 }
 
 export default DiaryForm;
