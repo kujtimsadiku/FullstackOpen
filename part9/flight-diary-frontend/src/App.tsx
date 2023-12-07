@@ -4,6 +4,7 @@ import { DiaryEntry } from "../types";
 import diaryService from "./service/diaries";
 import ErrorMessage from "./components/ErrorMessage";
 import DiaryForm from "./components/DiaryForm";
+import axios from "axios";
 
 function App() {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
@@ -11,9 +12,33 @@ function App() {
 
   useEffect(() => {
     const fetchDiaries = async () => {
-      const diariesFetched = await diaryService.getAll();
-      console.log(diariesFetched);
-      setDiaries(diariesFetched);
+      try {
+        const diariesFetched = await diaryService.getAll();
+        console.log(diariesFetched);
+        setDiaries(diariesFetched);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (
+            error?.response?.data &&
+            typeof error?.response?.data === "string"
+          ) {
+            const message = error.response.data.replace(
+              "Something went wrong while fetching. Error: ",
+              ""
+            );
+            console.error(message);
+            setErrorMessage(message);
+          } else {
+            setErrorMessage("Unrecognized axios error while fetching");
+          }
+        } else {
+          console.error("Unkown error", error);
+          setErrorMessage("Unkown error");
+        }
+      }
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 2500);
     };
 
     fetchDiaries();
