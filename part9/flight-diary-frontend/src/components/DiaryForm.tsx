@@ -15,6 +15,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  Grid,
   InputLabel,
   Radio,
   RadioGroup,
@@ -140,16 +141,19 @@ function DiaryForm({
             {...diaryFields.comment.inputProps}
           />
         </div>
-
-        <Button
-          style={{ marginTop: 25 }}
-          color="primary"
-          type="submit"
-          variant="contained"
-          disabled={checkInputs(diaryFields)}
-        >
-          Submit
-        </Button>
+        <Grid>
+          <Grid item>
+            <Button
+              style={{ marginTop: 25 }}
+              color="primary"
+              type="submit"
+              variant="contained"
+              disabled={checkInputs(diaryFields)}
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </div>
   );
