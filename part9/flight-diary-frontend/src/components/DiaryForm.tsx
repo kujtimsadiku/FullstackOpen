@@ -43,15 +43,13 @@ function checkInputs(diaries: DiaryFields): boolean {
   return false;
 }
 
-function DiaryForm({
-  setDiaries,
-  diaries,
-  setErrorMessage,
-}: {
+interface Props {
   setDiaries: SetStateDiaryEntry;
   diaries: DiaryEntry[];
   setErrorMessage: SetStateErrorMessage;
-}) {
+}
+
+function DiaryForm({ setDiaries, diaries, setErrorMessage }: Props) {
   const diaryFields: DiaryFields = {
     date: useField("date"),
     visibility: useField(Visibility.Great),
