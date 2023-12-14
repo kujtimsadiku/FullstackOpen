@@ -9,8 +9,6 @@ interface Props {
 const PatientInfo = ({ patients }: Props) => {
   const match = useMatch("/patients/:id");
 
-  console.log("match:", match);
-  console.log(patients);
   const patientByID = (id: string) => {
     const patient = patients.find((p) => p.id === id);
 
@@ -18,7 +16,6 @@ const PatientInfo = ({ patients }: Props) => {
   };
 
   const patient = match ? patientByID(match.params.id as string) : null;
-  console.log("lol", match?.params.id);
 
   if (patient) {
     return (
