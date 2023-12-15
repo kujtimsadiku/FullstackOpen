@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", (_req, res) => {
   console.log("Fetching all the patients");
 
-  res.send(patientService.getNonPatientSnn()).status(200);
+  res.send(patientService.getPatients()).status(200);
 });
 
 router.get("/:id", (req, res) => {

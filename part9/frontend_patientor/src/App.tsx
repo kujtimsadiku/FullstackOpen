@@ -20,6 +20,7 @@ const App = () => {
       const patients = await patientService.getAll();
       setPatients(patients);
     };
+
     void fetchPatientList();
   }, []);
 
@@ -45,7 +46,7 @@ const App = () => {
               }
             />
             <Route
-              path="/patients/:id}"
+              path="/patients/:id"
               element={<PatientInfo patients={patients} />}
             />
           </Routes>
