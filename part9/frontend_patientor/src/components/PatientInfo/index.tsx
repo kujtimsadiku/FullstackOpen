@@ -17,7 +17,16 @@ const PatientInfo = ({ patients }: Props) => {
     return patient;
   };
 
-  const patient = match ? patientByID(match.params.id as string) : null;
+  const isString = (params: unknown): params is string => {
+    return typeof params === "string";
+  };
+
+  const parseID = (id: unknown): string => {
+    if (!isString(id)) return ""; // no need to throw error since im checking if (patient)
+    return id;
+  };
+
+  const patient = match ? patientByID(parseID(match.params.id)) : null;
   console.log(patient);
 
   if (patient) {
