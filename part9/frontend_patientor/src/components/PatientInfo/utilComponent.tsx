@@ -5,7 +5,7 @@ import MaleSharpIcon from "@mui/icons-material/MaleSharp";
 import React from "react";
 
 interface PatientProp {
-  patient: Patient | undefined;
+  patient: Patient;
 }
 
 interface DiagnoseProp {
@@ -60,7 +60,7 @@ const BulletCodeList = ({ codes, diagnosis }: BulletCodeListProps) => {
 export const ShowEntries = ({ diagnosis, patient }: ListProps) => {
   return (
     <>
-      {patient?.entries?.map((entry) => (
+      {patient.entries?.map((entry) => (
         <React.Fragment key={entry.id}>
           <Typography>
             {entry.date} {entry.description}
