@@ -15,14 +15,7 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
-export enum HealthCheckRating {
-  "Healthy" = 0,
-  "LowRisk" = 1,
-  "HighRisk" = 2,
-  "CriticalRisk" = 3,
-}
-
-interface Discharge extends BaseEntry {
+export interface Discharge {
   date: string;
   criteria: string;
 }
@@ -32,15 +25,22 @@ export interface HospitalEntry extends BaseEntry {
   discharge: Discharge;
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string;
   endDate: string;
 }
 
-export interface OccupationalHealthcareEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: SickLeave;
+}
+
+export enum HealthCheckRating {
+  "Healthy" = 0,
+  "LowRisk" = 1,
+  "HighRisk" = 2,
+  "CriticalRisk" = 3,
 }
 
 export interface HealthCheckEntry extends BaseEntry {
@@ -63,7 +63,7 @@ export interface Patient {
   ssn?: string;
   gender: Gender;
   occupation: string;
-  entries?: Entry[];
+  entries: Entry[];
 }
 
 /* to return an object patient without social-security-number */
@@ -72,3 +72,10 @@ export type NonPatientSsn = Omit<Patient, "ssn">;
 export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
 /* for sending an object without ID to create a new patient */
 export type NewPatientEntry = Omit<Patient, "id">;
+export type NewBaseEntry = Omit<BaseEntry, "id">;
+
+export type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type EntryWithoutID = UnionOmit<Entry, "id">;
