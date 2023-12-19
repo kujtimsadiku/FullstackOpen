@@ -1,10 +1,7 @@
-import React from "react";
 import { Container, Typography } from "@mui/material";
-import FemaleSharpIcon from "@mui/icons-material/FemaleSharp";
-import MaleSharpIcon from "@mui/icons-material/MaleSharp";
 import { Diagnosis, Patient } from "../../types";
 import { useMatch } from "react-router-dom";
-import { BulletCodeList } from "./listComponent";
+import { ShowEntries, ShowGender } from "./utilComponent";
 
 interface Props {
   patients: Patient[];
@@ -36,29 +33,14 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
       <Container style={{ paddingLeft: "0" }}>
         <Typography variant="h4" marginTop={"0.5em"}>
           {patient.name}
-          {patient.gender === "female" && (
-            <FemaleSharpIcon style={{ fontSize: 35 }} />
-          )}
-          {patient.gender === "male" && (
-            <MaleSharpIcon style={{ fontSize: 35 }} />
-          )}
+          <ShowGender gender={patient.gender} />
         </Typography>
         <Typography>ssh: {patient.ssn}</Typography>
         <Typography>occupation: {patient.occupation}</Typography>
         <Typography variant="h4" marginTop={"1em"}>
           entries
         </Typography>
-        {patient.entries?.map((entry) => (
-          <React.Fragment key={entry.id}>
-            <Typography>
-              {entry.date} {entry.description}
-            </Typography>
-            <BulletCodeList
-              codes={entry.diagnosisCodes}
-              diagnosis={diagnosis}
-            />
-          </React.Fragment>
-        ))}
+        <ShowEntries diagnosis={diagnosis} patient={patient} />
       </Container>
     );
   }
