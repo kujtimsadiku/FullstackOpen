@@ -11,7 +11,7 @@ interface Props {
 const PatientInfo = ({ patients, diagnosis }: Props) => {
   const match = useMatch("/patients/:id");
 
-  const patientByID = (id: string) => {
+  const patientByID = (id: string): Patient | undefined => {
     const patient = patients.find((p) => p.id === id);
 
     return patient;
@@ -23,6 +23,7 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
 
   const parseID = (id: unknown): string => {
     if (!isString(id)) return ""; // no need to throw error since im checking if (patient)
+
     return id;
   };
 

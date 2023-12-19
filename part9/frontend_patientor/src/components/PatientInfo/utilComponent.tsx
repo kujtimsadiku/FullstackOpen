@@ -1,7 +1,11 @@
-import { List, ListItem, Typography } from "@mui/material";
-import { Diagnosis, Patient } from "../../types";
+import { Container, List, ListItem, Typography } from "@mui/material";
+import { Diagnosis, Entry, Patient } from "../../types";
 import FemaleSharpIcon from "@mui/icons-material/FemaleSharp";
 import MaleSharpIcon from "@mui/icons-material/MaleSharp";
+import MonitorHeartRoundedIcon from "@mui/icons-material/MonitorHeartRounded"; //health check
+import HealthAndSafetyRoundedIcon from "@mui/icons-material/HealthAndSafetyRounded"; // hospital
+import MedicalInformationRoundedIcon from "@mui/icons-material/MedicalInformationRounded"; // healthcare
+import FavoriteIcon from "@mui/icons-material/Favorite"; // for health check
 import React from "react";
 
 interface PatientProp {
@@ -33,8 +37,49 @@ export const ShowGender = ({ gender }: { gender: string }) => {
     case "female":
       return <FemaleSharpIcon style={{ fontSize: 35 }} />;
     default:
-      return;
+      return null;
   }
+};
+
+const EntryDetails = ({ entry }: { entry: Entry }) => {
+  // const checkHealthRating =  // for health rating
+  switch (entry.type) {
+    case "Hospital":
+      return (
+        <>
+          <Typography>
+            {entry.date} <HealthAndSafetyRoundedIcon sx={{ color: "black" }} />
+          </Typography>
+        </>
+      );
+    case "HealthCheck":
+      return (
+        <>
+          <Typography>
+            {entry.date} <MonitorHeartRoundedIcon sx={{ color: "black" }} />
+          </Typography>
+          <Typography>{entry.description}</Typography>
+          <FavoriteIcon color="success" />
+        </>
+      );
+    case "OccupationalHealthcare":
+      return (
+        <>
+          <Typography>
+            {entry.date}{" "}
+            <MedicalInformationRoundedIcon sx={{ color: "black" }} />
+          </Typography>
+        </>
+      );
+    default:
+      assertNever(entry);
+  }
+};
+
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
 };
 
 const BulletCodeList = ({ codes, diagnosis }: BulletCodeListProps) => {
@@ -62,9 +107,7 @@ export const ShowEntries = ({ diagnosis, patient }: ListProps) => {
     <>
       {patient.entries?.map((entry) => (
         <React.Fragment key={entry.id}>
-          <Typography>
-            {entry.date} {entry.description}
-          </Typography>
+          <EntryDetails entry={entry} />
           {entry.diagnosisCodes && (
             <BulletCodeList
               codes={entry.diagnosisCodes}
