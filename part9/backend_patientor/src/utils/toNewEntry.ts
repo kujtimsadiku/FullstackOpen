@@ -31,8 +31,8 @@ const isHealthCheckRating = (num: number): num is HealthCheckRating => {
 };
 
 const parseHealthCheck = (object: unknown): HealthCheckRating => {
-  if (!object || !isNumber(object) || !isHealthCheckRating(object)) {
-    throw new Error("Incorrect or missing health check rating" + object);
+  if (!isNumber(object) || !isHealthCheckRating(object)) {
+    throw new Error("Incorrect or missing health check rating: " + object);
   }
 
   return object;
@@ -40,7 +40,7 @@ const parseHealthCheck = (object: unknown): HealthCheckRating => {
 
 const parseDescription = (description: unknown): string => {
   if (!description || !isString(description)) {
-    throw new Error("Incorrect or missing description" + description);
+    throw new Error("Incorrect or missing description " + description);
   }
 
   return description;
@@ -48,7 +48,7 @@ const parseDescription = (description: unknown): string => {
 
 const parseSpecialist = (specialist: unknown): string => {
   if (!specialist || !isString(specialist)) {
-    throw new Error("Incorrect or missing specialist" + specialist);
+    throw new Error("Incorrect or missing specialist " + specialist);
   }
 
   return specialist;
@@ -56,7 +56,7 @@ const parseSpecialist = (specialist: unknown): string => {
 
 const parseCriteria = (criteria: unknown): string => {
   if (!criteria || !isString(criteria)) {
-    throw new Error("Incorrect or missing criteria" + criteria);
+    throw new Error("Incorrect or missing criteria " + criteria);
   }
 
   return criteria;
