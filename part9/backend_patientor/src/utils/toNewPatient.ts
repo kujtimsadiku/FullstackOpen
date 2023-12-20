@@ -49,7 +49,7 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-const toNewPatientEntry = (object: unknown): NewPatientEntry => {
+const toNewPatient = (object: unknown): NewPatientEntry => {
   if (!object || typeof object !== "object") {
     throw new Error("Incorrect or missing data");
   }
@@ -76,4 +76,4 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
   throw new Error("Incorrect data: some fields are missing");
 };
 
-export default toNewPatientEntry;
+export default toNewPatient;
