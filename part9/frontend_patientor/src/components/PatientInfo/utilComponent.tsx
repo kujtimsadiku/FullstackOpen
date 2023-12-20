@@ -1,5 +1,5 @@
-import { Container, List, ListItem, Typography } from "@mui/material";
-import { Diagnosis, Entry, HealthCheckRating, Patient } from "../../types";
+import { List, ListItem, Typography } from "@mui/material";
+import { Diagnosis, Entry, Patient } from "../../types";
 import FemaleSharpIcon from "@mui/icons-material/FemaleSharp";
 import MaleSharpIcon from "@mui/icons-material/MaleSharp";
 import MonitorHeartRoundedIcon from "@mui/icons-material/MonitorHeartRounded"; //health check
