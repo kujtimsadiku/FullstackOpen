@@ -1,5 +1,5 @@
 import { Container, List, ListItem, Typography } from "@mui/material";
-import { Diagnosis, Entry, Patient } from "../../types";
+import { Diagnosis, Entry, HealthCheckRating, Patient } from "../../types";
 import FemaleSharpIcon from "@mui/icons-material/FemaleSharp";
 import MaleSharpIcon from "@mui/icons-material/MaleSharp";
 import MonitorHeartRoundedIcon from "@mui/icons-material/MonitorHeartRounded"; //health check
@@ -41,8 +41,22 @@ export const ShowGender = ({ gender }: { gender: string }) => {
   }
 };
 
+const HealthRatingCheck = ({ rating }: { rating: number }) => {
+  switch (rating) {
+    case 0:
+      return <FavoriteIcon sx={{ color: "green" }} />;
+    case 1:
+      return <FavoriteIcon sx={{ color: "yellow" }} />;
+    case 2:
+      return <FavoriteIcon sx={{ color: "orange" }} />;
+    case 3:
+      return <FavoriteIcon sx={{ color: "red" }} />;
+    default:
+      return null;
+  }
+};
+
 const EntryDetails = ({ entry }: { entry: Entry }) => {
-  // const checkHealthRating =  // for health rating
   switch (entry.type) {
     case "Hospital":
       return (
@@ -59,7 +73,7 @@ const EntryDetails = ({ entry }: { entry: Entry }) => {
             {entry.date} <MonitorHeartRoundedIcon sx={{ color: "black" }} />
           </Typography>
           <Typography>{entry.description}</Typography>
-          <FavoriteIcon color="success" />
+          <HealthRatingCheck rating={entry.healthCheckRating} />
         </>
       );
     case "OccupationalHealthcare":
