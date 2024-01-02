@@ -1,4 +1,4 @@
-import { List, ListItem, Typography } from "@mui/material";
+import { Container, List, ListItem, Typography } from "@mui/material";
 import { Diagnosis, Entry, Patient } from "../../types";
 import FemaleSharpIcon from "@mui/icons-material/FemaleSharp";
 import MaleSharpIcon from "@mui/icons-material/MaleSharp";
@@ -6,7 +6,6 @@ import MonitorHeartRoundedIcon from "@mui/icons-material/MonitorHeartRounded"; /
 import HealthAndSafetyRoundedIcon from "@mui/icons-material/HealthAndSafetyRounded"; // hospital
 import MedicalInformationRoundedIcon from "@mui/icons-material/MedicalInformationRounded"; // healthcare
 import FavoriteIcon from "@mui/icons-material/Favorite"; // for health check
-import React from "react";
 
 interface PatientProp {
   patient: Patient;
@@ -117,10 +116,20 @@ const BulletCodeList = ({ codes, diagnosis }: BulletCodeListProps) => {
 };
 
 export const ShowEntries = ({ diagnosis, patient }: ListProps) => {
+  const styleContainer = {
+    border: "2px solid black",
+    borderRadius: "10px",
+    margin: "10px 0px",
+  };
+
   return (
     <>
       {patient.entries?.map((entry) => (
-        <React.Fragment key={entry.id}>
+        <Container
+          key={entry.id}
+          sx={styleContainer}
+          style={{ paddingLeft: "10px" }}
+        >
           <EntryDetails entry={entry} />
           {entry.diagnosisCodes && (
             <BulletCodeList
@@ -129,7 +138,7 @@ export const ShowEntries = ({ diagnosis, patient }: ListProps) => {
             />
           )}
           <Typography>diagnose by {entry.specialist}</Typography>
-        </React.Fragment>
+        </Container>
       ))}
     </>
   );

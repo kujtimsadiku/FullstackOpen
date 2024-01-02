@@ -1,30 +1,41 @@
-import { Container, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import { Diagnosis, Patient } from "../../types";
 import { useMatch } from "react-router-dom";
 import { ShowEntries, ShowGender } from "./utilComponent";
+import { useState } from "react";
+import AddEntryModal from "../AddEntryModal/index";
 
 interface Props {
   patients: Patient[];
   diagnosis: Diagnosis[];
 }
 
+const isString = (params: unknown): params is string => {
+  return typeof params === "string";
+};
+
+const parseID = (id: unknown): string => {
+  if (!isString(id)) return ""; // no need to throw error since im checking if (patient)
+
+  return id;
+};
+
 const PatientInfo = ({ patients, diagnosis }: Props) => {
   const match = useMatch("/patients/:id");
+  const [type, setType] = useState<string>();
+  const [error, setError] = useState<string>();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const openModal = (): void => setModalOpen(true);
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
   const patientByID = (id: string): Patient | undefined => {
     const patient = patients.find((p) => p.id === id);
 
     return patient;
-  };
-
-  const isString = (params: unknown): params is string => {
-    return typeof params === "string";
-  };
-
-  const parseID = (id: unknown): string => {
-    if (!isString(id)) return ""; // no need to throw error since im checking if (patient)
-
-    return id;
   };
 
   const patient = match ? patientByID(parseID(match.params.id)) : null;
@@ -42,6 +53,15 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
           entries
         </Typography>
         <ShowEntries diagnosis={diagnosis} patient={patient} />
+        {/* <AddEntryModal
+          modalOpen={modalOpen}
+          onSubmit={handleSubmit}
+          onClose={closeModal}
+          error={error}
+        /> */}
+        <Button variant="contained" color="primary" onClick={() => openModal()}>
+          create new
+        </Button>
       </Container>
     );
   }
