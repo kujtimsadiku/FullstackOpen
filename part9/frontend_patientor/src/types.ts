@@ -68,6 +68,12 @@ export interface BaseEntry {
   diagnosisCodes?: Array<Diagnosis["code"]>;
 }
 
+export enum TypeEntryForm {
+  HealthCheckType = "HealthCheck",
+  HospitalType = "Hospital",
+  HealthCareType = "OccupationalHealthcare",
+}
+
 export type UnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
   : never;

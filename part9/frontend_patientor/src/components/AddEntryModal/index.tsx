@@ -1,5 +1,12 @@
-import { Dialog, DialogTitle } from "@mui/material";
+import {
+  Alert,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Divider,
+} from "@mui/material";
 import { EntryWithoutID } from "../../types";
+import AddEntryForm from "./EntryForm";
 
 interface Props {
   modalOpen: boolean;
@@ -13,7 +20,12 @@ interface Props {
 const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => {
   return (
     <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
-      <DialogTitle>New entry {type}</DialogTitle>
+      <DialogTitle>New entry</DialogTitle>
+      <Divider />
+      <DialogContent>
+        {error && <Alert severity="error">{error}</Alert>}
+        <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
+      </DialogContent>
     </Dialog>
   );
 };
