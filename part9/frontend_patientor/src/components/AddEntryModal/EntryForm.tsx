@@ -1,4 +1,10 @@
-import { Container, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Container,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { Entry, EntryWithoutID, TypeEntryForm } from "../../types";
 import { useState } from "react";
 
@@ -46,8 +52,13 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
 
   return (
     <Container>
+      <InputLabel style={{ marginTop: 20 }}>Visit Type</InputLabel>
       <Select label="type" fullWidth value={type} onChange={onTypeChange}>
-        {entryOptions.map((option) => )}
+        {entryOptions.map((option) => (
+          <MenuItem key={option.label} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
       </Select>
     </Container>
   );

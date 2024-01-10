@@ -1,5 +1,5 @@
 import { Button, Container, Typography } from "@mui/material";
-import { Diagnosis, Patient } from "../../types";
+import { Diagnosis, EntryWithoutID, Patient } from "../../types";
 import { useMatch } from "react-router-dom";
 import { ShowEntries, ShowGender } from "./utilComponent";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const parseID = (id: unknown): string => {
 
 const PatientInfo = ({ patients, diagnosis }: Props) => {
   const match = useMatch("/patients/:id");
-  const [type, setType] = useState<string>();
+  // const [type, setType] = useState<string>();
   const [error, setError] = useState<string>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -40,6 +40,12 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
 
   const patient = match ? patientByID(parseID(match.params.id)) : null;
 
+  // const handleEntrySubmit = async (values: EntryWithoutID) => {
+  //   try {
+  //     const patient = await ;
+  //   } catch (error) {}
+  // };
+
   if (patient) {
     return (
       <Container style={{ paddingLeft: "0" }}>
@@ -55,7 +61,7 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
         <ShowEntries diagnosis={diagnosis} patient={patient} />
         {/* <AddEntryModal
           modalOpen={modalOpen}
-          onSubmit={handleSubmit}
+          onSubmit={handleEntrySubmit}
           onClose={closeModal}
           error={error}
         /> */}
