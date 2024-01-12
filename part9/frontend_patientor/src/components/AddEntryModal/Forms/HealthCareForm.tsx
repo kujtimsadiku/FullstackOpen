@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { SickLeave } from "../../../types";
+import React from "react";
 
 interface Props {
   employerName: string;
@@ -14,7 +15,7 @@ export const HealthCareForm = ({
   sickLeave,
   setSickLeave,
 }: Props) => {
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSickLeave({
       ...sickLeave,
       [event.target.name]: event.target.value,

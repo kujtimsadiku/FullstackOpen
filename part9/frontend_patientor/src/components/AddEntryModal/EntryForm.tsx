@@ -88,7 +88,7 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnosis }: Props) => {
   return (
     <Container>
       <InputLabel style={{ marginTop: 20 }}>Visit Type</InputLabel>
-      <Select label="type" fullWidth value={type} onChange={onTypeChange}>
+      <Select fullWidth value={type} onChange={onTypeChange}>
         {entryOptions.map((option) => (
           <MenuItem key={option.label} value={option.value}>
             {option.label}

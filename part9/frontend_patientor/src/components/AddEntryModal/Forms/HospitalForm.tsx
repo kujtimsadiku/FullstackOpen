@@ -1,31 +1,35 @@
 import { TextField } from "@mui/material";
+import { Discharge } from "../../../types";
+import React from "react";
 
 interface Props {
-  dischargeDate: string;
-  criteria: string;
-  setDischargeDate: React.Dispatch<React.SetStateAction<string>>;
-  setDischargeCriteria: React.Dispatch<React.SetStateAction<string>>;
+  discharge: Discharge;
+  setDischarge: React.Dispatch<React.SetStateAction<Discharge>>;
 }
 
-export const HospitalForm = ({
-  dischargeDate,
-  criteria,
-  setDischargeCriteria,
-  setDischargeDate,
-}: Props) => {
+export const HospitalForm = ({ discharge, setDischarge }: Props) => {
+  const handleDischarge = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDischarge({
+      ...discharge,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <>
       <TextField
         label="Discharge Date"
         fullWidth
-        value={dischargeDate}
-        onChange={({ target }) => setDischargeDate(target.value)}
+        value={discharge.date}
+        name="date"
+        onChange={handleDischarge}
       />
       <TextField
-        label="Criteria for discharge"
+        label="Criteria"
         fullWidth
-        value={criteria}
-        onChange={({ target }) => setDischargeCriteria(target.value)}
+        value={discharge.criteria}
+        name="criteria"
+        onChange={handleDischarge}
       />
     </>
   );

@@ -1,7 +1,14 @@
-import { TextField } from "@mui/material";
-import { Diagnosis, EntryWithoutID, SickLeave } from "../../../types";
+import { Button, Grid, TextField } from "@mui/material";
+import {
+  Diagnosis,
+  Discharge,
+  EntryWithoutID,
+  SickLeave,
+} from "../../../types";
 import { useState } from "react";
 import { HospitalForm } from "./HospitalForm";
+import { HealthCheckForm } from "./HealthCheckForm";
+import { HealthCareForm } from "./HealthCareForm";
 
 interface Props {
   type: string;
@@ -11,21 +18,29 @@ interface Props {
 }
 
 export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
-  const [date, setDate] = useState<string>();
-  const [description, setDescription] = useState<string>();
-  const [specialist, setSpecialist] = useState<string>();
-  const [diagnose, setDiagnose] = useState<string>();
-  const [rating, setRating] = useState<string>();
-  const [dischargeDate, setDischargeDate] = useState<string>();
-  const [criteria, setDischargeCriteria] = useState<string>();
-  const [employerName, setEmployerName] = useState<string>();
-  const [sickLeave, setSickLeave] = useState<SickLeave>();
+  const [date, setDate] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [specialist, setSpecialist] = useState<string>("");
+  const [diagnose, setDiagnose] = useState<string>("");
+  const [rating, setRating] = useState<string>("");
+  const [employerName, setEmployerName] = useState<string>("");
+  const [discharge, setDischarge] = useState<Discharge>({
+    date: "",
+    criteria: "",
+  });
+  const [sickLeave, setSickLeave] = useState<SickLeave>({
+    startDate: "",
+    endDate: "",
+  });
 
+  const handleEntry = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+  };
   // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleEntry}>
         <TextField
           label="Description"
           fullWidth
@@ -51,9 +66,44 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
           value={diagnose}
           onChange={({ target }) => setDiagnose(target.value)}
         />
-        {type === "Hospital" && <HospitalForm />}
-        {type === "HealthCare" && <HospitalForm />}
-        {type === "OccupationalHealthcare" && <HospitalForm />}
+        {type === "Hospital" && (
+          <HospitalForm discharge={discharge} setDischarge={setDischarge} />
+        )}
+        {type === "HealthCheck" && (
+          <HealthCareForm
+            employerName={employerName}
+            setEmployerName={setEmployerName}
+            sickLeave={sickLeave}
+            setSickLeave={setSickLeave}
+          />
+        )}
+        {type === "OccupationalHealthcare" && (
+          <HealthCheckForm rating={rating} setRating={setRating} />
+        )}
+        <Grid>
+          <Grid item>
+            <Button
+              color="secondary"
+              variant="contained"
+              style={{ float: "left" }}
+              type="button"
+              onClick={onCancel}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              style={{
+                float: "right",
+              }}
+              type="submit"
+              variant="contained"
+            >
+              Add
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </div>
   );
