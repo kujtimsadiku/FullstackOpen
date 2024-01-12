@@ -5,15 +5,14 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { EntryWithoutID, TypeEntryForm } from "../../types";
+import { Diagnosis, EntryWithoutID, TypeEntryForm } from "../../types";
 import { useState } from "react";
-import { HospitalForm } from "./Forms/HospitalForm";
-import { HealthCheckForm } from "./Forms/HealthCheck";
-import { HealthCareForm } from "./Forms/HealthCareForm";
+import { BaseForm } from "./Forms/BaseForm";
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: EntryWithoutID) => void;
+  diagnosis: Diagnosis[];
 }
 
 interface EntryOptions {
@@ -25,20 +24,39 @@ interface ChoosedEntryFormProps extends Props {
   entry: string;
 }
 
-const ChoosedEntryForm = (props: ChoosedEntryFormProps) => {
-  console.log(props.entry);
-  switch (props.entry) {
+const ChoosedEntryForm = ({
+  entry,
+  onCancel,
+  onSubmit,
+  diagnosis,
+}: ChoosedEntryFormProps) => {
+  switch (entry) {
     case "Hospital":
       return (
-        <HospitalForm onCancel={props.onCancel} onSubmit={props.onSubmit} />
+        <BaseForm
+          type="Hospital"
+          onCancel={onCancel}
+          onSubmit={onSubmit}
+          diagnosis={diagnosis}
+        />
       );
     case "HealthCheck":
       return (
-        <HealthCheckForm onCancel={props.onCancel} onSubmit={props.onSubmit} />
+        <BaseForm
+          type="HealthCheck"
+          onCancel={onCancel}
+          onSubmit={onSubmit}
+          diagnosis={diagnosis}
+        />
       );
     case "OccupationalHealthcare":
       return (
-        <HealthCareForm onCancel={props.onCancel} onSubmit={props.onSubmit} />
+        <BaseForm
+          type="OccupationalHealthcare"
+          onCancel={onCancel}
+          onSubmit={onSubmit}
+          diagnosis={diagnosis}
+        />
       );
     default:
       return;
@@ -50,7 +68,7 @@ const entryOptions: EntryOptions[] = Object.values(TypeEntryForm).map((v) => ({
   label: v.toString(),
 }));
 
-const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+const AddEntryForm = ({ onCancel, onSubmit, diagnosis }: Props) => {
   const [type, setType] = useState<TypeEntryForm>(TypeEntryForm.HospitalType);
 
   const onTypeChange = (event: SelectChangeEvent<string>) => {
@@ -77,7 +95,12 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           </MenuItem>
         ))}
       </Select>
-      <ChoosedEntryForm entry={type} onSubmit={onSubmit} onCancel={onCancel} />
+      <ChoosedEntryForm
+        entry={type}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+        diagnosis={diagnosis}
+      />
     </Container>
   );
 };

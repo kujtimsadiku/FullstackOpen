@@ -86,6 +86,7 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
           onSubmit={handleEntrySubmit}
           onClose={closeModal}
           error={error}
+          diagnosis={diagnosis}
         />
         <Button variant="contained" color="primary" onClick={() => openModal()}>
           create new

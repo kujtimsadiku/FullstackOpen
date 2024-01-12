@@ -1,59 +1,58 @@
-import { Button, TextField } from "@mui/material";
-import { Diagnosis } from "../../../types";
+import { TextField } from "@mui/material";
+import { Diagnosis, EntryWithoutID } from "../../../types";
+import { useState } from "react";
+import { HospitalForm } from "./HospitalForm";
 
 interface Props {
-  description: string;
-  date: string;
-  specialist: string;
-  diagnosis: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  setDate: React.Dispatch<React.SetStateAction<string>>;
-  setSpecialist: React.Dispatch<React.SetStateAction<string>>;
-  setDiagnosis: React.Dispatch<React.SetStateAction<string>>;
-  setDiagnosisCodes: React.Dispatch<
-    React.SetStateAction<Array<Diagnosis["code"]>>
-  >;
+  type: string;
+  onCancel: () => void;
+  onSubmit: (values: EntryWithoutID) => void;
+  diagnosis: Diagnosis[];
 }
 
-export const BaseForm = (props: Props) => {
+export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
+  const [date, setDate] = useState<string>();
+  const [description, setDescription] = useState<string>();
+  const [specialist, setSpecialist] = useState<string>();
+  const [diagnose, setDiagnose] = useState<string>();
+  const [rating, setRating] = useState<string>();
+  const [dischargeDate, setDischargeDate] = useState<string>();
+  const [criteria, setDischargeCriteria] = useState<string>();
+
+  // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
+
   return (
-    <>
-      <TextField
-        label="Description"
-        fullWidth
-        value={props.description}
-        onChange={({ target }) => props.setDescription(target.value)}
-      />
-      <TextField
-        label="Date"
-        placeholder="YYYY-MM-DD"
-        fullWidth
-        value={props.date}
-        onChange={({ target }) => props.setDate(target.value)}
-      />
-      <TextField
-        label="Specialist"
-        fullWidth
-        value={props.specialist}
-        onChange={({ target }) => props.setSpecialist(target.value)}
-      />
-      <TextField
-        label="Codes"
-        fullWidth
-        value={props.diagnosis}
-        onChange={({ target }) => props.setDiagnosis(target.value)}
-      />
-      <Button
-        color="secondary"
-        variant="contained"
-        style={{ float: "left" }}
-        type="button"
-        onClick={() =>
-          props.setDiagnosisCodes((prev) => [...prev, props.diagnosis])
-        }
-      >
-        Add
-      </Button>
-    </>
+    <div>
+      <form>
+        <TextField
+          label="Description"
+          fullWidth
+          value={description}
+          onChange={({ target }) => setDescription(target.value)}
+        />
+        <TextField
+          label="Date"
+          placeholder="YYYY-MM-DD"
+          fullWidth
+          value={date}
+          onChange={({ target }) => setDate(target.value)}
+        />
+        <TextField
+          label="Specialist"
+          fullWidth
+          value={specialist}
+          onChange={({ target }) => setSpecialist(target.value)}
+        />
+        <TextField
+          label="Diagnose Codes"
+          fullWidth
+          value={diagnose}
+          onChange={({ target }) => setDiagnose(target.value)}
+        />
+        {type === "Hospital" && <HospitalForm />}
+        {type === "HealthCare" && <HospitalForm />}
+        {type === "OccupationalHealthcare" && <HospitalForm />}
+      </form>
+    </div>
   );
 };

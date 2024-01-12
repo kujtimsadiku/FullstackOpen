@@ -1,14 +1,32 @@
-import { EntryWithoutID } from "../../../types";
+import { TextField } from "@mui/material";
 
 interface Props {
-  onCancel: () => void;
-  onSubmit: (values: EntryWithoutID) => void;
+  dischargeDate: string;
+  criteria: string;
+  setDischargeDate: React.Dispatch<React.SetStateAction<string>>;
+  setDischargeCriteria: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const HospitalForm = (props: Props) => {
+export const HospitalForm = ({
+  dischargeDate,
+  criteria,
+  setDischargeCriteria,
+  setDischargeDate,
+}: Props) => {
   return (
-    <div>
-      <form></form>
-    </div>
+    <>
+      <TextField
+        label="Discharge Date"
+        fullWidth
+        value={dischargeDate}
+        onChange={({ target }) => setDischargeDate(target.value)}
+      />
+      <TextField
+        label="Criteria for discharge"
+        fullWidth
+        value={criteria}
+        onChange={({ target }) => setDischargeCriteria(target.value)}
+      />
+    </>
   );
 };

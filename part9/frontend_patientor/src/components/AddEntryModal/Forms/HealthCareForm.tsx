@@ -1,14 +1,10 @@
 import { EntryWithoutID } from "../../../types";
 
 interface Props {
-  onCancel: () => void;
-  onSubmit: (values: EntryWithoutID) => void;
+  employerName: string;
+  setEmployerName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const HealthCareForm = (props: Props) => {
-  return (
-    <div>
-      <form></form>
-    </div>
-  );
+  return <div></div>;
 };
