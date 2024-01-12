@@ -44,7 +44,7 @@ export const BaseForm = (props: Props) => {
         onChange={({ target }) => props.setDiagnosis(target.value)}
       />
       <Button
-        ccolor="secondary"
+        color="secondary"
         variant="contained"
         style={{ float: "left" }}
         type="button"
