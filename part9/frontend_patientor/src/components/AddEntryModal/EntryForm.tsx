@@ -5,28 +5,45 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { Entry, EntryWithoutID, TypeEntryForm } from "../../types";
+import { EntryWithoutID, TypeEntryForm } from "../../types";
 import { useState } from "react";
+import { HospitalForm } from "./Forms/HospitalForm";
+import { HealthCheckForm } from "./Forms/HealthCheck";
+import { HealthCareForm } from "./Forms/HealthCareForm";
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: EntryWithoutID) => void;
 }
 
-interface EntryType {
-  type: Entry;
-}
-
-// const ChooseEntryForm = (entry: string) => {
-//   switch (entry) {
-
-//   }
-// };
-
 interface EntryOptions {
   value: TypeEntryForm;
   label: string;
 }
+
+interface ChoosedEntryFormProps extends Props {
+  entry: string;
+}
+
+const ChoosedEntryForm = (props: ChoosedEntryFormProps) => {
+  console.log(props.entry);
+  switch (props.entry) {
+    case "Hospital":
+      return (
+        <HospitalForm onCancel={props.onCancel} onSubmit={props.onSubmit} />
+      );
+    case "HealthCheck":
+      return (
+        <HealthCheckForm onCancel={props.onCancel} onSubmit={props.onSubmit} />
+      );
+    case "OccupationalHealthcare":
+      return (
+        <HealthCareForm onCancel={props.onCancel} onSubmit={props.onSubmit} />
+      );
+    default:
+      return;
+  }
+};
 
 const entryOptions: EntryOptions[] = Object.values(TypeEntryForm).map((v) => ({
   value: v,
@@ -34,7 +51,7 @@ const entryOptions: EntryOptions[] = Object.values(TypeEntryForm).map((v) => ({
 }));
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
-  const [type, setType] = useState<TypeEntryForm>();
+  const [type, setType] = useState<TypeEntryForm>(TypeEntryForm.HospitalType);
 
   const onTypeChange = (event: SelectChangeEvent<string>) => {
     event.preventDefault();
@@ -60,6 +77,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           </MenuItem>
         ))}
       </Select>
+      <ChoosedEntryForm entry={type} onSubmit={onSubmit} onCancel={onCancel} />
     </Container>
   );
 };

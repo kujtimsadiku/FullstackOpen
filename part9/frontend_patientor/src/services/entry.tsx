@@ -1,6 +1,14 @@
 import axios from "axios";
-import { EntryWithoutID } from "../types";
+import { Entry, EntryWithoutID } from "../types";
+
+import { apiBaseUrl } from "../constants";
 
 const create = async (object: EntryWithoutID) => {
-  const { data } = await axios.post<>;
+  const { data } = await axios.post<Entry>(`${apiBaseUrl}/:id/entries`, object);
+
+  return data;
+};
+
+export default {
+  create,
 };

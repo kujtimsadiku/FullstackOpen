@@ -4,6 +4,8 @@ import { useMatch } from "react-router-dom";
 import { ShowEntries, ShowGender } from "./utilComponent";
 import { useState } from "react";
 import AddEntryModal from "../AddEntryModal/index";
+import entriesService from "../../services/entry";
+import axios from "axios";
 
 interface Props {
   patients: Patient[];
@@ -22,7 +24,6 @@ const parseID = (id: unknown): string => {
 
 const PatientInfo = ({ patients, diagnosis }: Props) => {
   const match = useMatch("/patients/:id");
-  // const [type, setType] = useState<string>();
   const [error, setError] = useState<string>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -40,11 +41,32 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
 
   const patient = match ? patientByID(parseID(match.params.id)) : null;
 
-  // const handleEntrySubmit = async (values: EntryWithoutID) => {
-  //   try {
-  //     const patient = await ;
-  //   } catch (error) {}
-  // };
+  const handleEntrySubmit = async (values: EntryWithoutID) => {
+    try {
+      const entry = await entriesService.create(values);
+
+      patient?.entries.push(entry);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error?.response?.data &&
+          typeof error?.response?.data === "string"
+        ) {
+          const message = error.response.data.replace(
+            "Something went wrong. Error: ",
+            ""
+          );
+          console.error(message);
+          setError(message);
+        } else {
+          setError("Unrecognized axios error");
+        }
+      } else {
+        console.error("Unknown error", error);
+        setError("Unknown error");
+      }
+    }
+  };
 
   if (patient) {
     return (
@@ -59,12 +81,12 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
           entries
         </Typography>
         <ShowEntries diagnosis={diagnosis} patient={patient} />
-        {/* <AddEntryModal
+        <AddEntryModal
           modalOpen={modalOpen}
           onSubmit={handleEntrySubmit}
           onClose={closeModal}
           error={error}
-        /> */}
+        />
         <Button variant="contained" color="primary" onClick={() => openModal()}>
           create new
         </Button>
