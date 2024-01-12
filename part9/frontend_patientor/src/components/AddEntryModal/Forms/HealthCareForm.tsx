@@ -15,7 +15,9 @@ export const HealthCareForm = ({
   sickLeave,
   setSickLeave,
 }: Props) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSickLeaveChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSickLeave({
       ...sickLeave,
       [event.target.name]: event.target.value,
@@ -31,18 +33,20 @@ export const HealthCareForm = ({
         onChange={({ target }) => setEmployerName(target.value)}
       />
       <TextField
-        label="Sick Leave Start Day"
+        label="Sick Leave Start Date"
         fullWidth
-        name="startDay"
+        name="startDate"
+        placeholder="YYYY-MM-DD"
         value={sickLeave.startDate}
-        onChange={handleChange}
+        onChange={handleSickLeaveChange}
       />
       <TextField
-        label="Sick Leave End Day"
+        label="Sick Leave End Date"
+        placeholder="YYYY-MM-DD"
         fullWidth
-        name="endDay"
+        name="endDate"
         value={sickLeave.endDate}
-        onChange={handleChange}
+        onChange={handleSickLeaveChange}
       />
     </>
   );

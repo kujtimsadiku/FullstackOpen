@@ -24,6 +24,7 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
   const [diagnose, setDiagnose] = useState<string>("");
   const [rating, setRating] = useState<string>("");
   const [employerName, setEmployerName] = useState<string>("");
+  const [entry, setEntry] = useState<EntryWithoutID>();
   const [discharge, setDischarge] = useState<Discharge>({
     date: "",
     criteria: "",
@@ -33,10 +34,32 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
     endDate: "",
   });
 
+  // function maybe to handle the type checking or guarding
+  function CorrectEntry(entryForm: EntryWithoutID): EntryWithoutID {
+    switch (type) {
+      case "Hospital":
+        return;
+    }
+  }
+
+  // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
+
   const handleEntry = (event: React.SyntheticEvent) => {
     event.preventDefault();
+
+    const diagnosisCodes: Array<Diagnosis["code"]> | undefined = diagnose
+      .split(",")
+      .map((d) => d.trim());
+
+    const baseEntry = {
+      description,
+      date,
+      specialist,
+      diagnosisCodes,
+    };
+
+    const entryToSubmit: EntryWithoutID = CorrectEntry(baseEntry);
   };
-  // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
 
   return (
     <div>
