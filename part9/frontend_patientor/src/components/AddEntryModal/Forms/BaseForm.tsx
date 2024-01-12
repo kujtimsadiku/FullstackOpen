@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { Diagnosis, EntryWithoutID } from "../../../types";
+import { Diagnosis, EntryWithoutID, SickLeave } from "../../../types";
 import { useState } from "react";
 import { HospitalForm } from "./HospitalForm";
 
@@ -18,6 +18,8 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
   const [rating, setRating] = useState<string>();
   const [dischargeDate, setDischargeDate] = useState<string>();
   const [criteria, setDischargeCriteria] = useState<string>();
+  const [employerName, setEmployerName] = useState<string>();
+  const [sickLeave, setSickLeave] = useState<SickLeave>();
 
   // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
 
