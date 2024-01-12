@@ -3,6 +3,7 @@ import {
   Diagnosis,
   Discharge,
   EntryWithoutID,
+  HealthCheckRating,
   SickLeave,
 } from "../../../types";
 import { useState } from "react";
@@ -14,17 +15,17 @@ interface Props {
   type: string;
   onCancel: () => void;
   onSubmit: (values: EntryWithoutID) => void;
-  diagnosis: Diagnosis[];
 }
 
-export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
+export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
   const [date, setDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [specialist, setSpecialist] = useState<string>("");
   const [diagnose, setDiagnose] = useState<string>("");
-  const [rating, setRating] = useState<string>("");
+  const [healthCheckRating, setHealthCheckRating] = useState(
+    HealthCheckRating.Healthy
+  );
   const [employerName, setEmployerName] = useState<string>("");
-  const [entry, setEntry] = useState<EntryWithoutID>();
   const [discharge, setDischarge] = useState<Discharge>({
     date: "",
     criteria: "",
@@ -33,14 +34,6 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
     startDate: "",
     endDate: "",
   });
-
-  // function maybe to handle the type checking or guarding
-  function CorrectEntry(entryForm: EntryWithoutID): EntryWithoutID {
-    switch (type) {
-      case "Hospital":
-        return;
-    }
-  }
 
   // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
 
@@ -58,7 +51,18 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
       diagnosisCodes,
     };
 
-    const entryToSubmit: EntryWithoutID = CorrectEntry(baseEntry);
+    switch (type) {
+      case "Hospital":
+        onSubmit({ type: "Hospital", ...baseEntry, discharge });
+      case "HealthCheck":
+        onSubmit({
+          type: "HealthCheck",
+          ...baseEntry,
+          healthCheckRating: rating,
+        });
+      default:
+        break;
+    }
   };
 
   return (
@@ -92,7 +96,7 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
         {type === "Hospital" && (
           <HospitalForm discharge={discharge} setDischarge={setDischarge} />
         )}
-        {type === "HealthCheck" && (
+        {type === "OccupationalHealthcare" && (
           <HealthCareForm
             employerName={employerName}
             setEmployerName={setEmployerName}
@@ -100,8 +104,11 @@ export const BaseForm = ({ type, onCancel, onSubmit, diagnosis }: Props) => {
             setSickLeave={setSickLeave}
           />
         )}
-        {type === "OccupationalHealthcare" && (
-          <HealthCheckForm rating={rating} setRating={setRating} />
+        {type === "HealthCheck" && (
+          <HealthCheckForm
+            rating={healthCheckRating}
+            setRating={setHealthCheckRating}
+          />
         )}
         <Grid>
           <Grid item>

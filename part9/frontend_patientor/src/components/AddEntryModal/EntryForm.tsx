@@ -5,14 +5,13 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { Diagnosis, EntryWithoutID, TypeEntryForm } from "../../types";
+import { EntryWithoutID, TypeEntryForm } from "../../types";
 import { useState } from "react";
 import { BaseForm } from "./Forms/BaseForm";
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: EntryWithoutID) => void;
-  diagnosis: Diagnosis[];
 }
 
 interface EntryOptions {
@@ -28,26 +27,15 @@ const ChoosedEntryForm = ({
   entry,
   onCancel,
   onSubmit,
-  diagnosis,
 }: ChoosedEntryFormProps) => {
   switch (entry) {
     case "Hospital":
       return (
-        <BaseForm
-          type="Hospital"
-          onCancel={onCancel}
-          onSubmit={onSubmit}
-          diagnosis={diagnosis}
-        />
+        <BaseForm type="Hospital" onCancel={onCancel} onSubmit={onSubmit} />
       );
     case "HealthCheck":
       return (
-        <BaseForm
-          type="HealthCheck"
-          onCancel={onCancel}
-          onSubmit={onSubmit}
-          diagnosis={diagnosis}
-        />
+        <BaseForm type="HealthCheck" onCancel={onCancel} onSubmit={onSubmit} />
       );
     case "OccupationalHealthcare":
       return (
@@ -55,7 +43,6 @@ const ChoosedEntryForm = ({
           type="OccupationalHealthcare"
           onCancel={onCancel}
           onSubmit={onSubmit}
-          diagnosis={diagnosis}
         />
       );
     default:
@@ -68,7 +55,7 @@ const entryOptions: EntryOptions[] = Object.values(TypeEntryForm).map((v) => ({
   label: v.toString(),
 }));
 
-const AddEntryForm = ({ onCancel, onSubmit, diagnosis }: Props) => {
+const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [type, setType] = useState<TypeEntryForm>(TypeEntryForm.HospitalType);
 
   const onTypeChange = (event: SelectChangeEvent<string>) => {
@@ -95,12 +82,7 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnosis }: Props) => {
           </MenuItem>
         ))}
       </Select>
-      <ChoosedEntryForm
-        entry={type}
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-        diagnosis={diagnosis}
-      />
+      <ChoosedEntryForm entry={type} onSubmit={onSubmit} onCancel={onCancel} />
     </Container>
   );
 };

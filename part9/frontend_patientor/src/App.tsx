@@ -48,25 +48,25 @@ const App = () => {
             Home
           </Button>
           <Divider hidden />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PatientListPage
-                  patients={patients}
-                  setPatients={setPatients}
-                />
-              }
-            />
-            <DiagnosisContext.Provider value={diagnosis}>
+          <DiagnosisContext.Provider value={diagnosis}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PatientListPage
+                    patients={patients}
+                    setPatients={setPatients}
+                  />
+                }
+              />
               <Route
                 path="/patients/:id"
                 element={
                   <PatientInfo patients={patients} diagnosis={diagnosis} />
                 }
               />
-            </DiagnosisContext.Provider>
-          </Routes>
+            </Routes>
+          </DiagnosisContext.Provider>
         </Container>
       </Router>
     </div>
