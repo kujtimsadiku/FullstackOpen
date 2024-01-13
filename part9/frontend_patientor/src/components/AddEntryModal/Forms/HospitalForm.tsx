@@ -18,14 +18,14 @@ export const HospitalForm = ({ discharge, setDischarge }: Props) => {
   return (
     <>
       <TextField
-        label="Discharge Date"
+        type="date"
         fullWidth
         value={discharge.date}
         name="date"
         onChange={handleDischarge}
       />
       <TextField
-        label="Criteria"
+        label="Discharge Criteria"
         fullWidth
         value={discharge.criteria}
         name="criteria"

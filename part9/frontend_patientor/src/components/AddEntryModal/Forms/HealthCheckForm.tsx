@@ -6,41 +6,40 @@ interface Props {
   setRating: React.Dispatch<React.SetStateAction<HealthCheckRating>>;
 }
 
-interface RaitingOptions {
-  value: HealthCheckRating;
+interface RatingOptions {
+  value: number;
   label: string;
 }
 
-const raitingOptions: RaitingOptions[] = Object.values(HealthCheckRating).map(
-  (r) => {
-    return {
-      value: r,
-      label: r.toString(),
-    };
-  }
-);
+const ratingOptions: RatingOptions[] = Object.values(HealthCheckRating)
+  .filter((r) => typeof r === "number")
+  .map((v) => ({
+    value: v as number,
+    label: v.toString(),
+  }));
 
 export const HealthCheckForm = ({ rating, setRating }: Props) => {
-  const onHealthCheckChange = (event: SelectChangeEvent<string>) => {
+  const onHealthCheckChange = (event: SelectChangeEvent<HealthCheckRating>) => {
     event.preventDefault();
 
-    if (typeof event.target.value === "string") {
-      const value = event.target.value;
-      const healthRating = Object.values(HealthCheckRating).find(
-        (r) => r.toString() === value
-      );
+    if (typeof event.target.value === "number") {
+      const value = Number(event.target.value);
+      const healthRating = Object.values(HealthCheckRating);
 
-      console.log(healthRating);
+      if (healthRating && healthRating.includes(value)) {
+        setRating(value);
+        console.log(rating);
+      }
     }
   };
 
   return (
     <>
       <InputLabel>Health Rating</InputLabel>
-      <Select fullWidth value={""} onChange={onHealthCheckChange}>
-        {raitingOptions.map((r) => (
+      <Select fullWidth value={rating} onChange={onHealthCheckChange}>
+        {ratingOptions.map((r) => (
           <MenuItem key={r.label} value={r.value}>
-            {r.label}
+            {r.value}
           </MenuItem>
         ))}
       </Select>

@@ -1,27 +1,25 @@
 import { Container, List, ListItem, Typography } from "@mui/material";
-import { Diagnosis, Entry, Patient } from "../../types";
+import { Entry, Patient } from "../../types";
 import FemaleSharpIcon from "@mui/icons-material/FemaleSharp";
 import MaleSharpIcon from "@mui/icons-material/MaleSharp";
 import MonitorHeartRoundedIcon from "@mui/icons-material/MonitorHeartRounded"; //health check
 import HealthAndSafetyRoundedIcon from "@mui/icons-material/HealthAndSafetyRounded"; // hospital
 import MedicalInformationRoundedIcon from "@mui/icons-material/MedicalInformationRounded"; // healthcare
 import FavoriteIcon from "@mui/icons-material/Favorite"; // for health check
+import { useContext } from "react";
+import DiagnosisContext from "../../contexts/diagnosisContext";
 
 interface PatientProp {
   patient: Patient;
 }
 
-interface DiagnoseProp {
-  diagnosis: Diagnosis[];
-}
-
-interface ListProps extends PatientProp, DiagnoseProp {}
+interface ListProps extends PatientProp {}
 
 interface CodeProp {
   codes: string[];
 }
 
-interface BulletCodeListProps extends DiagnoseProp, CodeProp {}
+interface BulletCodeListProps extends CodeProp {}
 
 type Diagnose = {
   code: string;
@@ -95,7 +93,9 @@ const assertNever = (value: never): never => {
   );
 };
 
-const BulletCodeList = ({ codes, diagnosis }: BulletCodeListProps) => {
+const BulletCodeList = ({ codes }: BulletCodeListProps) => {
+  const diagnosis = useContext(DiagnosisContext);
+
   const diagnoseChecker = (code: string): string | undefined => {
     const found_diagnose: Diagnose | undefined = diagnosis?.find(
       (diagnose) => diagnose.code === code
@@ -115,7 +115,7 @@ const BulletCodeList = ({ codes, diagnosis }: BulletCodeListProps) => {
   );
 };
 
-export const ShowEntries = ({ diagnosis, patient }: ListProps) => {
+export const ShowEntries = ({ patient }: ListProps) => {
   const styleContainer = {
     border: "2px solid black",
     borderRadius: "10px",
@@ -132,10 +132,7 @@ export const ShowEntries = ({ diagnosis, patient }: ListProps) => {
         >
           <EntryDetails entry={entry} />
           {entry.diagnosisCodes && (
-            <BulletCodeList
-              codes={entry.diagnosisCodes}
-              diagnosis={diagnosis}
-            />
+            <BulletCodeList codes={entry.diagnosisCodes} />
           )}
           <Typography>diagnose by {entry.specialist}</Typography>
         </Container>

@@ -1,5 +1,5 @@
 import { Button, Container, Typography } from "@mui/material";
-import { Diagnosis, EntryWithoutID, Patient } from "../../types";
+import { EntryWithoutID, Patient } from "../../types";
 import { useMatch } from "react-router-dom";
 import { ShowEntries, ShowGender } from "./utilComponent";
 import { useState } from "react";
@@ -9,7 +9,6 @@ import axios from "axios";
 
 interface Props {
   patients: Patient[];
-  diagnosis: Diagnosis[];
 }
 
 const isString = (params: unknown): params is string => {
@@ -22,7 +21,7 @@ const parseID = (id: unknown): string => {
   return id;
 };
 
-const PatientInfo = ({ patients, diagnosis }: Props) => {
+const PatientInfo = ({ patients }: Props) => {
   const match = useMatch("/patients/:id");
   const [error, setError] = useState<string>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -43,7 +42,11 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
 
   const handleEntrySubmit = async (values: EntryWithoutID) => {
     try {
-      const entry = await entriesService.create(values);
+      if (!patient?.id) {
+        return;
+      }
+      console.log(values, "Here are the values");
+      const entry = await entriesService.create(patient?.id, values);
 
       patient?.entries.push(entry);
     } catch (error: unknown) {
@@ -80,13 +83,12 @@ const PatientInfo = ({ patients, diagnosis }: Props) => {
         <Typography variant="h4" marginTop={"1em"}>
           entries
         </Typography>
-        <ShowEntries diagnosis={diagnosis} patient={patient} />
+        <ShowEntries patient={patient} />
         <AddEntryModal
           modalOpen={modalOpen}
           onSubmit={handleEntrySubmit}
           onClose={closeModal}
           error={error}
-          diagnosis={diagnosis}
         />
         <Button variant="contained" color="primary" onClick={() => openModal()}>
           create new

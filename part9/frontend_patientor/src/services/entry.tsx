@@ -3,8 +3,11 @@ import { Entry, EntryWithoutID } from "../types";
 
 import { apiBaseUrl } from "../constants";
 
-const create = async (object: EntryWithoutID) => {
-  const { data } = await axios.post<Entry>(`${apiBaseUrl}/:id/entries`, object);
+const create = async (ID: string, object: EntryWithoutID) => {
+  const { data } = await axios.post<Entry>(
+    `${apiBaseUrl}/patients/${ID}/entries`,
+    object
+  );
 
   return data;
 };

@@ -61,9 +61,7 @@ const App = () => {
               />
               <Route
                 path="/patients/:id"
-                element={
-                  <PatientInfo patients={patients} diagnosis={diagnosis} />
-                }
+                element={<PatientInfo patients={patients} />}
               />
             </Routes>
           </DiagnosisContext.Provider>

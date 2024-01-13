@@ -1,4 +1,13 @@
-import { Button, Grid, TextField } from "@mui/material";
+import {
+  Button,
+  Grid,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import {
   Diagnosis,
   Discharge,
@@ -6,10 +15,11 @@ import {
   HealthCheckRating,
   SickLeave,
 } from "../../../types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { HospitalForm } from "./HospitalForm";
 import { HealthCheckForm } from "./HealthCheckForm";
 import { HealthCareForm } from "./HealthCareForm";
+import DiagnosisContext from "../../../contexts/diagnosisContext";
 
 interface Props {
   type: string;
@@ -21,8 +31,10 @@ export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
   const [date, setDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [specialist, setSpecialist] = useState<string>("");
-  const [diagnose, setDiagnose] = useState<string>("");
-  const [healthCheckRating, setHealthCheckRating] = useState(
+  const [diagnosisCodes, setDiagnoseCodes] = useState<Array<Diagnosis["code"]>>(
+    []
+  );
+  const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(
     HealthCheckRating.Healthy
   );
   const [employerName, setEmployerName] = useState<string>("");
@@ -34,15 +46,35 @@ export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
     startDate: "",
     endDate: "",
   });
+  const codes = useContext(DiagnosisContext);
 
-  // here you need to create a handler for form (handle diagnoses, discharge, sickleave and rating)
+  const clearForm = (): void => {
+    setDate("");
+    setDescription("");
+    setSpecialist("");
+    setDiagnoseCodes([]);
+    setHealthCheckRating(HealthCheckRating.Healthy);
+    setEmployerName("");
+    setDischarge({
+      date: "",
+      criteria: "",
+    });
+    setSickLeave({
+      startDate: "",
+      endDate: "",
+    });
+  };
+
+  const onDiagnoseChange = (event: SelectChangeEvent<string[]>) => {
+    event.preventDefault();
+
+    typeof event.target.value === "string"
+      ? setDiagnoseCodes(event.target.value.split(", "))
+      : setDiagnoseCodes(event.target.value);
+  };
 
   const handleEntry = (event: React.SyntheticEvent) => {
     event.preventDefault();
-
-    const diagnosisCodes: Array<Diagnosis["code"]> | undefined = diagnose
-      .split(",")
-      .map((d) => d.trim());
 
     const baseEntry = {
       description,
@@ -54,12 +86,23 @@ export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
     switch (type) {
       case "Hospital":
         onSubmit({ type: "Hospital", ...baseEntry, discharge });
+        break;
       case "HealthCheck":
+        console.log(healthCheckRating, "Boom");
         onSubmit({
           type: "HealthCheck",
           ...baseEntry,
-          healthCheckRating: rating,
+          healthCheckRating,
         });
+        break;
+      case "OccupationalHealthcare":
+        onSubmit({
+          type: "OccupationalHealthcare",
+          ...baseEntry,
+          employerName,
+          sickLeave,
+        });
+        break;
       default:
         break;
     }
@@ -75,7 +118,7 @@ export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
           onChange={({ target }) => setDescription(target.value)}
         />
         <TextField
-          label="Date"
+          type="date"
           placeholder="YYYY-MM-DD"
           fullWidth
           value={date}
@@ -87,12 +130,21 @@ export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <TextField
-          label="Diagnose Codes"
+        <InputLabel>Diagnosis Code</InputLabel>
+        <Select
+          label="Diagnosis codes"
+          multiple
           fullWidth
-          value={diagnose}
-          onChange={({ target }) => setDiagnose(target.value)}
-        />
+          value={diagnosisCodes}
+          onChange={onDiagnoseChange}
+          input={<OutlinedInput label="Multiple Select" />}
+        >
+          {codes.map((code) => (
+            <MenuItem key={code.code} value={code.code}>
+              {code.code}
+            </MenuItem>
+          ))}
+        </Select>
         {type === "Hospital" && (
           <HospitalForm discharge={discharge} setDischarge={setDischarge} />
         )}
@@ -131,6 +183,19 @@ export const BaseForm = ({ type, onCancel, onSubmit }: Props) => {
               variant="contained"
             >
               Add
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              style={{
+                float: "left",
+              }}
+              type="button"
+              color="secondary"
+              variant="contained"
+              onClick={clearForm}
+            >
+              Clear
             </Button>
           </Grid>
         </Grid>

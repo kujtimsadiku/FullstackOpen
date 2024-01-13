@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { InputLabel, TextField } from "@mui/material";
 import { SickLeave } from "../../../types";
 import React from "react";
 
@@ -32,17 +32,17 @@ export const HealthCareForm = ({
         value={employerName}
         onChange={({ target }) => setEmployerName(target.value)}
       />
+      <InputLabel>Sick Leave Start Date</InputLabel>
       <TextField
-        label="Sick Leave Start Date"
         fullWidth
+        type="date"
         name="startDate"
-        placeholder="YYYY-MM-DD"
         value={sickLeave.startDate}
         onChange={handleSickLeaveChange}
       />
+      <InputLabel>Sick Leave End Date</InputLabel>
       <TextField
-        label="Sick Leave End Date"
-        placeholder="YYYY-MM-DD"
+        type="date"
         fullWidth
         name="endDate"
         value={sickLeave.endDate}
