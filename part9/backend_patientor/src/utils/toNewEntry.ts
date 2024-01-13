@@ -71,13 +71,11 @@ const parseEmployerName = (employer: unknown): string => {
 };
 
 const parseDiagnosisCodes = (object: unknown): Array<Diagnose["code"]> => {
-  console.log(object);
   if (!object || typeof object !== "object" || !("diagnosisCodes" in object)) {
     // we will just trust the data to be in correct form
-    console.log(false);
     return [] as Array<Diagnose["code"]>;
   }
-  console.log(true);
+
   return object.diagnosisCodes as Array<Diagnose["code"]>;
 };
 
